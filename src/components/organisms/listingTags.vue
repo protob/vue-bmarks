@@ -1,34 +1,25 @@
 <template lang="html">
-
   <section class="listing-tags">
     <h1>listing-tags Component</h1>
   </section>
-
 </template>
 
-<script lang="js">
-  export default  {
-    name: 'listing-tags',
-    props: [],
-    mounted() {
+<script>
+export default {
+  name: "ListingTags",
+  components: {},
+  props: [],
 
-    },
-    data() {
-      return {
-
-      }
-    },
-    methods: {
-
-    },
-    computed: {
-
-    }
-}
+  data() {
+    return {};
+  },
+  computed: {},
+  mounted() {},
+  methods: {}
+};
 </script>
 
 <style scoped lang="scss">
-  .listing-tags {
-
-  }
+.listing-tags {
+}
 </style>

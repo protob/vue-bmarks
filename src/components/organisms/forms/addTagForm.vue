@@ -1,34 +1,25 @@
 <template lang="html">
-
   <section class="add-tag-form">
     <h1>add-tag-form Component</h1>
   </section>
-
 </template>
 
-<script lang="js">
-  export default  {
-    name: 'add-tag-form',
-    props: [],
-    mounted() {
+<script>
+export default {
+  name: "AddTagForm",
+  components: {},
+  props: [],
 
-    },
-    data() {
-      return {
-
-      }
-    },
-    methods: {
-
-    },
-    computed: {
-
-    }
-}
+  data() {
+    return {};
+  },
+  computed: {},
+  mounted() {},
+  methods: {}
+};
 </script>
 
 <style scoped lang="scss">
-  .add-tag-form {
-
-  }
+.add-tag-form {
+}
 </style>

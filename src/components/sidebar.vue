@@ -1,34 +1,24 @@
 <template lang="html">
-
   <section class="sidebar">
     <h1>sidebar Component</h1>
   </section>
-
 </template>
 
-<script lang="js">
-  export default  {
-    name: 'sidebar',
-    props: [],
-    mounted() {
+<script>
+export default {
+  name: "Sidebar",
+  props: [],
+  data() {
+    return {};
+  },
+  computed: {},
 
-    },
-    data() {
-      return {
-
-      }
-    },
-    methods: {
-
-    },
-    computed: {
-
-    }
-}
+  mounted() {},
+  methods: {}
+};
 </script>
 
 <style scoped lang="scss">
-  .sidebar {
-
-  }
+.sidebar {
+}
 </style>

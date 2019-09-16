@@ -1,8 +1,12 @@
 <template lang="html">
   <div class="listing-tags">
-    <div class="lisitng-head bg-blue-700 flex justify-between p-4">
-      <h2 class="text-white py-2 font-bold uppercase">Tags</h2>
-      <div class="toolbar"><btn class="mx-2">+1</btn> <btn>all</btn></div>
+    <div
+      class="lisitng-head bg-blue-700 flex xxl:flex-no-wrap flex-wrap justify-between p-4"
+    >
+      <h2 class="sm:w-full text-white py-2 font-bold uppercase">Tags</h2>
+      <div class="sm:w-full toolbar">
+        <btn class="mx-2">+1</btn> <btn>all</btn>
+      </div>
     </div>
     <div class="lising-items">
       <taxonamy-item

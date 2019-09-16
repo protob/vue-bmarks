@@ -25,7 +25,7 @@ export default new Vuex.Store({
         id: "8a0fcd2b-e611-4e60-914d-993b353945a2",
         lastMod: 1568306098304,
         name: "react",
-        tags: "",
+        tags: "js,webapps",
         url: "htttps://reactjs.com",
         userId: "1"
       },
@@ -35,7 +35,7 @@ export default new Vuex.Store({
         id: "448d536c-79da-478c-8871-fa6bfbb891ef",
         lastMod: 1568306180954,
         name: "woo",
-        tags: "",
+        tags: "wp,woo",
         url: "https://woocommerce.com/",
         userId: "1"
       },
@@ -45,7 +45,7 @@ export default new Vuex.Store({
         id: "3b807d7a-9250-4dc8-9ffa-7919c7d116bb",
         lastMod: 1568306204694,
         name: "magento",
-        tags: "",
+        tags: "ecommerce",
         url: "https://magento.com/",
         userId: "1"
       },
@@ -55,7 +55,7 @@ export default new Vuex.Store({
         id: "64424a4f-611b-4c8a-85e6-1e21ca7c19df",
         lastMod: 1568306257012,
         name: "presta",
-        tags: "",
+        tags: "ecommerce",
         url: "https://www.prestashop.com/en",
         userId: "1"
       },
@@ -65,7 +65,7 @@ export default new Vuex.Store({
         id: "6241c44f-1bb4-4679-ad17-40a45900b6ff",
         lastMod: 1568306295976,
         name: "shopify",
-        tags: "",
+        tags: "ecommerce",
         url: "https://www.shopify.com/",
         userId: "1"
       },
@@ -75,7 +75,7 @@ export default new Vuex.Store({
         id: "aebc34d4-4d18-4df7-b66b-20177fe093d7",
         lastMod: 1568324721085,
         name: "mozilla",
-        tags: "",
+        tags: "web",
         url: "http://mozilla.org",
         userId: "1"
       }

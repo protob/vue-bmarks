@@ -6,7 +6,7 @@
       </aside>
 
       <div class="bg-gray-400 w-16  main-panel">
-        listing
+        <listing-collection />
       </div>
     </div>
   </div>
@@ -14,10 +14,12 @@
 
 <script>
 import sidebar from "@/components/organisms/sidebar.vue";
+import listingCollection from "@/components/organisms/listingCollection.vue";
 export default {
   name: "MainContent",
   components: {
-    sidebar
+    sidebar,
+    listingCollection
   },
   props: [],
   data() {

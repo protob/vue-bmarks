@@ -18,7 +18,7 @@ export default {
   components: {
     btn
   },
-  props: { item: Object, key: [String, Number] },
+  props: { item: Object },
   data() {
     return {
       selected: ""

@@ -1,0 +1,21 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+
+
+@media (max-width: 540px) {
+  .segment-text {
+    padding: 35px 0 20px 0;
+  }
+}
+
+/*------------------------------------*\
+    # Typography
+\*------------------------------------*/

@@ -1,24 +1,22 @@
 <template lang="html">
   <section class="top-nav">
     <!--Nav-->
-    <nav
-      class="bg-gray-900 pt-2 md:pt-1 pb-1 px-1 mt-0 h-auto  w-full z-20 top-0 "
-    >
+    <nav class="bg-gray-900 px-2 py-4 w-full z-20  ">
       <!-- Three columns -->
-      <div class="flex mb-4">
-        <div class="w-1/3 bg-gray-400 ">
-          <div class="flex mb-4">
-            <div class="w-1/2 ">
+      <div class="flex flex-wrap">
+        <div class="lg:w-1/3  w-full ">
+          <div class="flex">
+            <div class="sm:w-1/2 w-full px-2">
               <search-bar />
             </div>
-            <div class="w-1/2 ">
+            <div class="sm:w-1/2  w-full px-2">
               <order-select />
             </div>
           </div>
         </div>
 
-        <div class="w-1/3 bg-gray-500 "></div>
-        <div class="w-1/3 bg-gray-400 "></div>
+        <div class="lg:w-1/3  w-full"></div>
+        <div class="lg:w-1/3  w-full "></div>
       </div>
     </nav>
   </section>

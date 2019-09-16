@@ -1,20 +1,17 @@
 <template lang="html">
-  <section class="search-form">
-    <div class="ml-auto hidden md:block">
+  <div class="search-form">
+    <div class="ml-auto md:block">
       <div class="filer">
-        <h2>filter</h2>
         <input
           v-model="filterPhrase"
-          class="form-input border border-black p-2"
+          placeholder="Search"
+          class="appearance-none placeholder-black block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           type="text"
           @input="filterItems"
         />
-
-        <h2>Filter phrase:</h2>
-        <div>{{ filterPhrase }}</div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>

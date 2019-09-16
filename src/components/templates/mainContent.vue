@@ -1,41 +1,32 @@
 <template lang="html">
-<div>
+  <div>
     <div class="flex h-full content-wrapper">
-        <aside class="w-1/6 bg-gray-500 sidebar">
-            sidebar
-        </aside>
-        <div class="w-5/6 bg-gray-400 h-full main-panel">
-            listing
-        </div>
+      <aside class=" bg-gray-500 sidebar-wrap">
+        <sidebar />
+      </aside>
+
+      <div class="bg-gray-400 w-16  main-panel">
+        listing
+      </div>
     </div>
-</div>
-  
+  </div>
 </template>
 
-<script lang="js">
-
-
-  export default  {
-    name: 'main-content',
-    props: [],
-    components:{
-
-    },
-    mounted() {
-
-    },
-    data() {
-      return {
-
-      }
-    },
-    methods: {
-
-    },
-    computed: {
-
-    }
-}
+<script>
+import sidebar from "@/components/organisms/sidebar.vue";
+export default {
+  name: "MainContent",
+  components: {
+    sidebar
+  },
+  props: [],
+  data() {
+    return {};
+  },
+  computed: {},
+  mounted() {},
+  methods: {}
+};
 </script>
 
 <style scoped lang="scss">
@@ -43,8 +34,15 @@
 .sidebar,
 .main-panel {
   min-height: 100vh;
+
   * {
     color: black;
   }
+}
+.sidebar-wrap {
+  width: calc(16.66666% + 2rem);
+}
+.main-panel {
+  width: calc(100% - 16rem);
 }
 </style>

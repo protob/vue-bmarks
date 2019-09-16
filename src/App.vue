@@ -4,8 +4,7 @@
   </div>
 </template>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>
 
 <script>
 export default {
@@ -15,9 +14,7 @@ export default {
       isLoading: true
     };
   },
-  mounted() {
-
-  }
+  mounted() {}
 };
 </script>
 

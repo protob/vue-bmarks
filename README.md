@@ -1,2 +1,2 @@
 # vue-bmarks
-Simple bookmarks manager based on Vue.js and Hasura (GraphQL on Postgres).
+Bookmarks manager built with Vue.js + Hasura (GraphQL on Postgres) + Apollo Client

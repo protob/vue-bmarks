@@ -55,7 +55,6 @@ export default {
         name: "vue",
         lastMod: 1568306037090
       };
-
       this.$root.$emit("fireModalAddTag", data);
     },
 

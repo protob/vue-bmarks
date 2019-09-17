@@ -24,7 +24,7 @@ export default class FormBuilder {
 
     return {
       props: {
-        id: {
+        formid: {
           default: null,
           type: [Number, String]
         }
@@ -33,7 +33,9 @@ export default class FormBuilder {
         return h(Provider, [
           h(FormFactory, {
             props: {
-              id: this.id,
+              // id: this.formid,
+              formid: this.formid,
+              id: this.formid,
               ...props
             }
           })

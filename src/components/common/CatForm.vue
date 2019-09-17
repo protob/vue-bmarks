@@ -1,6 +1,6 @@
 <template>
   <UserProvider>
-    <FormFactory :fields="fields" :id="id" />
+    <FormFactory :fields="fields" :formid="id" />
   </UserProvider>
 </template>
 
@@ -24,7 +24,7 @@ export default {
     // Passing an ID as a property makes
     // the form load an existing user and
     // switches the form into editing mode.
-    id: {
+    formid: {
       default: null,
       type: [Number, String]
     }

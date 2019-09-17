@@ -2,7 +2,10 @@
   <div class="lisitng-head bg-gray-900    ">
     <div class="lisitng-head bg-blue-700 flex justify-between p-4">
       <h2 class="text-white py-2 font-bold uppercase">{{ item.name }}</h2>
-      <div class="toolbar"><btn class="mx-2">+1</btn> <btn>all</btn></div>
+      <div class="toolbar">
+        <btn class="mx-2" @click="toggleModalAddBookmark(item.id)">+1</btn>
+        <btn>all</btn>
+      </div>
     </div>
 
     <div v-if="itemsByCat[item.id]" class="bookmarks-lisiting">
@@ -35,8 +38,15 @@
           </div>
         </div>
         <div class="item-toolbar">
-          <btn :type="'small'" class="m-1">E</btn>
-          <btn :type="'small'" class="ml-1">X</btn>
+          <btn
+            :type="'small'"
+            class="m-1"
+            @click="toggleModalAddBookmark(item.id, true)"
+            >E</btn
+          >
+          <btn :type="'small'" class="ml-1" @click="toggleDeleteTaxModal"
+            >X</btn
+          >
         </div>
       </div>
     </div>
@@ -67,6 +77,18 @@ export default {
   },
 
   methods: {
+    toggleModalAddBookmark(bookmarkId, isEditing = false) {
+      this.$root.$emit("fireModalAddBookmark", {
+        bookmarkId: bookmarkId,
+        isEditing: isEditing
+      });
+    },
+
+    toggleDeleteTaxModal(taxId) {
+      const key = "catId" in this.item ? "catId" : "taxId";
+      this.$root.$emit("fireConfirm", { taxId: taxId, taxKey: key });
+    },
+
     formatDate(timestamp) {
       const d = new Date(timestamp);
       const formated =

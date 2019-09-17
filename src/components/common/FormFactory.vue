@@ -1,36 +1,36 @@
 <template>
-  <form class="form-factory" @submit.prevent="submit">
+  <div class="form-factory">
     <div v-if="success" class="form-factory-success">Success!</div>
     <template v-else>
-      <FormGroup v-for="field in fieldsWithDefaults" :key="field.name">
-        <FormLabel :for="`${_uid}-${field.name}`">
-          {{ field.label }}
-          <template v-if="field.validation.required"
-            >*</template
-          >
-        </FormLabel>
+      <FormGroup v-for="field in fieldsWithDefaults">
         <Component
           :is="field.component"
-					v-model="data[field.name]"
           :id="`${_uid}-${field.name}`"
-					v-bind="{ ...field.options.props, ...field.options.attrs }"
+          v-model="data[field.name]"
+          v-bind="{ ...field.options.props, ...field.options.attrs }"
           @input="$v.data[field.name].$touch()"
         />
+
         <FormInlineMessage v-if="$v.data[field.name].$error"
           >Please fill in this field correctly.</FormInlineMessage
         >
       </FormGroup>
-      <button>Submit</button>
+      <div class="flex items-center justify-between">
+        <btn class="text-lg" @click="submit">
+          <span v-if="isEditing">Udpdate</span>
+          <span v-else>Add</span>
+        </btn>
+        <btn class="text-lg" @click="closeModal">Cancel</btn>
+      </div>
     </template>
-  </form>
+  </div>
 </template>
 
 <script>
 import { validationMixin } from "vuelidate";
-
+import btn from "@/components/atoms/btn.vue";
 import FormGroup from "./FormGroup.vue";
 import FormInlineMessage from "./FormInlineMessage.vue";
-import FormLabel from "./FormLabel.vue";
 
 const defaultField = {
   component: null,
@@ -45,7 +45,7 @@ export default {
   components: {
     FormGroup,
     FormInlineMessage,
-    FormLabel
+    btn
   },
   mixins: [validationMixin],
   // Injecting dependencies makes it
@@ -57,13 +57,14 @@ export default {
       default: () => [],
       type: Array
     },
-    id: {
+    formid: {
       default: null,
       type: [Number, String]
     }
   },
   data() {
     return {
+      isEditing: false,
       data: {},
       success: false
     };
@@ -77,17 +78,41 @@ export default {
     }
   },
   async created() {
-    if (this.id) {
-      this.data = await this.fetch(this.id);
-    }
+    // if (this.formid) {
+    //   this.data = await this.fetch(this.formid);
+    // }
+    // it causes the bug
   },
   methods: {
+    closeModal() {
+      const eventName =
+        this.formid == "catForm"
+          ? "closeCatModal"
+          : this.formid == "tagForm"
+          ? "closeTagModal"
+          : "closeBookmarkModal";
+
+      this.$root.$emit(eventName);
+    },
+
     async submit() {
       this.$v.$touch();
       if (this.$v.$error) return;
 
       const { success } = await this.post(this.data);
-      this.success = success;
+      const data = JSON.parse(JSON.stringify(this.data));
+
+      // triple ternary
+      const eventName =
+        this.formid == "catForm"
+          ? "sendCatData"
+          : this.formid == "tagForm"
+          ? "sendTagData"
+          : "sendBookmarkData";
+
+      this.$root.$emit(eventName, data);
+
+      this.success = false;
     }
   },
   // The vuelidate validation configuration is

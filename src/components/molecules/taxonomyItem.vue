@@ -8,8 +8,13 @@
       <btn :type="'small'" class="mx-1" @click="toggleModalAddBookmark(item.id)"
         >+1</btn
       >
-      <btn :type="'small'" class="m-1">E</btn>
-      <btn :type="'small'" class="ml-1">X</btn>
+      <btn
+        :type="'small'"
+        class="m-1"
+        @click="toggleModalAddBookmark(item.id, true)"
+        >E</btn
+      >
+      <btn :type="'small'" class="ml-1" @click="toggleDeleteTaxModal">X</btn>
     </div>
   </div>
 </template>
@@ -30,11 +35,16 @@ export default {
   computed: {},
   mounted() {},
   methods: {
-    toggleModalAddBookmark(catId) {
-      //cat id
+    toggleModalAddBookmark(bookmarkId, isEditing = false) {
       this.$root.$emit("fireModalAddBookmark", {
-        catId: catId
+        bookmarkId: bookmarkId,
+        isEditing: isEditing
       });
+    },
+
+    toggleDeleteTaxModal(taxId) {
+      const key = "catId" in this.item ? "catId" : "taxId";
+      this.$root.$emit("fireConfirm", { taxId: taxId, taxKey: key });
     }
   }
 };

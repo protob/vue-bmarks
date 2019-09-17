@@ -3,8 +3,11 @@
     class="lisitng-head bg-gray-900 flex justify-between p-4  border-t border-gray-500"
   >
     <h2 class="text-white py-2 font-bold capitalize">{{ item.name }}</h2>
+
     <div class="toolbar">
-      <btn :type="'small'" class="mx-1">+1</btn>
+      <btn :type="'small'" class="mx-1" @click="toggleModalAddBookmark(item.id)"
+        >+1</btn
+      >
       <btn :type="'small'" class="m-1">E</btn>
       <btn :type="'small'" class="ml-1">X</btn>
     </div>
@@ -26,7 +29,14 @@ export default {
   },
   computed: {},
   mounted() {},
-  methods: {}
+  methods: {
+    toggleModalAddBookmark(catId) {
+      //cat id
+      this.$root.$emit("fireModalAddBookmark", {
+        catId: catId
+      });
+    }
+  }
 };
 </script>
 

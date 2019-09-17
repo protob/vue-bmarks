@@ -5,7 +5,8 @@
     >
       <h2 class="sm:w-full text-white py-2 font-bold uppercase">Categories</h2>
       <div class="sm:w-full toolbar">
-        <btn class="mx-2">+1</btn> <btn>all</btn>
+        <btn class="mx-2" @click="toggleModalAddCat">+1</btn>
+        <btn>all</btn>
       </div>
     </div>
     <div class="lising-items">
@@ -41,7 +42,45 @@ export default {
     ...mapGetters(["getCats"])
   },
   mounted() {},
-  methods: {}
+  methods: {
+    toggleModalAddCat() {
+      const data = {
+        id: "c2af908a-df6e-4477-ba28-705be7b7169e",
+        userId: "1",
+        slug: "vue",
+        name: "vue",
+        lastMod: 1568306037090
+      };
+
+      this.$root.$emit("fireModalAddCat", data);
+    },
+
+    showAllCats() {
+      this.$root.$emit("showAllCats");
+    },
+
+    toggleModalEditCat(catId, catName) {
+      const data = {
+        catId: catId,
+        catName: catName
+      };
+      this.$root.$emit("fireModalAddCat", data);
+    },
+    toggleModalDelCat(catId) {
+      this.$root.$emit("fireModalDelCat", {
+        catId: catId
+      });
+    },
+
+    filterItemsByCat(catId, catName) {
+      const data = {
+        catId: catId,
+        catName: catName
+      };
+
+      this.$root.$emit("filterItemsByCat", data);
+    }
+  }
 };
 </script>
 

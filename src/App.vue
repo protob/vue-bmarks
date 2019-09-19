@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <router-view />
+    <login-form />
     <add-cat-form />
     <add-tag-form />
     <add-bookmark-form />
@@ -15,13 +16,15 @@
 import addBookmarkForm from "@/components/organisms/forms/addBookmarkForm.vue";
 import addCatForm from "@/components/organisms/forms/addCatForm.vue";
 import addTagForm from "@/components/organisms/forms/addTagForm.vue";
+import loginForm from "@/components/organisms/forms/loginForm.vue";
 import modalConfirm from "@/components/organisms/modalConfirm.vue";
 export default {
   components: {
     addCatForm,
     addTagForm,
     addBookmarkForm,
-    modalConfirm
+    modalConfirm,
+    loginForm
   },
   data() {
     return {

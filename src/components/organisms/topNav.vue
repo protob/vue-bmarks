@@ -16,20 +16,24 @@
         </div>
 
         <div class="lg:w-1/3  w-full"></div>
-        <div class="lg:w-1/3  w-full "></div>
+        <div class="lg:w-1/3  w-full ">
+          <login-toolbar />
+        </div>
       </div>
     </nav>
   </section>
 </template>
 
 <script>
+import loginToolbar from "@/components/organisms/loginToolbar.vue";
 import searchBar from "@/components/molecules/searchBar.vue";
 import orderSelect from "@/components/molecules/orderSelect.vue";
 export default {
   name: "TopNav",
   components: {
     searchBar,
-    orderSelect
+    orderSelect,
+    loginToolbar
   },
   props: [],
   data() {

@@ -159,6 +159,96 @@ export default class FormDirector {
       .build();
   }
 
+  makeLoginForm() {
+    return this.builder
+      .withProvider(UserProvider)
+      .addField({
+        component: FormInput,
+        label: "Name",
+        name: "name",
+        options: {
+          attrs: {
+            placeholder: "Name"
+          }
+        },
+        validation: {
+          required
+        }
+      })
+      .addField({
+        component: FormInput,
+        label: "Email",
+        name: "email",
+        options: {
+          attrs: {
+            placeholder: "email"
+          }
+        },
+        validation: {
+          required
+        }
+      })
+      .addField({
+        component: FormInput,
+        label: "Password",
+        name: "password",
+        options: {
+          attrs: {
+            placeholder: "password"
+          }
+        },
+        validation: {
+          required
+        }
+      })
+      .build();
+  }
+
+  makeRegisterForm() {
+    return this.builder
+      .withProvider(UserProvider)
+      .addField({
+        component: FormInput,
+        label: "Name",
+        name: "name",
+        options: {
+          attrs: {
+            placeholder: "Name"
+          }
+        },
+        validation: {
+          required
+        }
+      })
+      .addField({
+        component: FormInput,
+        label: "Email",
+        name: "email",
+        options: {
+          attrs: {
+            placeholder: "email"
+          }
+        },
+        validation: {
+          required
+        }
+      })
+      .addField({
+        component: FormInput,
+        label: "Password",
+        name: "password",
+        options: {
+          attrs: {
+            placeholder: "password"
+          }
+        },
+        validation: {
+          required
+        }
+      })
+      .build();
+  }
+
   makeBookmarkForm() {
     return this.builder
       .withProvider(UserProvider)

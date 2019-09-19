@@ -1,0 +1,302 @@
+{
+  "data": {
+    "bookmarks": [
+      {
+        "desc": "The Progressive JavaScript Framework",
+        "id": "1",
+        "name": "vue",
+        "slug": "vue",
+        "tags": null,
+        "updated_at": "2019-09-19T20:12:24.056874+00:00",
+        "url": "https://vuejs.org",
+        "userUuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "catUuid": "972dd38a-4bf6-42b6-b320-b26e6a44a7dc",
+        "uuid": "62d5f84a-465b-4d7d-8d3c-3bdb4c2e72b0"
+      },
+      {
+        "desc": "One platform with all the ecommerce and point of sale features you need to start, run, and grow your business",
+        "id": "6",
+        "name": "shopify",
+        "slug": "shopify",
+        "tags": null,
+        "updated_at": "2019-09-19T20:12:48.507127+00:00",
+        "url": "https://www.shopify.com/",
+        "userUuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "catUuid": "a996917b-a5d7-46b2-876d-a6937fc4bc8d",
+        "uuid": "d47cd20f-fddc-4c6f-8132-3d5f40a3836e"
+      },
+      {
+        "desc": "Create and develop your business with PrestaShop",
+        "id": "5",
+        "name": "presta",
+        "slug": "presta",
+        "tags": null,
+        "updated_at": "2019-09-19T20:12:55.880404+00:00",
+        "url": "https://www.prestashop.com/en",
+        "userUuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "catUuid": "a996917b-a5d7-46b2-876d-a6937fc4bc8d",
+        "uuid": "c6fd91ba-a373-439a-9ae8-b774207cb3d2"
+      },
+      {
+        "desc": "A JavaScript library for building user interfaces",
+        "id": "4",
+        "name": "magento",
+        "slug": "magento",
+        "tags": null,
+        "updated_at": "2019-09-19T20:13:03.662682+00:00",
+        "url": "https://magento.com/",
+        "userUuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "catUuid": "a996917b-a5d7-46b2-876d-a6937fc4bc8d",
+        "uuid": "3d891600-41bb-4ba9-bb43-8d76db90836f"
+      },
+      {
+        "desc": "Google fonts",
+        "id": "7",
+        "name": "Google fonts",
+        "slug": "Google fonts",
+        "tags": null,
+        "updated_at": "2019-09-19T20:13:30.034927+00:00",
+        "url": "https://fonts.google.com/",
+        "userUuid": "f5a92e3c-5b1b-449b-a463-8edb193a4c99",
+        "catUuid": "0ff6228a-ec86-430f-9f3f-fd7f7e179f33",
+        "uuid": "7622e7a2-644d-483c-b715-e6992d330da1"
+      },
+      {
+        "desc": "Affinity Designer has truly changed the world of graphic design.",
+        "id": "8",
+        "name": "Affinity Designer",
+        "slug": "affinity-designer",
+        "tags": null,
+        "updated_at": "2019-09-19T20:13:37.004316+00:00",
+        "url": "https://affinity.serif.com/en-us/designer/",
+        "userUuid": "f5a92e3c-5b1b-449b-a463-8edb193a4c99",
+        "catUuid": "0ff6228a-ec86-430f-9f3f-fd7f7e179f33",
+        "uuid": "ece66928-4cf4-4aa4-937e-24a496a90507"
+      },
+      {
+        "desc": "A JavaScript library for building user interfaces",
+        "id": "2",
+        "name": "react",
+        "slug": "react",
+        "tags": null,
+        "updated_at": "2019-09-19T20:14:01.569317+00:00",
+        "url": "https://reactjs.org/",
+        "userUuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "catUuid": "1c7f56ab-7b50-4560-85fd-63cd97095535",
+        "uuid": "bb94d90c-b97b-4176-87b6-548e8356f2a1"
+      },
+      {
+        "desc": "One framework. Mobile & desktop",
+        "id": "3",
+        "name": "angular",
+        "slug": "angular",
+        "tags": null,
+        "updated_at": "2019-09-19T20:14:27.275426+00:00",
+        "url": "https://angular.io/",
+        "userUuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "catUuid": "32f10cba-fdb6-4401-91da-3bf3b8016de8",
+        "uuid": "8b69ee92-d99b-4c00-856c-ac75db72b1df"
+      }
+    ],
+    "cats": [
+      {
+        "id": "1",
+        "name": "vue",
+        "slug": "vue",
+        "updated_at": "2019-09-19T19:43:17.160023+00:00",
+        "userUuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "uuid": "972dd38a-4bf6-42b6-b320-b26e6a44a7dc"
+      },
+      {
+        "id": "2",
+        "name": "js",
+        "slug": "js",
+        "updated_at": "2019-09-19T19:43:24.428679+00:00",
+        "userUuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "uuid": "32f10cba-fdb6-4401-91da-3bf3b8016de8"
+      },
+      {
+        "id": "3",
+        "name": "react",
+        "slug": "react",
+        "updated_at": "2019-09-19T19:43:33.992968+00:00",
+        "userUuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "uuid": "1c7f56ab-7b50-4560-85fd-63cd97095535"
+      },
+      {
+        "id": "4",
+        "name": "ecommerce",
+        "slug": "ecommerce",
+        "updated_at": "2019-09-19T19:43:49.599684+00:00",
+        "userUuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "uuid": "a996917b-a5d7-46b2-876d-a6937fc4bc8d"
+      },
+      {
+        "id": "6",
+        "name": "typography",
+        "slug": "typography",
+        "updated_at": "2019-09-19T19:44:21.946827+00:00",
+        "userUuid": "f5a92e3c-5b1b-449b-a463-8edb193a4c99",
+        "uuid": "33c5c2f3-668c-4b87-89c1-454628a0eefd"
+      },
+      {
+        "id": "5",
+        "name": "design",
+        "slug": "design",
+        "updated_at": "2019-09-19T19:48:52.709828+00:00",
+        "userUuid": "f5a92e3c-5b1b-449b-a463-8edb193a4c99",
+        "uuid": "0ff6228a-ec86-430f-9f3f-fd7f7e179f33"
+      }
+    ],
+    "tags": [
+      {
+        "id": "3",
+        "name": "js",
+        "slug": "js",
+        "updated_at": "2019-09-19T19:55:32.672464+00:00",
+        "userUuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "uuid": "bdafaf08-1c5c-4a21-8eb6-b6f8c351f91c"
+      },
+      {
+        "id": "4",
+        "name": "ecommerce",
+        "slug": "ecommerce",
+        "updated_at": "2019-09-19T19:55:38.32662+00:00",
+        "userUuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "uuid": "96a9a459-a486-464e-bb8d-c5b071dabf36"
+      },
+      {
+        "id": "1",
+        "name": "vue",
+        "slug": "vue",
+        "updated_at": "2019-09-19T19:55:43.491193+00:00",
+        "userUuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "uuid": "6d25e5a6-56cf-40bf-b0e8-af9c831196ee"
+      },
+      {
+        "id": "2",
+        "name": "react",
+        "slug": "react",
+        "updated_at": "2019-09-19T19:56:00.049588+00:00",
+        "userUuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "uuid": "e439f647-b793-4dc2-8f0b-92d78eaeea43"
+      },
+      {
+        "id": "5",
+        "name": "webdev",
+        "slug": "webdev",
+        "updated_at": "2019-09-19T19:56:10.071231+00:00",
+        "userUuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "uuid": "a38d649e-a338-497d-9f1a-a175b5255762"
+      },
+      {
+        "id": "3",
+        "name": "tips",
+        "slug": "tips",
+        "updated_at": "2019-09-19T20:04:24.889981+00:00",
+        "userUuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "uuid": "466d0b65-6e78-4150-a934-86ee2514a317"
+      }
+    ],
+    "users": [
+      {
+        "id": "2",
+        "name": "User Userson",
+        "slug": "user",
+        "updated_at": "2019-09-19T19:41:42.961201+00:00",
+        "username": "user",
+        "uuid": "f5a92e3c-5b1b-449b-a463-8edb193a4c99",
+        "email": "user@hasura.com"
+      },
+      {
+        "id": "1",
+        "name": "Admin Adminson",
+        "slug": "admin",
+        "updated_at": "2019-09-19T19:54:58.463541+00:00",
+        "username": "admin",
+        "uuid": "723881c9-a6fa-447d-9553-cac37936989b",
+        "email": "admin@hasura.com"
+      }
+    ],
+    "bookmarks_cats": [
+      {
+        "bookmarkUuid": "62d5f84a-465b-4d7d-8d3c-3bdb4c2e72b0",
+        "catUuid": "972dd38a-4bf6-42b6-b320-b26e6a44a7dc"
+      },
+      {
+        "bookmarkUuid": "d47cd20f-fddc-4c6f-8132-3d5f40a3836e",
+        "catUuid": "a996917b-a5d7-46b2-876d-a6937fc4bc8d"
+      },
+      {
+        "bookmarkUuid": "c6fd91ba-a373-439a-9ae8-b774207cb3d2",
+        "catUuid": "a996917b-a5d7-46b2-876d-a6937fc4bc8d"
+      },
+      {
+        "bookmarkUuid": "3d891600-41bb-4ba9-bb43-8d76db90836f",
+        "catUuid": "a996917b-a5d7-46b2-876d-a6937fc4bc8d"
+      },
+      {
+        "bookmarkUuid": "7622e7a2-644d-483c-b715-e6992d330da1",
+        "catUuid": "0ff6228a-ec86-430f-9f3f-fd7f7e179f33"
+      },
+      {
+        "bookmarkUuid": "ece66928-4cf4-4aa4-937e-24a496a90507",
+        "catUuid": "0ff6228a-ec86-430f-9f3f-fd7f7e179f33"
+      },
+      {
+        "bookmarkUuid": "bb94d90c-b97b-4176-87b6-548e8356f2a1",
+        "catUuid": "1c7f56ab-7b50-4560-85fd-63cd97095535"
+      },
+      {
+        "bookmarkUuid": "8b69ee92-d99b-4c00-856c-ac75db72b1df",
+        "catUuid": "32f10cba-fdb6-4401-91da-3bf3b8016de8"
+      }
+    ],
+    "bookmarks_tags": [
+      {
+        "tagUuid": "6d25e5a6-56cf-40bf-b0e8-af9c831196ee",
+        "bookmarkUuid": "62d5f84a-465b-4d7d-8d3c-3bdb4c2e72b0"
+      },
+      {
+        "tagUuid": "bdafaf08-1c5c-4a21-8eb6-b6f8c351f91c",
+        "bookmarkUuid": "62d5f84a-465b-4d7d-8d3c-3bdb4c2e72b0"
+      },
+      {
+        "tagUuid": "96a9a459-a486-464e-bb8d-c5b071dabf36",
+        "bookmarkUuid": "d47cd20f-fddc-4c6f-8132-3d5f40a3836e"
+      },
+      {
+        "tagUuid": "96a9a459-a486-464e-bb8d-c5b071dabf36",
+        "bookmarkUuid": "c6fd91ba-a373-439a-9ae8-b774207cb3d2"
+      },
+      {
+        "tagUuid": "96a9a459-a486-464e-bb8d-c5b071dabf36",
+        "bookmarkUuid": "3d891600-41bb-4ba9-bb43-8d76db90836f"
+      },
+      {
+        "tagUuid": "466d0b65-6e78-4150-a934-86ee2514a317",
+        "bookmarkUuid": "7622e7a2-644d-483c-b715-e6992d330da1"
+      },
+      {
+        "tagUuid": "466d0b65-6e78-4150-a934-86ee2514a317",
+        "bookmarkUuid": "ece66928-4cf4-4aa4-937e-24a496a90507"
+      },
+      {
+        "tagUuid": "bdafaf08-1c5c-4a21-8eb6-b6f8c351f91c",
+        "bookmarkUuid": "bb94d90c-b97b-4176-87b6-548e8356f2a1"
+      },
+      {
+        "tagUuid": "e439f647-b793-4dc2-8f0b-92d78eaeea43",
+        "bookmarkUuid": "bb94d90c-b97b-4176-87b6-548e8356f2a1"
+      },
+      {
+        "tagUuid": "bdafaf08-1c5c-4a21-8eb6-b6f8c351f91c",
+        "bookmarkUuid": "8b69ee92-d99b-4c00-856c-ac75db72b1df"
+      },
+      {
+        "tagUuid": "a38d649e-a338-497d-9f1a-a175b5255762",
+        "bookmarkUuid": "8b69ee92-d99b-4c00-856c-ac75db72b1df"
+      }
+    ]
+  }
+}

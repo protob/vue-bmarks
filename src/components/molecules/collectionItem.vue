@@ -31,6 +31,7 @@
               :key="Math.random()"
               :type="'small'"
               class="ml-1"
+              @click="filterByTag(elem.tag.uuid, elem.tag.name)"
             >
               {{ elem.tag.name }}
             </btn>
@@ -76,6 +77,9 @@ export default {
   },
 
   methods: {
+    filterByTag(uuid, name) {
+      this.$root.$emit("filterItemsByTag", { uuid, name });
+    },
     openModal(target, bookmarkId, isEditing = false) {
       this.$root.$emit("fireModal", { target, bookmarkId, isEditing });
     },

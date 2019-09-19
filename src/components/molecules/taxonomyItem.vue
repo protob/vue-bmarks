@@ -2,8 +2,11 @@
   <div
     class="lisitng-head bg-gray-900 flex justify-between p-4  border-t border-gray-500"
   >
-    <h2 class="text-white py-2 font-bold capitalize">{{ item.name }}</h2>
-
+    <a @click.prevent="filterByTaxonomy(item.uuid, item.name, item.__typename)">
+      <h2 class="text-white py-2 font-bold capitalize cursor-pointer">
+        {{ item.name }}
+      </h2>
+    </a>
     <div class="toolbar">
       <btn :type="'small'" class="mx-1" @click="openModal('bookmark', item.id)"
         >+1</btn
@@ -35,6 +38,12 @@ export default {
   computed: {},
   mounted() {},
   methods: {
+    filterByTaxonomy(uuid, name, target) {
+      const eventName =
+        target == "cats" ? "filterItemsByCat" : "filterItemsByTag";
+      this.$root.$emit(eventName, { uuid, name });
+    },
+
     openModal(target, bookmarkId, isEditing = false) {
       this.$root.$emit("fireModal", { target, bookmarkId, isEditing });
     },

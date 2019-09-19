@@ -14,7 +14,7 @@
 import collectionItem from "@/components/molecules/collectionItem.vue";
 
 import gql from "graphql-tag";
-const GET_BOOKMARKS_BY_CAT = gql`
+const GET_ALL_BOOKMARKS_BY_CAT = gql`
   query getBookmarksByCat {
     cats {
       name
@@ -34,6 +34,60 @@ const GET_BOOKMARKS_BY_CAT = gql`
               uuid
               name
               slug
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const GET_BOOKMARKS_BY_CAT = gql`
+  query getBookmarksByCat($uuid: uuid!) {
+    cats(where: { uuid: { _eq: $uuid } }) {
+      name
+      uuid
+      bookmarks {
+        name
+        uuid
+        userUuid
+        url
+        updated_at
+        slug
+        bookmarks_tags {
+          tag {
+            id
+            name
+            slug
+            uuid
+          }
+        }
+      }
+    }
+  }
+`;
+
+const GET_BOOKMARKS_BY_TAG = gql`
+  query getBookmarksByTag($uuid: uuid!) {
+    tags(where: { uuid: { _eq: $uuid } }) {
+      name
+      slug
+      uuid
+      bookmarks_tags {
+        bookmark {
+          desc
+          id
+          name
+          slug
+          url
+          updated_at
+          uuid
+          bookmarks_tags {
+            tag {
+              updated_at
+              slug
+              name
+              uuid
             }
           }
         }
@@ -85,13 +139,75 @@ export default {
 
   apollo: {
     bookmarksByCat: {
-      query: GET_BOOKMARKS_BY_CAT,
+      query: GET_ALL_BOOKMARKS_BY_CAT,
       update: data => data.cats
     }
   },
 
   computed: {},
   mounted() {
+    // items by cat
+
+    this.$root.$on("filterItemsByCat", data => {
+      console.log(data.uuid);
+      const uuid = data.uuid;
+      const tagName = data.name;
+
+      this.$apollo
+        .query({
+          query: GET_BOOKMARKS_BY_CAT,
+          variables: {
+            uuid
+          }
+        })
+        .then(result => {
+          const tempId = new Date().getTime();
+          const cats = result.data.cats;
+          console.log(cats[0].bookmarks);
+
+          const catItems = cats[0].bookmarks; // currently single cat filter is supported
+          const formattedItems = catItems.map(item => {
+            return { bookmark: item };
+          });
+          let item = {
+            name: tagName,
+            id: tempId,
+            bookmarks_cats: formattedItems
+          };
+          console.log(item);
+          this.bookmarksByCat = [item];
+        });
+    });
+
+    //items by tag
+
+    this.$root.$on("filterItemsByTag", data => {
+      console.log(data.uuid);
+      const uuid = data.uuid;
+      const tagName = data.name;
+
+      this.$apollo
+        .query({
+          query: GET_BOOKMARKS_BY_TAG,
+          variables: {
+            uuid
+          }
+        })
+        .then(result => {
+          const tempId = new Date().getTime();
+          const tags = result.data.tags;
+
+          const tagItems = tags[0].bookmarks_tags; // currently single tag filter is supported
+          let item = {
+            name: tagName,
+            id: tempId,
+            bookmarks_cats: tagItems
+          };
+          console.log(item);
+          this.bookmarksByCat = [item];
+        });
+    });
+
     // sort by order
     this.$root.$on("sortItemsByOrder", data => {
       this.$apollo
@@ -119,7 +235,7 @@ export default {
       if (!phrase) {
         this.$apollo
           .query({
-            query: GET_BOOKMARKS_BY_CAT
+            query: GET_ALL_BOOKMARKS_BY_CAT
           })
           .then(result => {
             this.bookmarksByCat = result.data.cats;

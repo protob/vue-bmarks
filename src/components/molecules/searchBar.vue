@@ -28,6 +28,9 @@ export default {
   methods: {
     filterItems() {
       this.$root.$emit("filterItemsByPhrase", { phrase: this.filterPhrase });
+    },
+    resetFilter() {
+      this.$root.$emit("filterItemsByPhrase", { phrase: null });
     }
   }
 };

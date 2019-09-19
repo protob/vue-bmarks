@@ -48,13 +48,17 @@ export default {
   },
   computed: {},
   mounted() {
+    this.$root.$on("closeLoginModal", data => {
+      this.toggleModal();
+    });
+    this.$root.$on("closeRegisterModal", data => {
+      this.toggleModal();
+    });
     this.$root.$on("fireModalLogin", data => {
       this.target = data.target;
       this.toggleModal();
     });
-    this.$root.$on("closeTagModal", data => {
-      this.toggleModal();
-    });
+
     this.$root.$on("fireModalAddTag", data => {
       // if (data) {
       //   this.form = data;

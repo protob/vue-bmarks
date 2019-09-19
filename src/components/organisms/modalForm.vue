@@ -20,7 +20,13 @@
 
         <div class=" px-8 pt-6 pb-8 mb-4 ">
           <LoginForm v-if="target == 'login'" :formid="'loginForm'" />
-          <RegisterForm v-else :formid="'registerForm'" />
+          <RegisterForm
+            v-else-if="target == 'register'"
+            :formid="'registerForm'"
+          />
+          <CatForm v-else-if="target == 'cat'" :formid="'catForm'" />
+          <TagForm v-else-if="target == 'tag'" :formid="'tagForm'" />
+          <BookmarkForm v-else :formid="'bookmarkForm'" />
         </div>
       </div>
     </div>
@@ -35,7 +41,10 @@ export default {
   name: "AddTagForm",
   components: {
     LoginForm: new FormDirector(new FormBuilder()).makeLoginForm(),
-    RegisterForm: new FormDirector(new FormBuilder()).makeRegisterForm()
+    RegisterForm: new FormDirector(new FormBuilder()).makeRegisterForm(),
+    CatForm: new FormDirector(new FormBuilder()).makeCatForm(),
+    TagForm: new FormDirector(new FormBuilder()).makeTagForm(),
+    BookmarkForm: new FormDirector(new FormBuilder()).makeBookmarkForm()
   },
   props: [],
 
@@ -48,13 +57,11 @@ export default {
   },
   computed: {},
   mounted() {
-    this.$root.$on("closeLoginModal", data => {
+    this.$root.$on("closeModal", data => {
       this.toggleModal();
     });
-    this.$root.$on("closeRegisterModal", data => {
-      this.toggleModal();
-    });
-    this.$root.$on("fireModalLogin", data => {
+
+    this.$root.$on("fireModal", data => {
       this.target = data.target;
       this.toggleModal();
     });

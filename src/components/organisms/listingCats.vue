@@ -5,7 +5,7 @@
     >
       <h2 class="sm:w-full text-white py-2 font-bold uppercase">Categories</h2>
       <div class="sm:w-full toolbar">
-        <btn class="mx-2" @click="toggleModalAddCat">+1</btn>
+        <btn class="mx-2" @click="openModal('cat')">+1</btn>
         <btn>all</btn>
       </div>
     </div>
@@ -43,6 +43,10 @@ export default {
   },
   mounted() {},
   methods: {
+    openModal(target) {
+      this.$root.$emit("fireModal", { target });
+    },
+
     toggleModalAddCat() {
       const data = {
         id: "c2af908a-df6e-4477-ba28-705be7b7169e",

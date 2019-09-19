@@ -85,17 +85,7 @@ export default {
   },
   methods: {
     closeModal() {
-      const map = {
-        catForm: "closeCatModal",
-        tagForm: "closeTagModal",
-        bookmarkForm: "closeBookmarkModal",
-        loginForm: "closeLoginModal",
-        registerForm: "closeRegisterModal"
-      };
-
-      const eventName = map[this.formid];
-
-      this.$root.$emit(eventName);
+      this.$root.$emit("closeModal", { target: this.formid });
     },
 
     async submit() {

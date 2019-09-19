@@ -3,7 +3,7 @@
     <div class="lisitng-head bg-blue-700 flex justify-between p-4">
       <h2 class="text-white py-2 font-bold uppercase">{{ item.name }}</h2>
       <div class="toolbar">
-        <btn class="mx-2" @click="toggleModalAddBookmark(item.id)">+1</btn>
+        <btn class="mx-2" @click="openModal('bookmark', item.id)">+1</btn>
         <btn>all</btn>
       </div>
     </div>
@@ -41,7 +41,7 @@
           <btn
             :type="'small'"
             class="m-1"
-            @click="toggleModalAddBookmark(item.id, true)"
+            @click="openModal('bookmark', item.id, true)"
             >E</btn
           >
           <btn :type="'small'" class="ml-1" @click="toggleDeleteTaxModal"
@@ -77,6 +77,10 @@ export default {
   },
 
   methods: {
+    openModal(target, bookmarkId, isEditing = false) {
+      this.$root.$emit("fireModal", { target, bookmarkId, isEditing });
+    },
+
     toggleModalAddBookmark(bookmarkId, isEditing = false) {
       this.$root.$emit("fireModalAddBookmark", {
         bookmarkId: bookmarkId,

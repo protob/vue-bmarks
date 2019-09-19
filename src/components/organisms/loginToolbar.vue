@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="sm:w-full toolbar">
-      <btn class="mx-2" @click="toggleMaodalLogin">Login</btn>
-      <btn @click="toggleMaodalRegister">Register</btn>
+      <btn class="mx-2" @click="openModal('login')">Login</btn>
+      <btn @click="openModal('register')">Register</btn>
     </div>
   </div>
 </template>
@@ -15,11 +15,8 @@ export default {
     btn
   },
   methods: {
-    toggleMaodalLogin() {
-      this.$root.$emit("fireModalLogin", { target: "login" });
-    },
-    toggleMaodalRegister() {
-      this.$root.$emit("fireModalLogin", { target: "register" });
+    openModal(target) {
+      this.$root.$emit("fireModal", { target });
     }
   }
 };

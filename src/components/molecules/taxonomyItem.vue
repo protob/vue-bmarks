@@ -5,13 +5,13 @@
     <h2 class="text-white py-2 font-bold capitalize">{{ item.name }}</h2>
 
     <div class="toolbar">
-      <btn :type="'small'" class="mx-1" @click="toggleModalAddBookmark(item.id)"
+      <btn :type="'small'" class="mx-1" @click="openModal('bookmark', item.id)"
         >+1</btn
       >
       <btn
         :type="'small'"
         class="m-1"
-        @click="toggleModalAddBookmark(item.id, true)"
+        @click="openModal('bookmark', item.id, true)"
         >E</btn
       >
       <btn :type="'small'" class="ml-1" @click="toggleDeleteTaxModal">X</btn>
@@ -35,6 +35,10 @@ export default {
   computed: {},
   mounted() {},
   methods: {
+    openModal(target, bookmarkId, isEditing = false) {
+      this.$root.$emit("fireModal", { target, bookmarkId, isEditing });
+    },
+
     toggleModalAddBookmark(bookmarkId, isEditing = false) {
       this.$root.$emit("fireModalAddBookmark", {
         bookmarkId: bookmarkId,

@@ -15,7 +15,9 @@
           </div>
         </div>
 
-        <div class="lg:w-1/3  w-full"></div>
+        <div class="lg:w-1/3  w-full">
+          <router-link :to="{ name: 'home' }"><btn>Home</btn></router-link>
+        </div>
         <div class="lg:w-1/3  w-full ">
           <login-toolbar />
         </div>
@@ -25,12 +27,14 @@
 </template>
 
 <script>
+import btn from "@/components/atoms/btn.vue";
 import loginToolbar from "@/components/organisms/loginToolbar.vue";
 import searchBar from "@/components/molecules/searchBar.vue";
 import orderSelect from "@/components/molecules/orderSelect.vue";
 export default {
   name: "TopNav",
   components: {
+    btn,
     searchBar,
     orderSelect,
     loginToolbar

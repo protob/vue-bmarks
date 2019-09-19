@@ -8,32 +8,31 @@
       </div>
     </div>
 
-    <div v-if="itemsByCat[item.id]" class="bookmarks-lisiting">
+    <div class="bookmarks-lisiting">
       <div
-        v-for="item in itemsByCat[item.id].items"
+        v-for="item in item.bookmarks_cats"
         :key="item.id"
         class="border border-white px-8 pt-4 pb-8 flex justify-between"
       >
         <div class="item-panel">
           <div class="item-data">
             <h1 class="text-white text-4xl pb-2">
-              <a :href="item.url" target="_blank">{{ item.name }}</a>
+              <a :href="item.url" target="_blank">{{ item.bookmark.name }}</a>
             </h1>
-            <h1 class="text-white  pb-2">{{ item.url }}</h1>
-            <h1 class="text-white  pb-2">{{ item.desc }}</h1>
+            <h1 class="text-white  pb-2">{{ item.bookmark.url }}</h1>
+            <h1 class="text-white  pb-2">{{ item.bookmark.desc }}</h1>
             <h1 class="text-white pb-2">
-              {{ formatDate(item.lastMod) }}
+              {{ formatDate(item.bookmark.updated_at) }}
             </h1>
           </div>
           <div class="item-tags">
             <btn
-              v-for="tag in item.tags.split(',')"
-              v-if="item.tags.split(',') != ''"
+              v-for="elem in item.bookmark.bookmarks_tags"
               :key="Math.random()"
               :type="'small'"
               class="ml-1"
             >
-              {{ tag }}
+              {{ elem.tag.name }}
             </btn>
           </div>
         </div>

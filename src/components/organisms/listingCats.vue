@@ -11,8 +11,8 @@
     </div>
     <div class="lising-items">
       <taxonamy-item
-        v-for="item in getCats"
-        :key="item.id"
+        v-for="item in items"
+        :key="item.uuid"
         :item="item"
         class="item"
       >
@@ -24,7 +24,18 @@
 <script>
 import btn from "@/components/atoms/btn.vue";
 import taxonamyItem from "@/components/molecules/taxonomyItem.vue";
-import { mapGetters } from "vuex";
+
+import gql from "graphql-tag";
+const GET_CATS = gql`
+  query getCats {
+    cats(order_by: { name: asc }) {
+      uuid
+      name
+      slug
+    }
+  }
+`;
+
 export default {
   name: "ListingCats",
   components: { btn, taxonamyItem },
@@ -32,15 +43,17 @@ export default {
 
   data() {
     return {
-      fakeitems: [...Array(6).keys()].map(i => ({
-        id: i + 1,
-        name: "Item " + (i + 1)
-      }))
+      items: []
     };
   },
-  computed: {
-    ...mapGetters(["getCats"])
+  apollo: {
+    items: {
+      query: GET_CATS,
+      update: data => data.cats
+    }
   },
+
+  computed: {},
   mounted() {},
   methods: {
     openModal(target) {
@@ -48,13 +61,7 @@ export default {
     },
 
     toggleModalAddCat() {
-      const data = {
-        id: "c2af908a-df6e-4477-ba28-705be7b7169e",
-        userId: "1",
-        slug: "vue",
-        name: "vue",
-        lastMod: 1568306037090
-      };
+      const data = {};
 
       this.$root.$emit("fireModalAddCat", data);
     },

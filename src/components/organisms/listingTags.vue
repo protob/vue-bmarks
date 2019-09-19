@@ -12,8 +12,8 @@
     </div>
     <div class="lising-items">
       <taxonamy-item
-        v-for="item in getTags"
-        :key="item.id"
+        v-for="item in items"
+        :key="item.uuid"
         :item="item"
         class="item"
       >
@@ -25,7 +25,17 @@
 <script>
 import btn from "@/components/atoms/btn.vue";
 import taxonamyItem from "@/components/molecules/taxonomyItem.vue";
-import { mapGetters } from "vuex";
+import gql from "graphql-tag";
+const GET_TAGS = gql`
+  query getTags {
+    tags(order_by: { name: asc }) {
+      uuid
+      name
+      slug
+    }
+  }
+`;
+
 export default {
   name: "ListingTags",
   components: {
@@ -36,31 +46,23 @@ export default {
 
   data() {
     return {
-      fakeitems: [...Array(6).keys()].map(i => ({
-        id: i + 1,
-        name: "Item " + (i + 1)
-      }))
+      items: []
     };
   },
-  computed: {
-    ...mapGetters(["getTags"])
+
+  apollo: {
+    items: {
+      query: GET_TAGS,
+      update: data => data.tags
+    }
   },
+
+  computed: {},
   mounted() {},
   methods: {
     openModal(target) {
       this.$root.$emit("fireModal", { target });
     },
-
-    // toggleModalAddTag() {
-    //   const data = {
-    //     id: "c2af908a-df6e-4477-ba28-705be7b7169e",
-    //     userId: "1",
-    //     slug: "vue",
-    //     name: "vue",
-    //     lastMod: 1568306037090
-    //   };
-    //   this.$root.$emit("fireModalAddTag", data);
-    // },
 
     showAllTags() {
       this.$root.$emit("showAllTags");

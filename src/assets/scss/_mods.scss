@@ -20,7 +20,8 @@ html {
     # Global
 \*------------------------------------*/
 
-.modal-panel {
+.modal-panel,
+.form-panel {
 	max-width: 480px;
 
 	input[type="text"] {
@@ -28,6 +29,10 @@ html {
 	}
 }
 
+.form-panel {
+	max-width: 320px;
+
+}
 
 .modal-container {
 	position: fixed;

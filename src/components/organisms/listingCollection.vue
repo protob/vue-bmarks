@@ -92,6 +92,28 @@ export default {
 
   computed: {},
   mounted() {
+    // sort by order
+    this.$root.$on("sortItemsByOrder", data => {
+      this.$apollo
+        .query({
+          query: this.prepareSortQuery(data.order)
+        })
+        .then(result => {
+          const tempId = new Date().getTime();
+          const items = result.data.bookmarks.map(item => {
+            return { bookmark: item };
+          });
+
+          let item = {
+            name: data.order,
+            id: tempId,
+            bookmarks_cats: items
+          };
+          this.bookmarksByCat = [item];
+        });
+    });
+
+    // search by phrase
     this.$root.$on("filterItemsByPhrase", data => {
       const phrase = data.phrase;
       if (!phrase) {
@@ -130,7 +152,45 @@ export default {
         });
     });
   },
-  methods: {}
+  methods: {
+    prepareSortQuery(key) {
+      const map = {
+        "date-asc": "{updated_at: asc}",
+        "date-desc": "{updated_at: desc}",
+        "name-asc": "{name: asc}",
+        "name-desc": "{name: desc}"
+      };
+      const order = map[key];
+
+      const queryString = `
+						query getBookmarksByOrder{
+							bookmarks(order_by:${order}) {
+								id
+								name
+								slug
+								updated_at
+								url
+								user {
+									id
+								}
+								bookmarks_tags {
+									tag {
+										uuid
+										name
+										slug
+									}
+								}
+							}
+						}
+					`;
+
+      const query = gql`
+        ${queryString}
+      `;
+
+      return query;
+    }
+  }
 };
 </script>
 

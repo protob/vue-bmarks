@@ -60,35 +60,21 @@ const ADD_TAG = gql`
   }
 `;
 
-// const ADD_BOOKMARK = gql`
-//   mutation AddBookmark(
-//     $userUuid: uuid!
-//     $name: String!
-//     $slug: String!
-//     $url: String!
-//     $desc: String!
-//     $catUuid: uuid!
-//   ) {
-//     insert_bookmarks(
-//       objects: [
-//         {
-//           name: $name
-//           slug: $slug
-//           url: $url
-//           desc: $desc
-//           catUuid: $catUuid
-//           userUuid: $userUuid
-//         }
-//       ]
-//     ) {
-//       returning {
-//         uuid
-//       }
-//     }
-//   }
-// `;
+const ADD_TAGS = gql`
+  mutation upsertTags($objects: [tags_insert_input!]!) {
+    insert_tags(
+      objects: $objects
+      on_conflict: { constraint: tags_pkey, update_columns: updated_at }
+    ) {
+      affected_rows
+      returning {
+        uuid
+        name
+      }
+    }
+  }
+`;
 
-// This have to be imoernted uuid mus be added in advance
 const ADD_BOOKMARK = gql`
   mutation AddBookmark(
     $bookmarkUuid: uuid!
@@ -98,6 +84,7 @@ const ADD_BOOKMARK = gql`
     $url: String!
     $desc: String!
     $catUuid: uuid!
+    $tags: [bookmarks_tags_insert_input!]!
   ) {
     insert_bookmarks(
       objects: [
@@ -124,6 +111,13 @@ const ADD_BOOKMARK = gql`
       returning {
         bookmarkUuid
         catUuid
+      }
+    }
+
+    insert_bookmarks_tags(objects: $tags) {
+      returning {
+        bookmarkUuid
+        tagUuid
       }
     }
   }
@@ -210,31 +204,69 @@ export default {
     },
 
     addCollectionItem(obj) {
-      const name = obj.name;
-      const userUuid = this.getCurrentUserUuid;
-      const slug = slugify(name);
-      const url = obj.url;
-      const desc = obj.desc;
-      const catUuid = this.taxUuid;
+      const bookmarkObj = {
+        bookmarkUuid: uuidv4(),
+        userUuid: this.getCurrentUserUuid,
+        url: obj.url,
+        slug: slugify(obj.name),
+        name: obj.name,
+        desc: obj.desc,
+        tags: obj.tags ? obj.tags.trim().split(",") : [],
+        catUuid: this.taxUuid
+      };
 
-      const bookmarkUuid = uuidv4();
+      if (bookmarkObj.tags.length > 0) {
+        const tagsToInsert = bookmarkObj.tags.map(el => {
+          return {
+            name: el,
+            slug: slugify(el),
+            userUuid: this.getCurrentUserUuid
+          };
+        });
 
-      // return false;
+        this.insertTags(tagsToInsert, bookmarkObj);
+      } else {
+        this.insertBookmark(bookmarkObj, []);
+      }
+
+      this.toggleModal(bookmarkObj);
+    },
+
+    insertTags(tagsToInsert, bookmarkObj) {
       this.$apollo
         .mutate({
-          mutation: ADD_BOOKMARK,
+          mutation: ADD_TAGS,
           variables: {
-            bookmarkUuid,
-            userUuid,
-            url,
-            slug,
-            name,
-            desc,
-            catUuid
+            objects: tagsToInsert
           },
           refetchQueries: ["getAllBookmarksByCat"]
         })
 
+        .then(resp => {
+          const respArr = resp.data.insert_tags.returning;
+          const tagsBookmarksMap = respArr.map(item => {
+            return {
+              bookmarkUuid: bookmarkObj.bookmarkUuid,
+              tagUuid: item.uuid
+            };
+          });
+
+          bookmarkObj.tags = tagsBookmarksMap;
+          this.insertBookmark(bookmarkObj);
+        })
+        .catch(error => {
+          // eslint-disable-next-line no-console
+          console.log(error);
+        });
+    },
+
+    insertBookmark(bookmarkObj) {
+      this.$apollo
+        .mutate({
+          mutation: ADD_BOOKMARK,
+          variables: bookmarkObj,
+          refetchQueries: ["getAllBookmarksByCat"]
+        })
         .then(data => {
           // eslint-disable-next-line no-console
           console.log(data);
@@ -243,8 +275,6 @@ export default {
           // eslint-disable-next-line no-console
           console.log(error);
         });
-
-      this.toggleModal();
     },
 
     toggleModal() {

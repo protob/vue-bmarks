@@ -2,8 +2,9 @@
   <div class="lisitng-head bg-gray-900    ">
     <div class="lisitng-head bg-blue-700 flex justify-between p-4">
       <h2 class="text-white py-2 font-bold uppercase">{{ item.name }}</h2>
+
       <div class="toolbar">
-        <btn class="mx-2" @click="openModal('bookmark', item.id)">+1</btn>
+        <btn class="mx-2" @click="openModal('bookmark', item.uuid)">+1</btn>
         <btn>all</btn>
       </div>
     </div>
@@ -11,7 +12,7 @@
     <div class="bookmarks-lisiting">
       <div
         v-for="item in item.bookmarks_cats"
-        :key="item.id"
+        :key="item.uuid"
         class="border border-white px-8 pt-4 pb-8 flex justify-between"
       >
         <div class="item-panel">
@@ -28,7 +29,7 @@
           <div class="item-tags">
             <btn
               v-for="elem in item.bookmark.bookmarks_tags"
-              :key="Math.random()"
+              :key="elem.tag.uuid"
               :type="'small'"
               class="ml-1"
               @click="filterByTag(elem.tag.uuid, elem.tag.name)"
@@ -80,8 +81,8 @@ export default {
     filterByTag(uuid, name) {
       this.$root.$emit("filterItemsByTag", { uuid, name });
     },
-    openModal(target, bookmarkId, isEditing = false) {
-      this.$root.$emit("fireModal", { target, bookmarkId, isEditing });
+    openModal(target, taxUuid, bookmarkId = null, isEditing = false) {
+      this.$root.$emit("fireModal", { target, taxUuid, bookmarkId, isEditing });
     },
 
     toggleModalAddBookmark(bookmarkId, isEditing = false) {

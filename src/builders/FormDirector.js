@@ -56,43 +56,12 @@ export default class FormDirector {
       })
       .addField({
         component: FormInput,
-        label: "id",
-        name: "id",
+        label: "uuid",
+        name: "uuid",
         options: {
           attrs: {
-            placeholder: "id"
+            placeholder: "uuid"
           }
-        },
-        validation: {
-          required
-        }
-      })
-
-      .addField({
-        component: FormInput,
-        label: "catId",
-        name: "catId",
-        options: {
-          attrs: {
-            placeholder: "catId"
-          }
-        },
-        validation: {
-          required
-        }
-      })
-
-      .addField({
-        component: FormInput,
-        label: "bmarksIds",
-        name: "bmarksIds",
-        options: {
-          attrs: {
-            placeholder: "bmarksIds"
-          }
-        },
-        validation: {
-          required
         }
       })
 
@@ -116,43 +85,12 @@ export default class FormDirector {
       })
       .addField({
         component: FormInput,
-        label: "id",
-        name: "id",
+        label: "uuid",
+        name: "uuid",
         options: {
           attrs: {
-            placeholder: "id"
+            placeholder: "uuid"
           }
-        },
-        validation: {
-          required
-        }
-      })
-
-      .addField({
-        component: FormInput,
-        label: "tagId",
-        name: "tagId",
-        options: {
-          attrs: {
-            placeholder: "tagId"
-          }
-        },
-        validation: {
-          required
-        }
-      })
-
-      .addField({
-        component: FormInput,
-        label: "bmarksIds",
-        name: "bmarksIds",
-        options: {
-          attrs: {
-            placeholder: "bmarksIds"
-          }
-        },
-        validation: {
-          required
         }
       })
 

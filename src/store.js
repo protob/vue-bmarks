@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     currentUserId: 1,
+    currentUserUuid: "723881c9-a6fa-447d-9553-cac37936989b",
 
     bookmarks: [
       {
@@ -152,7 +153,10 @@ export default new Vuex.Store({
   },
   getters: {
     getCurrentUserId: state => {
-      return state.getCurrentUserId;
+      return state.currentUserId;
+    },
+    getCurrentUserUuid: state => {
+      return state.currentUserUuid;
     },
     getItems: state => {
       return state.bookmarks;

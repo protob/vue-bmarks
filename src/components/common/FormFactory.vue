@@ -94,16 +94,7 @@ export default {
 
       const { success } = await this.post(this.data);
       const data = JSON.parse(JSON.stringify(this.data));
-
-      // triple ternary
-      const eventName =
-        this.formid == "catForm"
-          ? "sendCatData"
-          : this.formid == "tagForm"
-          ? "sendTagData"
-          : "sendBookmarkData";
-
-      this.$root.$emit(eventName, data);
+      this.$root.$emit("sendData", { json: data, formid: this.formid });
 
       this.success = false;
     }

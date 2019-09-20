@@ -36,7 +36,28 @@
 <script>
 import FormBuilder from "@/builders/FormBuilder";
 import FormDirector from "@/builders/FormDirector";
-
+import gql from "graphql-tag";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { mapGetters } from "vuex";
+const slugify = require("slugify");
+const ADD_CAT = gql`
+  mutation AddCat($name: String!, $slug: String!, $userUuid: uuid!) {
+    insert_cats(objects: [{ name: $name, slug: $slug, userUuid: $userUuid }]) {
+      returning {
+        uuid
+      }
+    }
+  }
+`;
+const ADD_TAG = gql`
+  mutation AddTag($name: String!, $slug: String!, $userUuid: uuid!) {
+    insert_tags(objects: [{ name: $name, slug: $slug, userUuid: $userUuid }]) {
+      returning {
+        uuid
+      }
+    }
+  }
+`;
 export default {
   name: "AddTagForm",
   components: {
@@ -55,7 +76,9 @@ export default {
       target: "login"
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters(["getCurrentUserUuid"])
+  },
   mounted() {
     this.$root.$on("closeModal", data => {
       this.toggleModal();
@@ -66,22 +89,51 @@ export default {
       this.toggleModal();
     });
 
-    this.$root.$on("fireModalAddTag", data => {
-      // if (data) {
-      //   this.form = data;
-      //   this.isEditing = true;
-      // } else {
-      //   this.isEditing = false;
-      // }
-      // this.toggleModal();
+    this.$root.$on("sendData", data => {
+      const id = data.formid;
+      const obj = data.json;
+
+      if (id == "catForm") {
+        this.addTaxonomyItem(obj, "cat");
+      } else if (id == "tagForm") {
+        this.addTaxonomyItem(obj, "tag");
+      } else {
+        this.addNewBookmark(obj);
+      }
     });
   },
   methods: {
-    updatedCat() {
-      console.log("update cat");
+    addTaxonomyItem(obj, target) {
+      const MUTATION = target == "cat" ? ADD_CAT : ADD_TAG;
+      const query = target == "cat" ? "getCats" : "getTags";
+      const name = obj.name;
+      const userUuid = this.getCurrentUserUuid;
+      const slug = slugify(name);
+
+      this.$apollo
+        .mutate({
+          mutation: MUTATION,
+          variables: {
+            name,
+            slug,
+            userUuid
+          },
+          refetchQueries: [query]
+        })
+
+        .then(data => {
+          console.log(data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      this.toggleModal();
     },
-    addCat() {
-      console.log("addcat");
+
+    addNewBookmark(obj) {
+      console.log("bb");
+      console.log(obj);
+      this.toggleModal();
     },
 
     toggleModal() {

@@ -1,7 +1,7 @@
 import { required } from "vuelidate/lib/validators";
 
 import UserProvider from "@/components/common/UserProvider.vue";
-
+import CatProvider from "@/components/common/CatProvider.vue";
 import FormInput from "@/components/common/FormInput.vue";
 import FormTextarea from "@/components/common/FormTextarea.vue";
 
@@ -40,7 +40,7 @@ export default class FormDirector {
   }
   makeCatForm() {
     return this.builder
-      .withProvider(UserProvider)
+      .withProvider(CatProvider)
       .addField({
         component: FormInput,
         label: "Name",

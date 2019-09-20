@@ -17,7 +17,7 @@
       <btn
         :type="'small'"
         class="m-1"
-        @click="openModal('bookmark', item.uuid, true)"
+        @click="openModal(taxonomyName, item.uuid, item.name, true)"
         >E</btn
       >
       <btn :type="'small'" class="ml-1" @click="toggleDeleteTaxModal">X</btn>
@@ -35,7 +35,8 @@ export default {
   props: { item: Object },
   data() {
     return {
-      selected: ""
+      selected: "",
+      taxonomyName: this.item.__typename == "cats" ? "cat" : "tag"
     };
   },
   computed: {},
@@ -47,8 +48,15 @@ export default {
       this.$root.$emit(eventName, { uuid, name });
     },
 
-    openModal(target, taxUuid, isEditing = false) {
-      this.$root.$emit("fireModal", { target, taxUuid, isEditing });
+    openModal(target, taxUuid, taxName, isEditing = false) {
+      this.$store.dispatch("setModalFormData", {
+        target,
+        taxUuid,
+        taxName,
+        isEditing
+      });
+
+      this.$root.$emit("fireModal", { target, taxUuid, taxName, isEditing });
     },
 
     toggleModalAddBookmark(bookmarkId, isEditing = false) {

@@ -41,18 +41,39 @@ import gql from "graphql-tag";
 import { mapGetters } from "vuex";
 const slugify = require("slugify");
 const uuidv4 = require("uuid/v4");
+// const ADD_CAT = gql`
+//   mutation AddCat($name: String!, $slug: String!, $userUuid: uuid!) {
+//     insert_cats(objects: [{ name: $name, slug: $slug, userUuid: $userUuid }]) {
+//       returning {
+//         uuid
+//       }
+//     }
+//   }
+// `;
+
+// const ADD_CAT = gql`
+//   mutation AddCat($name: String!, $slug: String!, $userUuid: uuid!) {
+//     insert_cats(
+//       objects: [{ name: $name, slug: $slug, userUuid: $userUuid }]
+//       on_conflict: { constraint: cats_pkey, update_columns: name }
+//     ) {
+//       returning {
+//         uuid
+//       }
+//     }
+//   }
+// `;
 const ADD_CAT = gql`
-  mutation AddCat($name: String!, $slug: String!, $userUuid: uuid!) {
-    insert_cats(objects: [{ name: $name, slug: $slug, userUuid: $userUuid }]) {
-      returning {
-        uuid
-      }
-    }
-  }
-`;
-const ADD_TAG = gql`
-  mutation AddTag($name: String!, $slug: String!, $userUuid: uuid!) {
-    insert_tags(objects: [{ name: $name, slug: $slug, userUuid: $userUuid }]) {
+  mutation AddCat(
+    $name: String!
+    $slug: String!
+    $userUuid: uuid!
+    $uuid: uuid!
+  ) {
+    insert_cats(
+      objects: [{ uuid: $uuid, name: $name, slug: $slug, userUuid: $userUuid }]
+      on_conflict: { constraint: cats_pkey, update_columns: [name, slug] }
+    ) {
       returning {
         uuid
       }
@@ -60,6 +81,32 @@ const ADD_TAG = gql`
   }
 `;
 
+// const ADD_TAG = gql`
+//   mutation AddTag($name: String!, $slug: String!, $userUuid: uuid!) {
+//     insert_tags(objects: [{ name: $name, slug: $slug, userUuid: $userUuid }]) {
+//       returning {
+//         uuid
+//       }
+//     }
+//   }
+// `;
+const ADD_TAG = gql`
+  mutation AddTag(
+    $name: String!
+    $slug: String!
+    $userUuid: uuid!
+    $uuid: uuid!
+  ) {
+    insert_tags(
+      objects: [{ uuid: $uuid, name: $name, slug: $slug, userUuid: $userUuid }]
+      on_conflict: { constraint: tags_pkey, update_columns: [name, slug] }
+    ) {
+      returning {
+        uuid
+      }
+    }
+  }
+`;
 const ADD_TAGS = gql`
   mutation upsertTags($objects: [tags_insert_input!]!) {
     insert_tags(
@@ -154,8 +201,14 @@ export default {
 
     this.$root.$on("fireModal", data => {
       this.target = data.target;
-      if (data.taxUuid) {
-        this.taxUuid = data.taxUuid;
+      if (data.isEditing == true) {
+        if (data.taxUuid) {
+          this.taxUuid = data.taxUuid;
+        }
+
+        // if (data.target == "cat") {
+        // } else if (data.target == "tag") {
+        // }
       }
       this.toggleModal();
     });
@@ -180,11 +233,13 @@ export default {
       const name = obj.name;
       const userUuid = this.getCurrentUserUuid;
       const slug = slugify(name);
+      const uuid = obj.uuid ? obj.uuid.trim() : uuidv4();
 
       this.$apollo
         .mutate({
           mutation: MUTATION,
           variables: {
+            uuid,
             name,
             slug,
             userUuid
@@ -201,6 +256,8 @@ export default {
           console.log(error);
         });
       this.toggleModal();
+
+      this.$store.dispatch("setModalFormData", {});
     },
 
     addCollectionItem(obj) {

@@ -2,7 +2,7 @@
   <div class="form-factory">
     <div v-if="success" class="form-factory-success">Success!</div>
     <template v-else>
-      <FormGroup v-for="field in fieldsWithDefaults">
+      <FormGroup v-for="field in fieldsWithDefaults" :key="field.name">
         <Component
           :is="field.component"
           :id="`${_uid}-${field.name}`"
@@ -31,6 +31,7 @@ import { validationMixin } from "vuelidate";
 import btn from "@/components/atoms/btn.vue";
 import FormGroup from "./FormGroup.vue";
 import FormInlineMessage from "./FormInlineMessage.vue";
+import { mapGetters } from "vuex";
 
 const defaultField = {
   component: null,
@@ -51,7 +52,7 @@ export default {
   // Injecting dependencies makes it
   // possible or reuse this component
   // for all kinds of content types.
-  inject: ["fetch", "post"],
+  // inject: ["fetch", "post", "providedName", "providedUuid"],
   props: {
     fields: {
       default: () => [],
@@ -73,17 +74,30 @@ export default {
     // Apply default field configuration
     // to make sure all properties we rely
     // on in the template do exist.
+    ...mapGetters(["getCurrentUserUuid", "getModalForm"]),
     fieldsWithDefaults() {
       return this.fields.map(x => ({ ...defaultField, ...x }));
     }
   },
-  async created() {
-    // if (this.formid) {
-    //   this.data = await this.fetch(this.formid);
-    // }
-    // it causes the bug
+
+  created() {
+    // first run
+    this.setData();
+
+    this.$root.$on("fireModal", () => {
+      //next run
+      this.setData();
+    });
   },
+
   methods: {
+    setData() {
+      if (this.getModalForm.isEditing) {
+        this.data.uuid = this.getModalForm.taxUuid;
+        this.data.name = this.getModalForm.taxName;
+        this.$forceUpdate();
+      }
+    },
     closeModal() {
       this.$root.$emit("closeModal", { target: this.formid });
     },
@@ -92,10 +106,12 @@ export default {
       this.$v.$touch();
       if (this.$v.$error) return;
 
-      const { success } = await this.post(this.data);
+      // const { success } = await this.post(this.data);
       const data = JSON.parse(JSON.stringify(this.data));
       this.$root.$emit("sendData", { json: data, formid: this.formid });
+      this.data.uuid = "";
 
+      this.data.name = "";
       this.success = false;
     }
   },

@@ -7,7 +7,12 @@ export default new Vuex.Store({
   state: {
     currentUserId: 1,
     currentUserUuid: "723881c9-a6fa-447d-9553-cac37936989b",
-
+    modalForm: {
+      target: null,
+      taxUuid: null,
+      taxName: null,
+      isEditing: null
+    },
     bookmarks: [
       {
         catId: "c2af908a-df6e-4477-ba28-705be7b7169e",
@@ -149,6 +154,9 @@ export default new Vuex.Store({
   mutations: {
     SET_USER_ID(state, payload) {
       state.currentUserId = payload;
+    },
+    SET_MODAL_FORM_DATA(state, payload) {
+      state.modalForm = payload;
     }
   },
   getters: {
@@ -166,11 +174,17 @@ export default new Vuex.Store({
     },
     getTags: state => {
       return state.tags;
+    },
+    getModalForm: state => {
+      return state.modalForm;
     }
   },
   actions: {
     changeCurrentUserId(vuexContext, id) {
       vuexContext.commit("SET_USER_ID", id);
+    },
+    setModalFormData(vuexContext, data) {
+      vuexContext.commit("SET_MODAL_FORM_DATA", data);
     }
   }
 });

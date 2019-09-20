@@ -15,6 +15,8 @@ const users = [
 export default {
   name: "UserProvider",
   provide: {
+    providedUuid: () => "iddd",
+    providedName: () => "namae",
     fetch: formid => Promise.resolve(users.find(x => x.id === formid)),
     post: user => users.push(user) && Promise.resolve({ success: true })
   },

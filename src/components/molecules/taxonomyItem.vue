@@ -8,13 +8,16 @@
       </h2>
     </a>
     <div class="toolbar">
-      <btn :type="'small'" class="mx-1" @click="openModal('bookmark', item.id)"
+      <btn
+        :type="'small'"
+        class="mx-1"
+        @click="openModal('bookmark', item.uuid)"
         >+1</btn
       >
       <btn
         :type="'small'"
         class="m-1"
-        @click="openModal('bookmark', item.id, true)"
+        @click="openModal('bookmark', item.uuid, true)"
         >E</btn
       >
       <btn :type="'small'" class="ml-1" @click="toggleDeleteTaxModal">X</btn>
@@ -44,8 +47,8 @@ export default {
       this.$root.$emit(eventName, { uuid, name });
     },
 
-    openModal(target, bookmarkId, isEditing = false) {
-      this.$root.$emit("fireModal", { target, bookmarkId, isEditing });
+    openModal(target, taxUuid, isEditing = false) {
+      this.$root.$emit("fireModal", { target, taxUuid, isEditing });
     },
 
     toggleModalAddBookmark(bookmarkId, isEditing = false) {

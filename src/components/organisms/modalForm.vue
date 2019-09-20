@@ -37,9 +37,10 @@
 import FormBuilder from "@/builders/FormBuilder";
 import FormDirector from "@/builders/FormDirector";
 import gql from "graphql-tag";
-import { InMemoryCache } from "apollo-cache-inmemory";
+// import { InMemoryCache } from "apollo-cache-inmemory";
 import { mapGetters } from "vuex";
 const slugify = require("slugify");
+const uuidv4 = require("uuid/v4");
 const ADD_CAT = gql`
   mutation AddCat($name: String!, $slug: String!, $userUuid: uuid!) {
     insert_cats(objects: [{ name: $name, slug: $slug, userUuid: $userUuid }]) {
@@ -58,6 +59,76 @@ const ADD_TAG = gql`
     }
   }
 `;
+
+// const ADD_BOOKMARK = gql`
+//   mutation AddBookmark(
+//     $userUuid: uuid!
+//     $name: String!
+//     $slug: String!
+//     $url: String!
+//     $desc: String!
+//     $catUuid: uuid!
+//   ) {
+//     insert_bookmarks(
+//       objects: [
+//         {
+//           name: $name
+//           slug: $slug
+//           url: $url
+//           desc: $desc
+//           catUuid: $catUuid
+//           userUuid: $userUuid
+//         }
+//       ]
+//     ) {
+//       returning {
+//         uuid
+//       }
+//     }
+//   }
+// `;
+
+// This have to be imoernted uuid mus be added in advance
+const ADD_BOOKMARK = gql`
+  mutation AddBookmark(
+    $bookmarkUuid: uuid!
+    $userUuid: uuid!
+    $name: String!
+    $slug: String!
+    $url: String!
+    $desc: String!
+    $catUuid: uuid!
+  ) {
+    insert_bookmarks(
+      objects: [
+        {
+          uuid: $bookmarkUuid
+          name: $name
+          slug: $slug
+          url: $url
+          desc: $desc
+          userUuid: $userUuid
+          catUuid: $catUuid
+        }
+      ]
+    ) {
+      affected_rows
+      returning {
+        name
+        uuid
+      }
+    }
+    insert_bookmarks_cats(
+      objects: { bookmarkUuid: $bookmarkUuid, catUuid: $catUuid }
+    ) {
+      returning {
+        bookmarkUuid
+        catUuid
+      }
+    }
+  }
+`;
+
 export default {
   name: "AddTagForm",
   components: {
@@ -73,7 +144,8 @@ export default {
     return {
       isEditing: false,
       form: {},
-      target: "login"
+      target: "login",
+      taxUuid: null
     };
   },
   computed: {
@@ -81,11 +153,16 @@ export default {
   },
   mounted() {
     this.$root.$on("closeModal", data => {
+      // eslint-disable-next-line no-console
+      console.log(data);
       this.toggleModal();
     });
 
     this.$root.$on("fireModal", data => {
       this.target = data.target;
+      if (data.taxUuid) {
+        this.taxUuid = data.taxUuid;
+      }
       this.toggleModal();
     });
 
@@ -98,7 +175,7 @@ export default {
       } else if (id == "tagForm") {
         this.addTaxonomyItem(obj, "tag");
       } else {
-        this.addNewBookmark(obj);
+        this.addCollectionItem(obj);
       }
     });
   },
@@ -122,17 +199,51 @@ export default {
         })
 
         .then(data => {
+          // eslint-disable-next-line no-console
           console.log(data);
         })
         .catch(error => {
+          // eslint-disable-next-line no-console
           console.log(error);
         });
       this.toggleModal();
     },
 
-    addNewBookmark(obj) {
-      console.log("bb");
-      console.log(obj);
+    addCollectionItem(obj) {
+      const name = obj.name;
+      const userUuid = this.getCurrentUserUuid;
+      const slug = slugify(name);
+      const url = obj.url;
+      const desc = obj.desc;
+      const catUuid = this.taxUuid;
+
+      const bookmarkUuid = uuidv4();
+
+      // return false;
+      this.$apollo
+        .mutate({
+          mutation: ADD_BOOKMARK,
+          variables: {
+            bookmarkUuid,
+            userUuid,
+            url,
+            slug,
+            name,
+            desc,
+            catUuid
+          },
+          refetchQueries: ["getAllBookmarksByCat"]
+        })
+
+        .then(data => {
+          // eslint-disable-next-line no-console
+          console.log(data);
+        })
+        .catch(error => {
+          // eslint-disable-next-line no-console
+          console.log(error);
+        });
+
       this.toggleModal();
     },
 

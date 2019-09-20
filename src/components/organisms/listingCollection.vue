@@ -15,19 +15,19 @@ import collectionItem from "@/components/molecules/collectionItem.vue";
 
 import gql from "graphql-tag";
 const GET_ALL_BOOKMARKS_BY_CAT = gql`
-  query getBookmarksByCat {
+  query getAllBookmarksByCat {
     cats {
       name
       uuid
       bookmarks_cats {
         bookmark {
-          id
+          uuid
           name
           slug
           updated_at
           url
           user {
-            id
+            uuid
           }
           bookmarks_tags {
             tag {
@@ -56,7 +56,7 @@ const GET_BOOKMARKS_BY_CAT = gql`
         slug
         bookmarks_tags {
           tag {
-            id
+            uuid
             name
             slug
             uuid
@@ -76,7 +76,7 @@ const GET_BOOKMARKS_BY_TAG = gql`
       bookmarks_tags {
         bookmark {
           desc
-          id
+          uuid
           name
           slug
           url
@@ -113,7 +113,7 @@ const GET_BOOKMARKS_BY_PHRASE = gql`
       updated_at
       url
       user {
-        id
+        uuid
       }
       bookmarks_tags {
         tag {
@@ -149,7 +149,6 @@ export default {
     // items by cat
 
     this.$root.$on("filterItemsByCat", data => {
-      console.log(data.uuid);
       const uuid = data.uuid;
       const tagName = data.name;
 
@@ -163,7 +162,6 @@ export default {
         .then(result => {
           const tempId = new Date().getTime();
           const cats = result.data.cats;
-          console.log(cats[0].bookmarks);
 
           const catItems = cats[0].bookmarks; // currently single cat filter is supported
           const formattedItems = catItems.map(item => {
@@ -174,7 +172,7 @@ export default {
             id: tempId,
             bookmarks_cats: formattedItems
           };
-          console.log(item);
+
           this.bookmarksByCat = [item];
         });
     });
@@ -182,7 +180,6 @@ export default {
     //items by tag
 
     this.$root.$on("filterItemsByTag", data => {
-      console.log(data.uuid);
       const uuid = data.uuid;
       const tagName = data.name;
 
@@ -203,7 +200,7 @@ export default {
             id: tempId,
             bookmarks_cats: tagItems
           };
-          console.log(item);
+
           this.bookmarksByCat = [item];
         });
     });
@@ -252,12 +249,11 @@ export default {
           }
         })
         .then(result => {
-          console.log(result);
           const tempId = new Date().getTime();
           const items = result.data.bookmarks.map(item => {
             return { bookmark: item };
           });
-          console.log(items);
+
           let item = {
             name: phrase,
             id: tempId,

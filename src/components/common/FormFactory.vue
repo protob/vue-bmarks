@@ -2,10 +2,11 @@
   <div class="form-factory">
     <div v-if="success" class="form-factory-success">Success!</div>
     <template v-else>
-      <FormGroup v-for="field in fieldsWithDefaults" :key="field.name">
+      <FormGroup v-for="(field, index) in fieldsWithDefaults" :key="field.name">
+        dupa {{ data }}
         <Component
           :is="field.component"
-          :id="`${_uid}-${field.name}`"
+          :key="index"
           v-model="data[field.name]"
           v-bind="{ ...field.options.props, ...field.options.attrs }"
           @input="$v.data[field.name].$touch()"
@@ -86,20 +87,43 @@ export default {
 
     this.$root.$on("fireModal", () => {
       //next run
-      this.setData();
+      this.$nextTick().then(() => {
+        this.resetData();
+        this.setData();
+      });
+      this.resetDataHtml();
     });
   },
 
   methods: {
-    setData() {
-      if (this.getModalForm.isEditing) {
-        this.data.uuid = this.getModalForm.taxUuid;
-        this.data.name = this.getModalForm.taxName;
+    resetDataHtml() {
+      //temporary fix -  input name is not in sync with data.name (ater modifing cat name and add new cat)
+      const els = document.querySelectorAll(".form-factory input");
+      els.forEach(element => {
+        element.value = "";
+      });
+    },
+    resetData(forceUpdate = true) {
+      Object.keys(this.data).forEach(key => {
+        this.data[key] = "";
+      });
+
+      if (forceUpdate) {
         this.$forceUpdate();
       }
     },
+    setData() {
+      this.resetData(false);
+      if (this.getModalForm.isEditing) {
+        this.data.uuid = this.getModalForm.taxUuid;
+        this.data.name = this.getModalForm.taxName;
+      }
+      this.$forceUpdate();
+    },
     closeModal() {
       this.$root.$emit("closeModal", { target: this.formid });
+      this.$store.dispatch("setModalFormData", {});
+      this.resetData();
     },
 
     async submit() {
@@ -109,9 +133,8 @@ export default {
       // const { success } = await this.post(this.data);
       const data = JSON.parse(JSON.stringify(this.data));
       this.$root.$emit("sendData", { json: data, formid: this.formid });
-      this.data.uuid = "";
+      this.resetData();
 
-      this.data.name = "";
       this.success = false;
     }
   },

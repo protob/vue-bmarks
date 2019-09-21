@@ -41,28 +41,7 @@ import gql from "graphql-tag";
 import { mapGetters } from "vuex";
 const slugify = require("slugify");
 const uuidv4 = require("uuid/v4");
-// const ADD_CAT = gql`
-//   mutation AddCat($name: String!, $slug: String!, $userUuid: uuid!) {
-//     insert_cats(objects: [{ name: $name, slug: $slug, userUuid: $userUuid }]) {
-//       returning {
-//         uuid
-//       }
-//     }
-//   }
-// `;
 
-// const ADD_CAT = gql`
-//   mutation AddCat($name: String!, $slug: String!, $userUuid: uuid!) {
-//     insert_cats(
-//       objects: [{ name: $name, slug: $slug, userUuid: $userUuid }]
-//       on_conflict: { constraint: cats_pkey, update_columns: name }
-//     ) {
-//       returning {
-//         uuid
-//       }
-//     }
-//   }
-// `;
 const ADD_CAT = gql`
   mutation AddCat(
     $name: String!
@@ -81,15 +60,6 @@ const ADD_CAT = gql`
   }
 `;
 
-// const ADD_TAG = gql`
-//   mutation AddTag($name: String!, $slug: String!, $userUuid: uuid!) {
-//     insert_tags(objects: [{ name: $name, slug: $slug, userUuid: $userUuid }]) {
-//       returning {
-//         uuid
-//       }
-//     }
-//   }
-// `;
 const ADD_TAG = gql`
   mutation AddTag(
     $name: String!
@@ -201,14 +171,15 @@ export default {
 
     this.$root.$on("fireModal", data => {
       this.target = data.target;
+
       if (data.isEditing == true) {
+        this.isEditing = true;
         if (data.taxUuid) {
           this.taxUuid = data.taxUuid;
         }
-
-        // if (data.target == "cat") {
-        // } else if (data.target == "tag") {
-        // }
+      } else {
+        this.isEditing = false;
+        this.$store.dispatch("setModalFormData", {});
       }
       this.toggleModal();
     });

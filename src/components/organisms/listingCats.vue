@@ -60,27 +60,8 @@ export default {
       this.$root.$emit("fireModal", { target });
     },
 
-    toggleModalAddCat() {
-      const data = {};
-
-      this.$root.$emit("fireModalAddCat", data);
-    },
-
     showAllCats() {
       this.$root.$emit("showAllCats");
-    },
-
-    toggleModalEditCat(catId, catName) {
-      const data = {
-        catId: catId,
-        catName: catName
-      };
-      this.$root.$emit("fireModalAddCat", data);
-    },
-    toggleModalDelCat(catId) {
-      this.$root.$emit("fireModalDelCat", {
-        catId: catId
-      });
     },
 
     filterItemsByCat(catId, catName) {

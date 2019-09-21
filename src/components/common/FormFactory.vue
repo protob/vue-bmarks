@@ -149,6 +149,7 @@ export default {
             slug: slugify(this.data.name),
             url: this.data.url,
             desc: this.data.desc,
+            tags: this.data.tags,
             catUuid: this.data.catUuid
           }
         : { uuid: this.data.uuid, name: this.data.name };

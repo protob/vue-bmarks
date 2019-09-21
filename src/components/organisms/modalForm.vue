@@ -353,7 +353,7 @@ export default {
           variables: {
             objects: tagsToInsert
           },
-          refetchQueries: ["getAllBookmarksByCat"]
+          refetchQueries: ["getAllBookmarksByCat", "getTags"]
         })
 
         .then(resp => {

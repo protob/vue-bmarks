@@ -13,7 +13,12 @@
     >
       <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
         <div class="mb-6">
-          <h1>Delete item, Are you sure?</h1>
+          <h1>
+            Delete {{ itemData.taxName }}
+            <span v-if="itemData.target == 'cat'">and its links.</span>
+            <span v-else>and remove it from links</span>
+            <br />Are you sure?
+          </h1>
         </div>
 
         <div class="flex items-center justify-between">
@@ -28,6 +33,33 @@
 <style lang="scss" scoped></style>
 
 <script>
+import gql from "graphql-tag";
+
+const DELETE_CAT = gql`
+  mutation DeleteCats($uuid: uuid!) {
+    delete_bookmarks_cats(where: { catUuid: { _eq: $uuid } }) {
+      affected_rows
+      returning {
+        catUuid
+      }
+    }
+
+    delete_bookmarks(where: { catUuid: { _eq: $uuid } }) {
+      affected_rows
+      returning {
+        catUuid
+      }
+    }
+
+    delete_cats(where: { uuid: { _eq: $uuid } }) {
+      affected_rows
+      returning {
+        uuid
+      }
+    }
+  }
+`;
+
 import btn from "@/components/atoms/btn.vue";
 export default {
   components: {
@@ -36,11 +68,16 @@ export default {
   data() {
     return {
       itemId: null,
-      itemData: null
+      itemData: {
+        target: "",
+        taxName: "",
+        taxUuid: ""
+      }
     };
   },
   mounted() {
     this.$root.$on("fireConfirm", data => {
+      // console.log(data);
       this.toggleModal();
       this.itemData = data;
     });
@@ -48,9 +85,34 @@ export default {
 
   methods: {
     deleteItem() {
+      const uuid = this.itemData.taxUuid;
+
+      if (this.itemData.target == "cat") {
+        this.$apollo
+          .mutate({
+            mutation: DELETE_CAT,
+            variables: {
+              uuid
+            },
+            refetchQueries: ["getCats", "getAllBookmarksByCat"]
+          })
+
+          .then(data => {
+            // eslint-disable-next-line no-console
+            console.log(data);
+          })
+          .catch(error => {
+            // eslint-disable-next-line no-console
+            console.log(error);
+          });
+      } else if (this.itemData.target == "tag") {
+        // eslint-disable-next-line no-console
+        console.log("Tag");
+      }
+
       this.toggleModal();
-      console.log("item deleted");
     },
+
     toggleModal() {
       const modal = this.$refs["modal-del-item"];
 

@@ -9,6 +9,7 @@
     </a>
     <div class="toolbar">
       <btn
+        v-if="item.__typename == 'cats'"
         :type="'small'"
         class="mx-1"
         @click="openModal('bookmark', item.uuid)"
@@ -20,7 +21,12 @@
         @click="openModal(taxonomyName, item.uuid, item.name, true)"
         >E</btn
       >
-      <btn :type="'small'" class="ml-1" @click="toggleDeleteTaxModal">X</btn>
+      <btn
+        :type="'small'"
+        class="ml-1"
+        @click="toggleDeleteTaxModal(taxonomyName, item.uuid, item.name)"
+        >X</btn
+      >
     </div>
   </div>
 </template>
@@ -32,7 +38,8 @@ export default {
   components: {
     btn
   },
-  props: { item: Object },
+  // eslint-disable-next-line vue/require-valid-default-prop
+  props: { item: { type: Object, default: {} } },
   data() {
     return {
       selected: "",
@@ -64,16 +71,8 @@ export default {
       this.$root.$emit("fireModal", { target, taxUuid, taxName, isEditing });
     },
 
-    toggleModalAddBookmark(bookmarkId, isEditing = false) {
-      this.$root.$emit("fireModalAddBookmark", {
-        bookmarkId: bookmarkId,
-        isEditing: isEditing
-      });
-    },
-
-    toggleDeleteTaxModal(taxId) {
-      const key = "catId" in this.item ? "catId" : "taxId";
-      this.$root.$emit("fireConfirm", { taxId: taxId, taxKey: key });
+    toggleDeleteTaxModal(target, taxUuid, taxName) {
+      this.$root.$emit("fireConfirm", { target, taxUuid, taxName });
     }
   }
 };

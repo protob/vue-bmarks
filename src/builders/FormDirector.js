@@ -39,62 +39,66 @@ export default class FormDirector {
       .build();
   }
   makeCatForm() {
-    return this.builder
-      .withProvider(CatProvider)
-      .addField({
-        component: FormInput,
-        label: "Name",
-        name: "name",
-        options: {
-          attrs: {
-            placeholder: "Name"
+    return (
+      this.builder
+        .withProvider(CatProvider)
+        .addField({
+          component: FormInput,
+          label: "Name",
+          name: "name",
+          options: {
+            attrs: {
+              placeholder: "Name"
+            }
+          },
+          validation: {
+            required
           }
-        },
-        validation: {
-          required
-        }
-      })
-      .addField({
-        component: FormInput,
-        label: "uuid",
-        name: "uuid",
-        options: {
-          attrs: {
-            placeholder: "uuid"
-          }
-        }
-      })
+        })
+        // .addField({
+        //   component: FormInput,
+        //   label: "uuid",
+        //   name: "uuid",
+        //   options: {
+        //     attrs: {
+        //       placeholder: "uuid"
+        //     }
+        //   }
+        // })
 
-      .build();
+        .build()
+    );
   }
   makeTagForm() {
-    return this.builder
-      .withProvider(UserProvider)
-      .addField({
-        component: FormInput,
-        label: "Name",
-        name: "name",
-        options: {
-          attrs: {
-            placeholder: "Name"
+    return (
+      this.builder
+        .withProvider(UserProvider)
+        .addField({
+          component: FormInput,
+          label: "Name",
+          name: "name",
+          options: {
+            attrs: {
+              placeholder: "Name"
+            }
+          },
+          validation: {
+            required
           }
-        },
-        validation: {
-          required
-        }
-      })
-      .addField({
-        component: FormInput,
-        label: "uuid",
-        name: "uuid",
-        options: {
-          attrs: {
-            placeholder: "uuid"
-          }
-        }
-      })
+        })
+        // .addField({
+        //   component: FormInput,
+        //   label: "uuid",
+        //   name: "uuid",
+        //   options: {
+        //     attrs: {
+        //       placeholder: "uuid"
+        //     }
+        //   }
+        // })
 
-      .build();
+        .build()
+    );
   }
 
   makeLoginForm() {

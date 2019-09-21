@@ -90,8 +90,8 @@ export default {
     post: user => users.push(user) && Promise.resolve({ success: true })
   },
   updated() {
-    catData.uuid = this.getModalForm.taxUuid;
-    catData.name = this.getModalForm.taxName;
+    // catData.uuid = this.getModalForm.taxUuid;
+    // catData.name = this.getModalForm.taxName;
   },
   render() {
     return this.$slots.default;

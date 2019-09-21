@@ -3,11 +3,12 @@
     <div v-if="success" class="form-factory-success">Success!</div>
     <template v-else>
       <FormGroup v-for="(field, index) in fieldsWithDefaults" :key="field.name">
-        dupa {{ data }}
         <Component
           :is="field.component"
+          :id="`${_uid}-${field.name}`"
           :key="index"
           v-model="data[field.name]"
+          :name="`${_uid}-${field.name}`"
           v-bind="{ ...field.options.props, ...field.options.attrs }"
           @input="$v.data[field.name].$touch()"
         />
@@ -18,7 +19,7 @@
       </FormGroup>
       <div class="flex items-center justify-between">
         <btn class="text-lg" @click="submit">
-          <span v-if="isEditing">Udpdate</span>
+          <span v-if="getModalForm.isEditing">Udpdate</span>
           <span v-else>Add</span>
         </btn>
         <btn class="text-lg" @click="closeModal">Cancel</btn>
@@ -87,22 +88,12 @@ export default {
 
     this.$root.$on("fireModal", () => {
       //next run
-      this.$nextTick().then(() => {
-        this.resetData();
-        this.setData();
-      });
-      this.resetDataHtml();
+      this.success = false; // It is required to reset form input data
+      this.setData();
     });
   },
 
   methods: {
-    resetDataHtml() {
-      //temporary fix -  input name is not in sync with data.name (ater modifing cat name and add new cat)
-      const els = document.querySelectorAll(".form-factory input");
-      els.forEach(element => {
-        element.value = "";
-      });
-    },
     resetData(forceUpdate = true) {
       Object.keys(this.data).forEach(key => {
         this.data[key] = "";
@@ -124,18 +115,17 @@ export default {
       this.$root.$emit("closeModal", { target: this.formid });
       this.$store.dispatch("setModalFormData", {});
       this.resetData();
+      this.success = true;
     },
 
-    async submit() {
+    submit() {
       this.$v.$touch();
       if (this.$v.$error) return;
 
-      // const { success } = await this.post(this.data);
-      const data = JSON.parse(JSON.stringify(this.data));
+      const data = { uuid: this.data.uuid, name: this.data.name };
       this.$root.$emit("sendData", { json: data, formid: this.formid });
       this.resetData();
-
-      this.success = false;
+      this.success = true;
     }
   },
   // The vuelidate validation configuration is

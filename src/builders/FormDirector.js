@@ -233,16 +233,6 @@ export default class FormDirector {
 
       .addField({
         component: FormInput,
-        label: "catUuid",
-        name: "catUuid",
-        options: {
-          attrs: {
-            placeholder: "catUuid"
-          }
-        }
-      })
-      .addField({
-        component: FormInput,
         label: "tags",
         name: "tags",
         options: {

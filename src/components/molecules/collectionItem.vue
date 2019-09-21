@@ -4,7 +4,18 @@
       <h2 class="text-white py-2 font-bold uppercase">{{ item.name }}</h2>
 
       <div class="toolbar">
-        <btn class="mx-2" @click="openModal('bookmark', item.uuid)">+1</btn>
+        <btn
+          class="mx-2"
+          @click="
+            openModal(
+              'bookmark',
+              item.uuid,
+              { isBookmark: true, taxName: item.name },
+              false
+            )
+          "
+          >+1</btn
+        >
         <btn>all</btn>
       </div>
     </div>
@@ -42,7 +53,15 @@
           <btn
             :type="'small'"
             class="m-1"
-            @click="openModal('bookmark', item.id, true)"
+            @click="
+              openModal(
+                'bookmark',
+                item.bookmark.uuid,
+
+                item.bookmark,
+                true
+              )
+            "
             >E</btn
           >
           <btn :type="'small'" class="ml-1" @click="toggleDeleteTaxModal"
@@ -81,8 +100,44 @@ export default {
     filterByTag(uuid, name) {
       this.$root.$emit("filterItemsByTag", { uuid, name });
     },
-    openModal(target, taxUuid, bookmarkId = null, isEditing = false) {
-      this.$root.$emit("fireModal", { target, taxUuid, bookmarkId, isEditing });
+    openModal(target, taxUuid, bookmark = null, isEditing = false) {
+      // ediging exsiting bookmark
+      if (bookmark) {
+        if (isEditing) {
+          const tagsArr = bookmark.bookmarks_tags.map(elem => {
+            return {
+              uuid: elem.tag.uuid,
+              name: elem.tag.name
+            };
+          });
+
+          this.$store.dispatch("setModalFormData", {
+            target,
+            taxUuid,
+            taxName: bookmark.name,
+            desc: bookmark.desc,
+            slug: bookmark.slug,
+            url: bookmark.url,
+            tags: tagsArr,
+            catUuid: this.item.uuid,
+            isBookmark: true,
+            isEditing
+          });
+        } else {
+          const data = {
+            target,
+            taxUuid,
+            taxName: bookmark.taxName,
+            isEditing: false,
+            catUuid: this.item.uuid,
+            isBookmark: true
+          };
+
+          this.$store.dispatch("setModalFormData", data);
+        }
+      }
+
+      this.$root.$emit("fireModal", { target, taxUuid, bookmark, isEditing });
     },
 
     toggleModalAddBookmark(bookmarkId, isEditing = false) {

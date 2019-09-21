@@ -140,6 +140,55 @@ const ADD_BOOKMARK = gql`
   }
 `;
 
+// --- upsert bookmark only, without cats and tags
+
+const UPDATE_BOOKMARK_SHALLOW = gql`
+  mutation AddBookmark(
+    $bookmarkUuid: uuid!
+    $userUuid: uuid!
+    $name: String!
+    $slug: String!
+    $url: String!
+    $desc: String!
+    $catUuid: uuid!
+  ) {
+    insert_bookmarks(
+      objects: [
+        {
+          uuid: $bookmarkUuid
+          name: $name
+          slug: $slug
+          url: $url
+          desc: $desc
+          userUuid: $userUuid
+          catUuid: $catUuid
+        }
+      ]
+      on_conflict: {
+        constraint: bookmarks_pkey
+        update_columns: [name, url, slug, desc]
+      }
+    ) {
+      affected_rows
+      returning {
+        name
+        uuid
+      }
+    }
+    insert_bookmarks_cats(
+      objects: { bookmarkUuid: $bookmarkUuid, catUuid: $catUuid }
+      on_conflict: {
+        constraint: bookmarks_cats_pkey
+        update_columns: bookmarkUuid
+      }
+    ) {
+      returning {
+        bookmarkUuid
+        catUuid
+      }
+    }
+  }
+`;
 export default {
   name: "AddTagForm",
   components: {
@@ -174,12 +223,14 @@ export default {
 
       if (data.isEditing == true) {
         this.isEditing = true;
+        // edit single bookmark item
+
         if (data.taxUuid) {
           this.taxUuid = data.taxUuid;
         }
       } else {
         this.isEditing = false;
-        this.$store.dispatch("setModalFormData", {});
+        // this.$store.dispatch("setModalFormData", {});
       }
       this.toggleModal();
     });
@@ -188,12 +239,18 @@ export default {
       const id = data.formid;
       const obj = data.json;
 
-      if (id == "catForm") {
-        this.addTaxonomyItem(obj, "cat");
-      } else if (id == "tagForm") {
-        this.addTaxonomyItem(obj, "tag");
+      if (data.formid == "bookmarkForm") {
+        if (data.isEditing) {
+          this.updadteCollectionItem(obj);
+        } else {
+          this.addCollectionItem(obj);
+        }
       } else {
-        this.addCollectionItem(obj);
+        if (id == "catForm") {
+          this.addTaxonomyItem(obj, "cat");
+        } else if (id == "tagForm") {
+          this.addTaxonomyItem(obj, "tag");
+        }
       }
     });
   },
@@ -230,7 +287,35 @@ export default {
 
       this.$store.dispatch("setModalFormData", {});
     },
+    updadteCollectionItem(obj) {
+      const bookmarkObj = {
+        bookmarkUuid: obj.uuid,
+        userUuid: this.getCurrentUserUuid,
+        url: obj.url,
+        slug: slugify(obj.name),
+        name: obj.name,
+        desc: obj.desc,
+        catUuid: obj.catUuid
+        // tags: obj.tags ? obj.tags.trim().split(",") : [],
+      };
 
+      this.$apollo
+        .mutate({
+          mutation: UPDATE_BOOKMARK_SHALLOW,
+          variables: bookmarkObj,
+          refetchQueries: ["getAllBookmarksByCat"]
+        })
+        .then(data => {
+          // eslint-disable-next-line no-console
+          console.log(data);
+        })
+        .catch(error => {
+          // eslint-disable-next-line no-console
+          console.log(error);
+        });
+
+      this.toggleModal(bookmarkObj);
+    },
     addCollectionItem(obj) {
       const bookmarkObj = {
         bookmarkUuid: uuidv4(),
@@ -240,7 +325,8 @@ export default {
         name: obj.name,
         desc: obj.desc,
         tags: obj.tags ? obj.tags.trim().split(",") : [],
-        catUuid: this.taxUuid
+        // catUuid: this.taxUuid
+        catUuid: obj.catUuid
       };
 
       if (bookmarkObj.tags.length > 0) {

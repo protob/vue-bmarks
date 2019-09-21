@@ -49,12 +49,17 @@ export default {
     },
 
     openModal(target, taxUuid, taxName, isEditing = false) {
-      this.$store.dispatch("setModalFormData", {
+      const isBookmark = target == "bookmark" ? true : false;
+      const data = {
         target,
         taxUuid,
         taxName,
-        isEditing
-      });
+        isEditing,
+        catUuid: taxUuid,
+        isBookmark: isBookmark
+      };
+
+      this.$store.dispatch("setModalFormData", data);
 
       this.$root.$emit("fireModal", { target, taxUuid, taxName, isEditing });
     },

@@ -24,6 +24,7 @@ const GET_ALL_BOOKMARKS_BY_CAT = gql`
           uuid
           name
           slug
+          desc
           updated_at
           url
           user {
@@ -52,6 +53,7 @@ const GET_BOOKMARKS_BY_CAT = gql`
         uuid
         userUuid
         url
+        desc
         updated_at
         slug
         bookmarks_tags {
@@ -80,6 +82,7 @@ const GET_BOOKMARKS_BY_TAG = gql`
           name
           slug
           url
+          desc
           updated_at
           uuid
           bookmarks_tags {
@@ -112,6 +115,7 @@ const GET_BOOKMARKS_BY_PHRASE = gql`
       slug
       updated_at
       url
+      desc
       user {
         uuid
       }

@@ -34,7 +34,8 @@ import btn from "@/components/atoms/btn.vue";
 import FormGroup from "./FormGroup.vue";
 import FormInlineMessage from "./FormInlineMessage.vue";
 import { mapGetters } from "vuex";
-
+const slugify = require("slugify");
+const uuidv4 = require("uuid/v4");
 const defaultField = {
   component: null,
   label: "",
@@ -67,8 +68,15 @@ export default {
   },
   data() {
     return {
+      isBookmark: false,
       isEditing: false,
-      data: {},
+      data: {
+        uuid: "",
+        name: "",
+        url: "",
+        desc: "",
+        tags: ""
+      },
       success: false
     };
   },
@@ -105,9 +113,21 @@ export default {
     },
     setData() {
       this.resetData(false);
+
+      this.isBookmark = this.getModalForm.isBookmark;
+      this.data.catUuid = this.getModalForm.catUuid;
       if (this.getModalForm.isEditing) {
-        this.data.uuid = this.getModalForm.taxUuid;
+        this.data.uuid = this.getModalForm.taxUuid; // tax uid is itemuid
         this.data.name = this.getModalForm.taxName;
+
+        //------
+
+        this.data.slug = this.getModalForm.slug;
+        this.data.url = this.getModalForm.url;
+        this.data.tags = this.getModalForm.tags
+          ? this.getModalForm.tags.map(item => item.name)
+          : "";
+        this.data.desc = this.getModalForm.desc;
       }
       this.$forceUpdate();
     },
@@ -122,8 +142,22 @@ export default {
       this.$v.$touch();
       if (this.$v.$error) return;
 
-      const data = { uuid: this.data.uuid, name: this.data.name };
-      this.$root.$emit("sendData", { json: data, formid: this.formid });
+      const data = this.isBookmark
+        ? {
+            uuid: this.isEditing ? this.data.uuid : uuidv4(),
+            name: this.data.name,
+            slug: slugify(this.data.name),
+            url: this.data.url,
+            desc: this.data.desc,
+            catUuid: this.data.catUuid
+          }
+        : { uuid: this.data.uuid, name: this.data.name };
+
+      this.$root.$emit("sendData", {
+        json: data,
+        formid: this.formid,
+        isEditing: this.isEditing
+      });
       this.resetData();
       this.success = true;
     }

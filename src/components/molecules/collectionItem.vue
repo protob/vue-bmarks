@@ -64,7 +64,16 @@
             "
             >E</btn
           >
-          <btn :type="'small'" class="ml-1" @click="toggleDeleteTaxModal"
+          <btn
+            :type="'small'"
+            class="ml-1"
+            @click="
+              toggleDeleteTaxModal(
+                'bookmark',
+                item.bookmark.uuid,
+                item.bookmark.name
+              )
+            "
             >X</btn
           >
         </div>
@@ -140,16 +149,8 @@ export default {
       this.$root.$emit("fireModal", { target, taxUuid, bookmark, isEditing });
     },
 
-    toggleModalAddBookmark(bookmarkId, isEditing = false) {
-      this.$root.$emit("fireModalAddBookmark", {
-        bookmarkId: bookmarkId,
-        isEditing: isEditing
-      });
-    },
-
-    toggleDeleteTaxModal(taxId) {
-      const key = "catId" in this.item ? "catId" : "taxId";
-      this.$root.$emit("fireConfirm", { taxId: taxId, taxKey: key });
+    toggleDeleteTaxModal(target, taxUuid, taxName) {
+      this.$root.$emit("fireConfirm", { target, taxUuid, taxName });
     },
 
     formatDate(timestamp) {

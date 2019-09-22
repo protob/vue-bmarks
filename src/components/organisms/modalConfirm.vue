@@ -16,7 +16,9 @@
           <h1>
             Delete {{ itemData.taxName }}
             <span v-if="itemData.target == 'cat'">and its links.</span>
-            <span v-else>and remove it from links</span>
+            <span v-else-if="itemData.target == 'tag'"
+              >and remove it from links</span
+            >
             <br />Are you sure?
           </h1>
         </div>
@@ -34,6 +36,29 @@
 
 <script>
 import gql from "graphql-tag";
+
+const DELETE_BOOKMARK = gql`
+  mutation DeleteBookmarks($uuid: uuid!) {
+    delete_bookmarks_cats(where: { bookmarkUuid: { _eq: $uuid } }) {
+      affected_rows
+      returning {
+        catUuid
+      }
+    }
+    delete_bookmarks_tags(where: { bookmarkUuid: { _eq: $uuid } }) {
+      affected_rows
+      returning {
+        tagUuid
+      }
+    }
+    delete_bookmarks(where: { catUuid: { _eq: $uuid } }) {
+      affected_rows
+      returning {
+        catUuid
+      }
+    }
+  }
+`;
 
 const DELETE_CAT = gql`
   mutation DeleteCats($uuid: uuid!) {
@@ -140,14 +165,10 @@ export default {
 
   methods: {
     prepareDeleteBookmarksTagsQuery(arr) {
-      const queryString = `
-			mutation DeleteTags{
-						delete_bookmarks_tags(
-
-							    where: {bookmarkUuid: {_in: ${JSON.stringify(arr)}}}
-
-							) {
-							affected_rows
+      const queryString = `mutation DeleteTags{delete_bookmarks_tags(where: {bookmarkUuid:{
+				_in: ${JSON.stringify(arr)}
+			}}) {
+						affected_rows
 							returning {
 								tagUuid
 							}
@@ -255,21 +276,15 @@ export default {
     },
     deleteItem() {
       const uuid = this.itemData.taxUuid;
-      const MUTATION = this.itemData.target == "cat" ? DELETE_CAT : DELETE_TAG;
-      const taxQuery = this.itemData.target == "cat" ? "getCats" : "getTags";
 
-      if (this.itemData.target == "cat") {
-        // CAT MUTATION
-        this.generateBookmarkTagMap();
-      } else {
-        //TAG MUTAITON
+      if (this.itemData.target == "bookmark") {
         this.$apollo
           .mutate({
-            mutation: MUTATION,
+            mutation: DELETE_BOOKMARK,
             variables: {
               uuid
             },
-            refetchQueries: [taxQuery, "getAllBookmarksByCat"]
+            refetchQueries: ["getCats", "getTags", "getAllBookmarksByCat"]
           })
 
           .then(data => {
@@ -281,6 +296,36 @@ export default {
             console.log(error);
           });
         this.toggleModal();
+      } else {
+        //TAG tags
+        const MUTATION =
+          this.itemData.target == "cat" ? DELETE_CAT : DELETE_TAG;
+        const taxQuery = this.itemData.target == "cat" ? "getCats" : "getTags";
+
+        if (this.itemData.target == "cat") {
+          // CAT MUTATION
+          this.generateBookmarkTagMap();
+        } else {
+          //TAG MUTAITON
+          this.$apollo
+            .mutate({
+              mutation: MUTATION,
+              variables: {
+                uuid
+              },
+              refetchQueries: [taxQuery, "getAllBookmarksByCat"]
+            })
+
+            .then(data => {
+              // eslint-disable-next-line no-console
+              console.log(data);
+            })
+            .catch(error => {
+              // eslint-disable-next-line no-console
+              console.log(error);
+            });
+          this.toggleModal();
+        }
       }
     },
 

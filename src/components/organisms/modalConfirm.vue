@@ -60,6 +60,60 @@ const DELETE_CAT = gql`
   }
 `;
 
+const DELETE_TAG = gql`
+  mutation DeleteTags($uuid: uuid!) {
+    delete_bookmarks_tags(where: { tagUuid: { _eq: $uuid } }) {
+      affected_rows
+      returning {
+        tagUuid
+      }
+    }
+
+    delete_tags(where: { uuid: { _eq: $uuid } }) {
+      affected_rows
+      returning {
+        uuid
+      }
+    }
+  }
+`;
+
+// const DELETE_BOOKMARKS_TAGS = gql`
+//   mutation DeleteTags($objects: [bookmarks_tags_insert_input!]!) {
+//     delete_bookmarks_tags(where: { bookmarkUuid: { _nin: $objects } }) {
+//       affected_rows
+//       returning {
+//         tagUuid
+//       }
+//     }
+//   }
+// `;
+
+const GET_BOOKMARKS_BY_CAT = gql`
+  query getBookmarksByCat($uuid: uuid!) {
+    cats(where: { uuid: { _eq: $uuid } }) {
+      name
+      uuid
+      bookmarks {
+        name
+        uuid
+        userUuid
+        url
+        desc
+        updated_at
+        slug
+        bookmarks_tags {
+          tag {
+            uuid
+            name
+            slug
+            uuid
+          }
+        }
+      }
+    }
+  }
+`;
 import btn from "@/components/atoms/btn.vue";
 export default {
   components: {
@@ -68,6 +122,7 @@ export default {
   data() {
     return {
       itemId: null,
+
       itemData: {
         target: "",
         taxName: "",
@@ -84,17 +139,137 @@ export default {
   },
 
   methods: {
+    prepareDeleteBookmarksTagsQuery(arr) {
+      const queryString = `
+			mutation DeleteTags{
+						delete_bookmarks_tags(
+
+							    where: {bookmarkUuid: {_in: ${JSON.stringify(arr)}}}
+
+							) {
+							affected_rows
+							returning {
+								tagUuid
+							}
+						}
+					}
+					`;
+
+      const query = gql`
+        ${queryString}
+      `;
+
+      return query;
+    },
+
+    generateBookmarkTagMap() {
+      const uuid = this.itemData.taxUuid;
+      this.$apollo
+        .query({
+          query: GET_BOOKMARKS_BY_CAT,
+          variables: {
+            uuid
+          }
+        })
+        .then(result => {
+          const cats = result.data.cats;
+
+          const catItems = cats[0].bookmarks; // currently single cat filter is supported
+          const formattedItems = catItems.map(item => {
+            return { bookmark: item };
+          });
+          let item = {
+            name: this.itemData.name,
+            bookmarks_cats: formattedItems
+          };
+
+          let o = {};
+          item.bookmarks_cats.forEach(item => {
+            const tags = item.bookmark.bookmarks_tags;
+            if (tags) {
+              const arr = tags.map(item => {
+                return {
+                  uuid: item.tag.uuid
+                };
+              });
+              if (arr.length) {
+                o[item.bookmark.uuid] = arr;
+              }
+            }
+          });
+
+          this.deleteBookmarks(o);
+        });
+    },
+    deleteCat() {
+      const uuid = this.itemData.taxUuid;
+      const MUTATION = this.itemData.target == "cat" ? DELETE_CAT : DELETE_TAG;
+      const taxQuery = this.itemData.target == "cat" ? "getCats" : "getTags";
+
+      this.$apollo
+        .mutate({
+          mutation: MUTATION,
+          variables: {
+            uuid
+          },
+          refetchQueries: [taxQuery, "getAllBookmarksByCat"]
+        })
+
+        .then(data => {
+          // eslint-disable-next-line no-console
+          console.log(data);
+        })
+        .catch(error => {
+          // eslint-disable-next-line no-console
+          console.log(error);
+        });
+
+      this.toggleModal();
+    },
+    deleteBookmarks(bookmarkTagsMap) {
+      // const uuid = this.itemData.taxUuid;
+      const bookmarksUuids = Object.keys(bookmarkTagsMap);
+
+      const taxQuery = this.itemData.target == "cat" ? "getCats" : "getTags";
+
+      const DELETE_BOOKMARKS_TAGS = this.prepareDeleteBookmarksTagsQuery(
+        bookmarksUuids
+      );
+
+      this.$apollo
+        .mutate({
+          mutation: DELETE_BOOKMARKS_TAGS,
+
+          refetchQueries: [taxQuery, "getAllBookmarksByCat"]
+        })
+
+        .then(output => {
+          // eslint-disable-next-line no-console
+          console.log(output.data);
+          this.deleteCat();
+        })
+        .catch(error => {
+          // eslint-disable-next-line no-console
+          console.log(error);
+        });
+    },
     deleteItem() {
       const uuid = this.itemData.taxUuid;
+      const MUTATION = this.itemData.target == "cat" ? DELETE_CAT : DELETE_TAG;
+      const taxQuery = this.itemData.target == "cat" ? "getCats" : "getTags";
 
       if (this.itemData.target == "cat") {
+        // CAT MUTATION
+        this.generateBookmarkTagMap();
+      } else {
+        //TAG MUTAITON
         this.$apollo
           .mutate({
-            mutation: DELETE_CAT,
+            mutation: MUTATION,
             variables: {
               uuid
             },
-            refetchQueries: ["getCats", "getAllBookmarksByCat"]
+            refetchQueries: [taxQuery, "getAllBookmarksByCat"]
           })
 
           .then(data => {
@@ -105,12 +280,8 @@ export default {
             // eslint-disable-next-line no-console
             console.log(error);
           });
-      } else if (this.itemData.target == "tag") {
-        // eslint-disable-next-line no-console
-        console.log("Tag");
+        this.toggleModal();
       }
-
-      this.toggleModal();
     },
 
     toggleModal() {

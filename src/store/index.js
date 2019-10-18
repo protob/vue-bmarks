@@ -1,12 +1,16 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
+import accountModule from "./modules/account.module";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  modules: {
+    account: accountModule
+  },
   state: {
     currentUserId: 1,
     currentUserUuid: "723881c9-a6fa-447d-9553-cac37936989b",
+    formMode: "login", // login/regiser
     modalForm: {
       target: null,
       taxUuid: null,
@@ -157,6 +161,9 @@ export default new Vuex.Store({
     },
     SET_MODAL_FORM_DATA(state, payload) {
       state.modalForm = payload;
+    },
+    SET_FORM_MODE(state, payload) {
+      state.formMode = payload;
     }
   },
   getters: {
@@ -177,9 +184,15 @@ export default new Vuex.Store({
     },
     getModalForm: state => {
       return state.modalForm;
+    },
+    getFormMode: state => {
+      return state.formMode;
     }
   },
   actions: {
+    changeFormMode(vuexContext, payload) {
+      vuexContext.commit("SET_FORM_MODE", payload.mode);
+    },
     changeCurrentUserId(vuexContext, id) {
       vuexContext.commit("SET_USER_ID", id);
     },

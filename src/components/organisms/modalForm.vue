@@ -220,7 +220,7 @@ export default {
 
     this.$root.$on("fireModal", data => {
       this.target = data.target;
-
+      this.$store.dispatch("changeFormMode", { mode: this.target });
       if (data.isEditing == true) {
         this.isEditing = true;
         // edit single bookmark item
@@ -232,6 +232,7 @@ export default {
         this.isEditing = false;
         // this.$store.dispatch("setModalFormData", {});
       }
+
       this.toggleModal();
     });
 
@@ -239,7 +240,11 @@ export default {
       const id = data.formid;
       const obj = data.json;
 
-      if (data.formid == "bookmarkForm") {
+      if (data.formid == "loginForm") {
+        this.loginWithEmailAndPassword(obj);
+      } else if (data.formid == "registerForm") {
+        this.registerWithEmailAndPassword(obj);
+      } else if (data.formid == "bookmarkForm") {
         if (data.isEditing) {
           this.updadteCollectionItem(obj);
         } else {
@@ -255,6 +260,15 @@ export default {
     });
   },
   methods: {
+    loginWithEmailAndPassword(obj) {
+      return obj;
+      // console.log("login", obj);
+    },
+    registerWithEmailAndPassword(obj) {
+      return obj;
+      // console.log("register", obj);
+    },
+
     addTaxonomyItem(obj, target) {
       const MUTATION = target == "cat" ? ADD_CAT : ADD_TAG;
       const query = target == "cat" ? "getCats" : "getTags";

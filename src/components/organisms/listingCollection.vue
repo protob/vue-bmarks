@@ -110,7 +110,7 @@ const GET_BOOKMARKS_BY_PHRASE = gql`
         ]
       }
     ) {
-      id
+      uuid
       name
       slug
       updated_at
@@ -168,8 +168,8 @@ export default {
           const cats = result.data.cats;
 
           const catItems = cats[0].bookmarks; // currently single cat filter is supported
-          const formattedItems = catItems.map(item => {
-            return { bookmark: item };
+          const formattedItems = catItems.map(el => {
+            return { bookmark: el };
           });
           let item = {
             name: tagName,
@@ -217,13 +217,13 @@ export default {
         })
         .then(result => {
           const tempId = new Date().getTime();
-          const items = result.data.bookmarks.map(item => {
-            return { bookmark: item };
+          const items = result.data.bookmarks.map(el => {
+            return { bookmark: el };
           });
 
           let item = {
             name: data.order,
-            id: tempId,
+            uuid: tempId,
             bookmarks_cats: items
           };
           this.bookmarksByCat = [item];
@@ -241,6 +241,7 @@ export default {
           .then(result => {
             this.bookmarksByCat = result.data.cats;
           });
+
         return false;
       }
 
@@ -254,13 +255,13 @@ export default {
         })
         .then(result => {
           const tempId = new Date().getTime();
-          const items = result.data.bookmarks.map(item => {
-            return { bookmark: item };
+          const items = result.data.bookmarks.map(el => {
+            return { bookmark: el };
           });
 
           let item = {
             name: phrase,
-            id: tempId,
+            uuid: tempId,
             bookmarks_cats: items
           };
 
@@ -281,7 +282,7 @@ export default {
       const queryString = `
 						query getBookmarksByOrder{
 							bookmarks(order_by:${order}) {
-								id
+								uuid
 								name
 								slug
 								updated_at

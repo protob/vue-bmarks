@@ -196,21 +196,21 @@ export default {
           const cats = result.data.cats;
 
           const catItems = cats[0].bookmarks; // currently single cat filter is supported
-          const formattedItems = catItems.map(item => {
-            return { bookmark: item };
+          const formattedItems = catItems.map(el => {
+            return { bookmark: el };
           });
-          let item = {
+          let tempItem = {
             name: this.itemData.name,
             bookmarks_cats: formattedItems
           };
 
           let o = {};
-          item.bookmarks_cats.forEach(item => {
+          tempItem.bookmarks_cats.forEach(item => {
             const tags = item.bookmark.bookmarks_tags;
             if (tags) {
-              const arr = tags.map(item => {
+              const arr = tags.map(el => {
                 return {
-                  uuid: item.tag.uuid
+                  uuid: el.tag.uuid
                 };
               });
               if (arr.length) {

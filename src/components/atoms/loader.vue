@@ -15,7 +15,8 @@ export default {
   name: "Waiting",
   components: {
     ScaleLoader
-  }
+  },
+  mounted() {}
 };
 </script>
 

@@ -225,7 +225,7 @@ export default {
       target: "login",
       taxUuid: null,
 
-      userId: JSON.parse(localStorage.user_info)
+      userId: localStorage.user_info
         ? JSON.parse(localStorage.user_info).sub
         : ""
     };

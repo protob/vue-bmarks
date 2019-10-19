@@ -3,18 +3,30 @@ import { router } from "@/router";
 
 const user = authService.getUserId();
 const state = user
-  ? { status: { loggedIn: true }, user }
-  : { status: {}, user: null };
+  ? { status: { loggedIn: true }, user, token: "" }
+  : { status: {}, user: null, token: "" };
 
 const actions = {
+  addToken({ commit }, token) {
+    commit("addToken", token);
+  },
+
   login({ commit }) {
     commit("loginRequest", user);
     authService.login();
   },
+
+  syncUser() {},
+
   async handleAuthenticationResponse({ dispatch, commit }) {
     try {
       const userInfo = await authService.handleAuthentication();
       commit("loginSuccess", userInfo);
+      const userData = JSON.parse(localStorage.user_info);
+      const token = userData.idToken;
+      if (token) {
+        commit("addToken", token);
+      }
 
       router.push({ path: authService.getReturnUrl() });
     } catch (error) {
@@ -32,6 +44,10 @@ const actions = {
 };
 
 const mutations = {
+  addToken(state, token) {
+    state.token = token;
+  },
+
   loginRequest(state, user) {
     state.status = { loggingIn: true };
     state.user = user;

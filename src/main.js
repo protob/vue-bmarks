@@ -17,7 +17,7 @@ const authLink = setContext((_, { headers }) => {
 
   const tokenString = token ? `Bearer ${token}` : "";
 
-  // return the headers to the context so httpLink can read them
+  // return the headers to the context so httpLink can read them #
   return {
     headers: {
       ...headers,

@@ -15,6 +15,7 @@ const actions = {
     try {
       const userInfo = await authService.handleAuthentication();
       commit("loginSuccess", userInfo);
+
       router.push({ path: authService.getReturnUrl() });
     } catch (error) {
       authService.logout();

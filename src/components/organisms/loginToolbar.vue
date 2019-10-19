@@ -1,18 +1,9 @@
 <template>
   <div>
     <div class="sm:w-full toolbar">
-      <btn class="mx-2" @click="openModal('login')">Login</btn>
-      <btn @click="openModal('register')">Register</btn>
+      <btn v-if="isLoggedIn" class="mx-2" @click="logout()">Logout</btn>
+      <btn v-if="!isLoggedIn" class="mx-2" @click="login()">Login</btn>
     </div>
-
-    <ul class="navbar-nav ml-auto">
-      <li v-if="isLoggedIn" class="nav-item">
-        <a href class="nav-link" @click.prevent="logout()">Logout</a>
-      </li>
-      <li v-if="!isLoggedIn" class="nav-item">
-        <a href class="nav-link" @click.prevent="login()">Login</a>
-      </li>
-    </ul>
   </div>
 </template>
 

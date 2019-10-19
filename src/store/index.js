@@ -190,6 +190,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    loginWithEmailAndPassword(vuexContext, payload) {
+      return payload;
+    },
     changeFormMode(vuexContext, payload) {
       vuexContext.commit("SET_FORM_MODE", payload.mode);
     },

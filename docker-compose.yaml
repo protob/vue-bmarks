@@ -1,22 +1,25 @@
-version: '3.6'
+version: "3.6"
 services:
   postgres:
     image: postgres
     restart: "no"
     volumes:
-    - db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
   graphql-engine:
     image: hasura/graphql-engine:v1.0.0-beta.6
     ports:
-    - "8080:8080"
+      - "8080:8080"
     depends_on:
-    - "postgres"
+      - "postgres"
     restart: "no"
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
+      #HASURA_GRAPHQL_DATABASE_URL: postgres://admin:password@postgres:5432/postgres
+
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       ## uncomment next line to set an admin secret
-      # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+      HASURA_GRAPHQL_ADMIN_SECRET: password
+      HASURA_GRAPHQL_JWT_SECRET: '{"type":"RS512","key":"-----BEGIN CERTIFICATE-----\nMIIDATCCAemgAwIBAgIJLRqMP6CF8L/fMA0GCSqGSIb3DQEBCwUAMB4xHDAaBgNV\nBAMTE2hhc3VyYXV0aC5hdXRoMC5jb20wHhcNMTkxMDE4MjA0NzE0WhcNMzMwNjI2\nMjA0NzE0WjAeMRwwGgYDVQQDExNoYXN1cmF1dGguYXV0aDAuY29tMIIBIjANBgkq\nhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvQqP+I81BXBsUG8haN9Jm0b9NwMvtQ0s\n6N08XzXdCX9gLhOtCxI4wU1AxYNBvJU3YN83aOsUDrUlTMal1uWJED2SI4F3udTI\nc6wjNX7ceXH6KBjz8DzF5p64GCsMpYqHghF6rmjnj/JnIzXrIWhF+gAz0WmaI7TN\nnCtbFwTol6zNU34qbiHZwu2uWMWAI9WUCzFAtnbw9YD4ppaQWBnCQj2QP5M9Ryj7\nqPZRdJUOFFxmJzDp59xFVNObOC7s44jAwh8CIJbI/JfQa1qJrydupAxSTrYY26yF\nsHQ6ZcEevNa96n3nzNQjmPpUVJh/YfNDlbK9QabbhqnTZEyE3O/8PQIDAQABo0Iw\nQDAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBS4aEx8WZVfi/wPG9SJB51EhRzG\nfDAOBgNVHQ8BAf8EBAMCAoQwDQYJKoZIhvcNAQELBQADggEBACkNuxR+DmVygJ6I\nPCR2VddrmbwzIBe0fb2AVNlQviUaalFogyhuUr9svRQTWtHfuENvdWbjLftVwpkl\nj8YRslAwoSF3U0Y9uKs1x4TOG04W0fyDr+iK7u8h836orhMO6x8QKZxAONoD+9np\nCyfAQsLKKsR0Vg2hfPoRQd2c2OTc2QNplmw67ebtjb6gdDyVe3txKQui2wT4X3CH\nSCKlBy3YydR+4qoeCbhX+D0DSa3VZwXLEySsPWhGXcVVahXhqUax41cxJAocIY1l\n39AbhK3WuhluChxl3/860U70cQ0rnQIL0twZqh4aFpUslj+YzgaHyUlqzxzcH54Z\nWwkcoFU=\n-----END CERTIFICATE-----\n"}'
 volumes:
   db_data:

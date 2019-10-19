@@ -47,10 +47,19 @@ const ADD_CAT = gql`
     $name: String!
     $slug: String!
     $userUuid: uuid!
+    $userId: String!
     $uuid: uuid!
   ) {
     insert_cats(
-      objects: [{ uuid: $uuid, name: $name, slug: $slug, userUuid: $userUuid }]
+      objects: [
+        {
+          uuid: $uuid
+          name: $name
+          slug: $slug
+          userUuid: $userUuid
+          userId: $userId
+        }
+      ]
       on_conflict: { constraint: cats_pkey, update_columns: [name, slug] }
     ) {
       returning {
@@ -64,11 +73,20 @@ const ADD_TAG = gql`
   mutation AddTag(
     $name: String!
     $slug: String!
+    $userId: String!
     $userUuid: uuid!
     $uuid: uuid!
   ) {
     insert_tags(
-      objects: [{ uuid: $uuid, name: $name, slug: $slug, userUuid: $userUuid }]
+      objects: [
+        {
+          uuid: $uuid
+          name: $name
+          slug: $slug
+          userUuid: $userUuid
+          userId: $userId
+        }
+      ]
       on_conflict: { constraint: tags_pkey, update_columns: [name, slug] }
     ) {
       returning {
@@ -205,7 +223,11 @@ export default {
       isEditing: false,
       form: {},
       target: "login",
-      taxUuid: null
+      taxUuid: null,
+
+      userId: JSON.parse(localStorage.user_info)
+        ? JSON.parse(localStorage.user_info).sub
+        : ""
     };
   },
   computed: {
@@ -261,6 +283,7 @@ export default {
   },
   methods: {
     loginWithEmailAndPassword(obj) {
+      this.$store.dispatch("loginWithEmailAndPassword", obj);
       return obj;
       // console.log("login", obj);
     },
@@ -276,6 +299,7 @@ export default {
       const userUuid = this.getCurrentUserUuid;
       const slug = slugify(name);
       const uuid = obj.uuid ? obj.uuid.trim() : uuidv4();
+      const userId = this.userId;
 
       this.$apollo
         .mutate({
@@ -284,7 +308,8 @@ export default {
             uuid,
             name,
             slug,
-            userUuid
+            userUuid,
+            userId
           },
           refetchQueries: [query]
         })

@@ -39,6 +39,7 @@ const actions = {
   logout({ commit }) {
     authService.logout();
     commit("logout");
+
     router.push("/");
   }
 };

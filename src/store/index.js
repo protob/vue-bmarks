@@ -8,8 +8,8 @@ export default new Vuex.Store({
     account: accountModule
   },
   state: {
-    currentUserId: 1,
-    currentUserUuid: "723881c9-a6fa-447d-9553-cac37936989b",
+    currentUserId: null,
+    currentUserUuid: null,
     formMode: "login", // login/regiser
     modalForm: {
       target: null,
@@ -156,6 +156,9 @@ export default new Vuex.Store({
     ]
   },
   mutations: {
+    SET_USER_UUID(state, payload) {
+      state.currentUserUuid = payload;
+    },
     SET_USER_ID(state, payload) {
       state.currentUserId = payload;
     },
@@ -195,6 +198,9 @@ export default new Vuex.Store({
     },
     changeFormMode(vuexContext, payload) {
       vuexContext.commit("SET_FORM_MODE", payload.mode);
+    },
+    changeCurrentUserUuid(vuexContext, id) {
+      vuexContext.commit("SET_USER_UUID", id);
     },
     changeCurrentUserId(vuexContext, id) {
       vuexContext.commit("SET_USER_ID", id);

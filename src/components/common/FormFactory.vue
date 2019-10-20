@@ -162,7 +162,7 @@ export default {
       } else {
         data = this.isBookmark
           ? {
-              uuid: this.isEditing ? this.data.uuid : uuidv4(),
+              uuid: this.getModalForm.isEditing ? this.data.uuid : uuidv4(),
               name: this.data.name,
               slug: slugify(this.data.name),
               url: this.data.url,
@@ -170,13 +170,16 @@ export default {
               tags: this.data.tags,
               catUuid: this.data.catUuid
             }
-          : { uuid: this.data.uuid, name: this.data.name };
+          : {
+              uuid: this.data.uuid,
+              name: this.data.name
+            };
       }
 
       this.$root.$emit("sendData", {
         json: data,
         formid: this.formid,
-        isEditing: this.isEditing
+        isEditing: this.getModalForm.isEditing
       });
       this.resetData();
       this.success = true;

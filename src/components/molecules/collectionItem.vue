@@ -86,7 +86,7 @@
 import btn from "@/components/atoms/btn.vue";
 import { mapGetters } from "vuex";
 export default {
-  name: "OrderSelect",
+  name: "CollectionItem",
   components: {
     btn
   },

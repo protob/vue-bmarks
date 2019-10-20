@@ -34,6 +34,9 @@ function logout() {
   // Clear access token and ID token from local storage
   localStorage.removeItem("user_info");
   localStorage.removeItem("returnUrl");
+  //-------------
+  localStorage.removeItem("userUuid");
+  localStorage.removeItem("userId");
 }
 
 function handleAuthentication() {

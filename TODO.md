@@ -1,1 +1,3 @@
-# add upsert operation for user profile, now it allways adds new user beacuse uuid is not checked (maybe add constraint to email)
+# when:after editing existing tag names in collcetion item popup (csv), what: new tag value is added to item and sidebar because its unaware of id
+
+# cannot delete tag from colletion item input csv list

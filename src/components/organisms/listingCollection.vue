@@ -161,7 +161,8 @@ export default {
           query: GET_BOOKMARKS_BY_CAT,
           variables: {
             uuid
-          }
+          },
+          fetchPolicy: "no-cache"
         })
         .then(result => {
           const tempId = new Date().getTime();

@@ -51,10 +51,10 @@ const DELETE_BOOKMARK = gql`
         tagUuid
       }
     }
-    delete_bookmarks(where: { catUuid: { _eq: $uuid } }) {
+    delete_bookmarks(where: { uuid: { _eq: $uuid } }) {
       affected_rows
       returning {
-        catUuid
+        uuid
       }
     }
   }

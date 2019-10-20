@@ -37,7 +37,7 @@
 import FormBuilder from "@/builders/FormBuilder";
 import FormDirector from "@/builders/FormDirector";
 import gql from "graphql-tag";
-// import { InMemoryCache } from "apollo-cache-inmemory";
+
 import { mapGetters } from "vuex";
 const slugify = require("slugify");
 const uuidv4 = require("uuid/v4");
@@ -111,9 +111,10 @@ const ADD_TAGS = gql`
 `;
 
 const ADD_BOOKMARK = gql`
-  mutation AddBookmark(
+  mutation AddBookmarkWithTags(
     $bookmarkUuid: uuid!
     $userUuid: uuid!
+    $userId: String!
     $name: String!
     $slug: String!
     $url: String!
@@ -130,6 +131,7 @@ const ADD_BOOKMARK = gql`
           url: $url
           desc: $desc
           userUuid: $userUuid
+          userId: $userId
           catUuid: $catUuid
         }
       ]
@@ -158,17 +160,17 @@ const ADD_BOOKMARK = gql`
   }
 `;
 
-// --- upsert bookmark only, without cats and tags
-
-const UPDATE_BOOKMARK_SHALLOW = gql`
-  mutation AddBookmark(
+const ADD_BOOKMARK_DEEP = gql`
+  mutation AddBookmarkWithTags(
     $bookmarkUuid: uuid!
     $userUuid: uuid!
+    $userId: String!
     $name: String!
     $slug: String!
     $url: String!
     $desc: String!
     $catUuid: uuid!
+    $tags: [bookmarks_tags_insert_input!]!
   ) {
     insert_bookmarks(
       objects: [
@@ -179,6 +181,87 @@ const UPDATE_BOOKMARK_SHALLOW = gql`
           url: $url
           desc: $desc
           userUuid: $userUuid
+          userId: $userId
+          catUuid: $catUuid
+        }
+      ]
+
+      on_conflict: {
+        constraint: bookmarks_pkey
+        update_columns: [name, url, slug, desc]
+      }
+    ) {
+      affected_rows
+      returning {
+        name
+        uuid
+      }
+    }
+    # insert_bookmarks_cats(
+    #   objects: { bookmarkUuid: $bookmarkUuid, catUuid: $catUuid }
+    #   on_conflict: {
+    #     constraint: bookmarks_cats_pkey
+    #     update_columns: bookmarkUuid
+    #   }
+    # ) {
+    #   returning {
+    #     bookmarkUuid
+    #     catUuid
+    #   }
+    # }
+
+    insert_bookmarks_tags(
+      objects: $tags
+      on_conflict: {
+        constraint: bookmarks_tags_pkey
+        update_columns: bookmarkUuid
+      }
+    ) {
+      returning {
+        bookmarkUuid
+        tagUuid
+      }
+    }
+  }
+`;
+
+const GET_TAGS_BY_USERID = gql`
+  query getTagsBySLug($userId: String!, $objects: [String!]!) {
+    tags(
+      where: { _and: { userId: { _eq: $userId }, slug: { _in: $objects } } }
+    ) {
+      name
+      slug
+      userUuid
+      userId
+      uuid
+    }
+  }
+`;
+
+// --- upsert bookmark only, without cats and tags
+
+const UPDATE_BOOKMARK_SHALLOW = gql`
+  mutation AddBookmark(
+    $bookmarkUuid: uuid!
+    $userUuid: uuid!
+    $userId: String!
+    $name: String!
+    $slug: String!
+    $url: String!
+    $desc: String!
+    $catUuid: uuid! # $tags: [bookmarks_tags_insert_input!]!
+  ) {
+    insert_bookmarks(
+      objects: [
+        {
+          uuid: $bookmarkUuid
+          name: $name
+          slug: $slug
+          url: $url
+          desc: $desc
+          userUuid: $userUuid
+          userId: $userId
           catUuid: $catUuid
         }
       ]
@@ -205,6 +288,16 @@ const UPDATE_BOOKMARK_SHALLOW = gql`
         catUuid
       }
     }
+
+    # insert_bookmarks_tags(
+    #   objects: $tags
+    #   on_conflict: { constraint: tags_pkey, update_columns: updated_at }
+    # ) {
+    #   returning {
+    #     bookmarkUuid
+    #     tagUuid
+    #   }
+    # }
   }
 `;
 export default {
@@ -224,19 +317,15 @@ export default {
       form: {},
       target: "login",
       taxUuid: null,
-
-      userId: localStorage.user_info
-        ? JSON.parse(localStorage.user_info).sub
-        : ""
+      userUuid: localStorage.userUuid ? localStorage.userUuid : "",
+      userId: localStorage.userId ? localStorage.userId : ""
     };
   },
   computed: {
-    ...mapGetters(["getCurrentUserUuid"])
+    ...mapGetters(["getCurrentUserUuid", "getCurrentUserId"])
   },
   mounted() {
-    this.$root.$on("closeModal", data => {
-      // eslint-disable-next-line no-console
-      console.log(data);
+    this.$root.$on("closeModal", () => {
       this.toggleModal();
     });
 
@@ -268,7 +357,7 @@ export default {
         this.registerWithEmailAndPassword(obj);
       } else if (data.formid == "bookmarkForm") {
         if (data.isEditing) {
-          this.updadteCollectionItem(obj);
+          this.updateCollectionItem(obj);
         } else {
           this.addCollectionItem(obj);
         }
@@ -282,15 +371,30 @@ export default {
     });
   },
   methods: {
+    //form and modals
+    toggleModal() {
+      const modal = this.$refs["modal-login"];
+      modal.classList.toggle("opacity-0");
+      modal.classList.toggle("pointer-events-none");
+    },
+    submitForm() {
+      if (this.isEditing) {
+        this.updatedCat();
+      } else {
+        this.addCat();
+      }
+    },
+
+    // login
     loginWithEmailAndPassword(obj) {
       this.$store.dispatch("loginWithEmailAndPassword", obj);
       return obj;
-      // console.log("login", obj);
     },
     registerWithEmailAndPassword(obj) {
       return obj;
-      // console.log("register", obj);
     },
+
+    // ADD
 
     addTaxonomyItem(obj, target) {
       const MUTATION = target == "cat" ? ADD_CAT : ADD_TAG;
@@ -299,18 +403,20 @@ export default {
       const userUuid = this.getCurrentUserUuid;
       const slug = slugify(name);
       const uuid = obj.uuid ? obj.uuid.trim() : uuidv4();
-      const userId = this.userId;
+      const userId = this.getCurrentUserId;
+
+      const data = {
+        uuid,
+        name,
+        slug,
+        userUuid,
+        userId
+      };
 
       this.$apollo
         .mutate({
           mutation: MUTATION,
-          variables: {
-            uuid,
-            name,
-            slug,
-            userUuid,
-            userId
-          },
+          variables: data,
           refetchQueries: [query]
         })
 
@@ -326,53 +432,34 @@ export default {
 
       this.$store.dispatch("setModalFormData", {});
     },
-    updadteCollectionItem(obj) {
-      const bookmarkObj = {
-        bookmarkUuid: obj.uuid,
-        userUuid: this.getCurrentUserUuid,
-        url: obj.url,
-        slug: slugify(obj.name),
-        name: obj.name,
-        desc: obj.desc,
-        catUuid: obj.catUuid
-        // tags: obj.tags ? obj.tags.trim().split(",") : [],
-      };
-
-      this.$apollo
-        .mutate({
-          mutation: UPDATE_BOOKMARK_SHALLOW,
-          variables: bookmarkObj,
-          refetchQueries: ["getAllBookmarksByCat"]
-        })
-        .then(data => {
-          // eslint-disable-next-line no-console
-          console.log(data);
-        })
-        .catch(error => {
-          // eslint-disable-next-line no-console
-          console.log(error);
-        });
-
-      this.toggleModal(bookmarkObj);
-    },
     addCollectionItem(obj) {
+      let tags = !obj.tags ? [] : obj.tags;
+      if (typeof obj.tags == "object") {
+        tags = JSON.parse(JSON.stringify(obj.tags));
+      } else {
+        tags = obj.tags.trim().split(",");
+      }
+
+      const userId = this.userId;
       const bookmarkObj = {
         bookmarkUuid: uuidv4(),
         userUuid: this.getCurrentUserUuid,
+        userId: userId,
         url: obj.url,
         slug: slugify(obj.name),
         name: obj.name,
         desc: obj.desc,
-        tags: obj.tags ? obj.tags.trim().split(",") : [],
+        tags: tags.filter(n => n), // remove empty strings
         // catUuid: this.taxUuid
         catUuid: obj.catUuid
       };
 
-      if (bookmarkObj.tags.length > 0) {
+      if (tags.length > 0) {
         const tagsToInsert = bookmarkObj.tags.map(el => {
           return {
             name: el,
             slug: slugify(el),
+            userId: this.userId,
             userUuid: this.getCurrentUserUuid
           };
         });
@@ -384,6 +471,7 @@ export default {
 
       this.toggleModal(bookmarkObj);
     },
+    // INSERT
 
     insertTags(tagsToInsert, bookmarkObj) {
       this.$apollo
@@ -430,17 +518,164 @@ export default {
         });
     },
 
-    toggleModal() {
-      const modal = this.$refs["modal-login"];
-      modal.classList.toggle("opacity-0");
-      modal.classList.toggle("pointer-events-none");
+    // prepare
+
+    prepareTagsBeforeSend(itemsObj, bookmarkObj) {
+      const userId = this.getCurrentUserId;
+      const itemsObj2 = itemsObj.filter(
+        (item, index, self) =>
+          index === self.findIndex(elem => elem.slug === item.slug)
+      ); // only unique tag slugs
+
+      const slugsArr = itemsObj2.map(item => item.slug);
+
+      this.$apollo
+        .query({
+          query: GET_TAGS_BY_USERID,
+          variables: {
+            userId: userId,
+            objects: [...slugsArr]
+          },
+          fetchPolicy: "no-cache",
+          refetchQueries: ["getAllBookmarksByCat", "getTags"]
+        })
+        .then(result => {
+          const data = result.data.tags;
+
+          const dataToSend = itemsObj2;
+
+          let updatedData = dataToSend;
+          if (data.length) {
+            const res = data.filter(n =>
+              dataToSend.some(n2 => n.slug == n2.slug)
+            );
+            const responseObj = Object.assign(
+              {},
+              ...res.map(item => ({ [item.slug]: item }))
+            );
+
+            updatedData = dataToSend.map(item => ({
+              ...item,
+              // uuid: responseObj[item.slug].uuid
+
+              uuid: responseObj[item.slug]
+                ? responseObj[item.slug].uuid
+                : uuidv4()
+            }));
+          } else {
+            updatedData = dataToSend.map(item => ({
+              ...item,
+              uuid: uuidv4()
+            }));
+          }
+
+          this.updateTags(updatedData, bookmarkObj);
+        });
     },
-    submitForm() {
-      if (this.isEditing) {
-        this.updatedCat();
+
+    //UPDATE
+    updateItemDeep(bookmarkObj) {
+      this.$apollo
+        .mutate({
+          mutation: ADD_BOOKMARK_DEEP,
+          variables: bookmarkObj,
+          refetchQueries: ["getAllBookmarksByCat"]
+        })
+        .then(data => {
+          // eslint-disable-next-line no-console
+          console.log(data);
+        })
+        .catch(error => {
+          // eslint-disable-next-line no-console
+          console.log(error);
+        });
+    },
+
+    updateCollectionItem(obj) {
+      let tags = !obj.tags ? [] : obj.tags;
+      if (typeof obj.tags == "object") {
+        tags = JSON.parse(JSON.stringify(obj.tags));
       } else {
-        this.addCat();
+        tags = obj.tags.trim().split(",");
       }
+
+      const userId = this.getCurrentUserId;
+
+      const bookmarkObj = {
+        bookmarkUuid: obj.uuid,
+        userUuid: this.getCurrentUserUuid,
+        userId: userId,
+        url: obj.url,
+        slug: slugify(obj.name),
+        name: obj.name,
+        desc: obj.desc,
+        catUuid: obj.catUuid
+        // tags: tags .filter(n => n) // remove empty strings
+      };
+
+      this.$apollo
+        .mutate({
+          mutation: UPDATE_BOOKMARK_SHALLOW,
+          variables: bookmarkObj,
+          refetchQueries: ["getAllBookmarksByCat"]
+        })
+        .then(data => {
+          // eslint-disable-next-line no-console
+          console.log(data);
+        })
+        .catch(error => {
+          // eslint-disable-next-line no-console
+          console.log(error);
+        });
+
+      if (tags.length > 0) {
+        const tagsToInsert = tags.map(el => {
+          return {
+            name: el,
+            slug: slugify(el),
+            userId: this.userId,
+            userUuid: this.getCurrentUserUuid
+          };
+        });
+
+        this.updateTagsStep1(tagsToInsert, bookmarkObj);
+      }
+      this.toggleModal(bookmarkObj);
+    },
+
+    updateTagsStep1(tagsToInsert, bookmarkObj) {
+      // prevent duplicates
+
+      this.prepareTagsBeforeSend(tagsToInsert, bookmarkObj);
+    },
+
+    updateTags(tagsToInsert, bookmarkObj) {
+      this.$apollo
+        .mutate({
+          mutation: ADD_TAGS,
+          variables: {
+            objects: tagsToInsert
+          },
+          refetchQueries: ["getAllBookmarksByCat", "getTags"]
+        })
+
+        .then(resp => {
+          const respArr = resp.data.insert_tags.returning;
+          const tagsBookmarksMap = respArr.map(item => {
+            return {
+              bookmarkUuid: bookmarkObj.bookmarkUuid,
+              tagUuid: item.uuid
+            };
+          });
+
+          bookmarkObj.tags = tagsBookmarksMap;
+
+          this.updateItemDeep(bookmarkObj);
+        })
+        .catch(error => {
+          // eslint-disable-next-line no-console
+          console.log(error);
+        });
     }
   }
 };

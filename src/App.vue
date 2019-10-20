@@ -56,7 +56,7 @@ const GET_USER_BY_ID = gql`
 `;
 
 const uuidv4 = require("uuid/v4");
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   components: {
     modalConfirm,
@@ -69,6 +69,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters(["getCurrentUserUuid", "getCurrentUserId"]),
     ...mapState("account", {
       user: "user",
       token: "token"
@@ -81,15 +82,47 @@ export default {
     }
   },
   mounted() {
-    //   this.$root.$on("syncUser", () => { }
+    this.setUserUuid();
   },
   methods: {
+    setUserUuid() {
+      const userId = localStorage.userId;
+
+      if (userId) {
+        this.$store.dispatch("changeCurrentUserId", userId);
+
+        this.$apollo
+          .query({
+            query: GET_USER_BY_ID,
+            variables: {
+              userId: userId
+            }
+          })
+          .then(result => {
+            if (result.data.users.length) {
+              const userUuid = result.data.users[0].uuid;
+              this.$store.dispatch("changeCurrentUserUuid", userUuid);
+              localStorage.userUuid = userUuid;
+            }
+          })
+          .catch(error => {
+            // eslint-disable-next-line no-console
+            console.log(error);
+          });
+      }
+    },
+
     syncUser() {
       if (this.token) {
         const obj = jwt_decode(this.token);
+        const userUuid = uuidv4();
 
+        this.$store.dispatch("changeCurrentUserUuid", userUuid);
+        this.$store.dispatch("changeCurrentUserId", obj.sub);
+        localStorage.userUuid = userUuid;
+        localStorage.userId = obj.sub;
         const data = {
-          uuid: uuidv4(), //,
+          uuid: userUuid, //,
           email: obj.email,
           name: obj.nickname,
           userId: obj.sub,
@@ -98,6 +131,7 @@ export default {
           username: obj.nickname
         };
 
+        //changeCurrentUserId(vuexContext, id) {
         this.$apollo
           .query({
             query: GET_USER_BY_ID,
@@ -122,8 +156,7 @@ export default {
                   console.log(error);
                 });
             } else {
-              // eslint-disable-next-line no-console
-              console.log("user exist");
+              this.setUserUuid();
             }
           })
           .catch(error => {

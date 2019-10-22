@@ -25,16 +25,7 @@
 import btn from "@/components/atoms/btn.vue";
 import taxonamyItem from "@/components/molecules/taxonomyItem.vue";
 
-import gql from "graphql-tag";
-const GET_CATS = gql`
-  query getCats {
-    cats(order_by: { name: asc }) {
-      uuid
-      name
-      slug
-    }
-  }
-`;
+import { GET_CATS } from "@/queries/listingTaxonomy.js";
 
 export default {
   name: "ListingCats",

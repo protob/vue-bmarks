@@ -25,16 +25,8 @@
 <script>
 import btn from "@/components/atoms/btn.vue";
 import taxonamyItem from "@/components/molecules/taxonomyItem.vue";
-import gql from "graphql-tag";
-const GET_TAGS = gql`
-  query getTags {
-    tags(order_by: { name: asc }) {
-      uuid
-      name
-      slug
-    }
-  }
-`;
+
+import { GET_TAGS } from "@/queries/listingTaxonomy.js";
 
 export default {
   name: "ListingTags",

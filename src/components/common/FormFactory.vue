@@ -20,7 +20,7 @@
       <div class="flex items-center justify-between">
         <btn class="text-lg" @click="submit">
           <span v-if="getModalForm.isEditing">Udpdate</span>
-          <span v-else>Add</span>
+          <span v-else>{{ submitLabel }}</span>
         </btn>
         <btn class="text-lg" @click="closeModal">Cancel</btn>
       </div>
@@ -84,7 +84,12 @@ export default {
     // Apply default field configuration
     // to make sure all properties we rely
     // on in the template do exist.
-    ...mapGetters(["getCurrentUserUuid", "getModalForm"]),
+    ...mapGetters(["getCurrentUserUuid", "getModalForm", "getFormMode"]),
+    submitLabel() {
+      return ["loginForm", "registerForm"].includes(this.formid)
+        ? "Submit"
+        : "Add";
+    },
     fieldsWithDefaults() {
       return this.fields.map(x => ({ ...defaultField, ...x }));
     }
@@ -142,22 +147,39 @@ export default {
       this.$v.$touch();
       if (this.$v.$error) return;
 
-      const data = this.isBookmark
-        ? {
-            uuid: this.isEditing ? this.data.uuid : uuidv4(),
-            name: this.data.name,
-            slug: slugify(this.data.name),
-            url: this.data.url,
-            desc: this.data.desc,
-            tags: this.data.tags,
-            catUuid: this.data.catUuid
-          }
-        : { uuid: this.data.uuid, name: this.data.name };
+      let data = {};
+      if (this.getFormMode == "login") {
+        data = {
+          email: this.data.email,
+          password: this.data.password
+        };
+      } else if (this.getFormMode == "register") {
+        data = {
+          email: this.data.email,
+          password: this.data.password,
+          name: this.data.name
+        };
+      } else {
+        data = this.isBookmark
+          ? {
+              uuid: this.getModalForm.isEditing ? this.data.uuid : uuidv4(),
+              name: this.data.name,
+              slug: slugify(this.data.name),
+              url: this.data.url,
+              desc: this.data.desc,
+              tags: this.data.tags,
+              catUuid: this.data.catUuid
+            }
+          : {
+              uuid: this.data.uuid,
+              name: this.data.name
+            };
+      }
 
       this.$root.$emit("sendData", {
         json: data,
         formid: this.formid,
-        isEditing: this.isEditing
+        isEditing: this.getModalForm.isEditing
       });
       this.resetData();
       this.success = true;

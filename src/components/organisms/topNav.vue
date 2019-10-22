@@ -16,7 +16,7 @@
         </div>
 
         <div class="lg:w-1/3  w-full">
-          <router-link :to="{ name: 'home' }"><btn>Home</btn></router-link>
+          <router-link :to="{ name: 'bookmarks' }"><btn>Home</btn></router-link>
         </div>
         <div class="lg:w-1/3  w-full ">
           <login-toolbar />
@@ -46,8 +46,6 @@ export default {
     };
   },
 
-  computed: {},
-  mounted() {},
   methods: {
     filterItems() {
       this.$root.$emit("filterItemsByPhrase", { phrase: this.filterPhrase });

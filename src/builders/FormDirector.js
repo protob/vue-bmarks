@@ -104,19 +104,7 @@ export default class FormDirector {
   makeLoginForm() {
     return this.builder
       .withProvider(UserProvider)
-      .addField({
-        component: FormInput,
-        label: "Name",
-        name: "name",
-        options: {
-          attrs: {
-            placeholder: "Name"
-          }
-        },
-        validation: {
-          required
-        }
-      })
+
       .addField({
         component: FormInput,
         label: "Email",

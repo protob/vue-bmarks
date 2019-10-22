@@ -25,16 +25,8 @@
 <script>
 import btn from "@/components/atoms/btn.vue";
 import taxonamyItem from "@/components/molecules/taxonomyItem.vue";
-import gql from "graphql-tag";
-const GET_TAGS = gql`
-  query getTags {
-    tags(order_by: { name: asc }) {
-      uuid
-      name
-      slug
-    }
-  }
-`;
+
+import { GET_TAGS } from "@/queries/listingTaxonomy.js";
 
 export default {
   name: "ListingTags",
@@ -42,7 +34,6 @@ export default {
     btn,
     taxonamyItem
   },
-  props: [],
 
   data() {
     return {
@@ -57,8 +48,6 @@ export default {
     }
   },
 
-  computed: {},
-  mounted() {},
   methods: {
     openModal(target) {
       this.$root.$emit("fireModal", { target });

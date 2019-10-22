@@ -24,23 +24,11 @@
 <script>
 import btn from "@/components/atoms/btn.vue";
 import taxonamyItem from "@/components/molecules/taxonomyItem.vue";
-
-import gql from "graphql-tag";
-const GET_CATS = gql`
-  query getCats {
-    cats(order_by: { name: asc }) {
-      uuid
-      name
-      slug
-    }
-  }
-`;
+import { GET_CATS } from "@/queries/listingTaxonomy.js";
 
 export default {
   name: "ListingCats",
   components: { btn, taxonamyItem },
-  props: [],
-
   data() {
     return {
       items: []
@@ -53,8 +41,6 @@ export default {
     }
   },
 
-  computed: {},
-  mounted() {},
   methods: {
     openModal(target) {
       this.$root.$emit("fireModal", { target });
@@ -75,8 +61,3 @@ export default {
   }
 };
 </script>
-
-<style scoped lang="scss">
-.listing-cats {
-}
-</style>

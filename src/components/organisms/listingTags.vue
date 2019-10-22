@@ -34,7 +34,6 @@ export default {
     btn,
     taxonamyItem
   },
-  props: [],
 
   data() {
     return {
@@ -49,8 +48,6 @@ export default {
     }
   },
 
-  computed: {},
-  mounted() {},
   methods: {
     openModal(target) {
       this.$root.$emit("fireModal", { target });

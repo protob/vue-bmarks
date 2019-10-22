@@ -10,9 +10,6 @@ import topNav from "@/components/organisms/topNav.vue";
 import mainContent from "@/components/templates/mainContent.vue";
 export default {
   name: "Home",
-  components: { mainContent, topNav },
-  mounted() {
-    // this.$root.$emit("syncUser");
-  }
+  components: { mainContent, topNav }
 };
 </script>

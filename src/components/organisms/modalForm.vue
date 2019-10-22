@@ -59,7 +59,6 @@ export default {
     TagForm: new FormDirector(new FormBuilder()).makeTagForm(),
     BookmarkForm: new FormDirector(new FormBuilder()).makeBookmarkForm()
   },
-  props: [],
 
   data() {
     return {
@@ -75,52 +74,62 @@ export default {
     ...mapGetters(["getCurrentUserUuid", "getCurrentUserId"])
   },
   mounted() {
-    this.$root.$on("closeModal", () => {
-      this.toggleModal();
-    });
-
-    this.$root.$on("fireModal", data => {
-      this.target = data.target;
-      this.$store.dispatch("changeFormMode", { mode: this.target });
-      if (data.isEditing == true) {
-        this.isEditing = true;
-        // edit single bookmark item
-
-        if (data.taxUuid) {
-          this.taxUuid = data.taxUuid;
-        }
-      } else {
-        this.isEditing = false;
-        // this.$store.dispatch("setModalFormData", {});
-      }
-
-      this.toggleModal();
-    });
-
-    this.$root.$on("sendData", data => {
-      const id = data.formid;
-      const obj = data.json;
-
-      if (data.formid == "loginForm") {
-        this.loginWithEmailAndPassword(obj);
-      } else if (data.formid == "registerForm") {
-        this.registerWithEmailAndPassword(obj);
-      } else if (data.formid == "bookmarkForm") {
-        if (data.isEditing) {
-          this.updateCollectionItem(obj);
-        } else {
-          this.addCollectionItem(obj);
-        }
-      } else {
-        if (id == "catForm") {
-          this.addTaxonomyItem(obj, "cat");
-        } else if (id == "tagForm") {
-          this.addTaxonomyItem(obj, "tag");
-        }
-      }
-    });
+    this.enableCloseModal();
+    this.enableFireModal();
+    this.enableSendData();
   },
   methods: {
+    // enable event handlers
+    enableCloseModal() {
+      this.$root.$on("closeModal", () => {
+        this.toggleModal();
+      });
+    },
+    enableFireModal() {
+      this.$root.$on("fireModal", data => {
+        this.target = data.target;
+        this.$store.dispatch("changeFormMode", { mode: this.target });
+        if (data.isEditing == true) {
+          this.isEditing = true;
+          // edit single bookmark item
+
+          if (data.taxUuid) {
+            this.taxUuid = data.taxUuid;
+          }
+        } else {
+          this.isEditing = false;
+          // this.$store.dispatch("setModalFormData", {});
+        }
+
+        this.toggleModal();
+      });
+    },
+
+    enableSendData() {
+      this.$root.$on("sendData", data => {
+        const id = data.formid;
+        const obj = data.json;
+
+        if (data.formid == "loginForm") {
+          this.loginWithEmailAndPassword(obj);
+        } else if (data.formid == "registerForm") {
+          this.registerWithEmailAndPassword(obj);
+        } else if (data.formid == "bookmarkForm") {
+          if (data.isEditing) {
+            this.updateCollectionItem(obj);
+          } else {
+            this.addCollectionItem(obj);
+          }
+        } else {
+          if (id == "catForm") {
+            this.addTaxonomyItem(obj, "cat");
+          } else if (id == "tagForm") {
+            this.addTaxonomyItem(obj, "tag");
+          }
+        }
+      });
+    },
+
     //form and modals
     toggleModal() {
       const modal = this.$refs["modal-login"];

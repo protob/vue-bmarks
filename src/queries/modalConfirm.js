@@ -66,17 +66,6 @@ const DELETE_TAG = gql`
   }
 `;
 
-// const DELETE_BOOKMARKS_TAGS = gql`
-//   mutation DeleteTags($objects: [bookmarks_tags_insert_input!]!) {
-//     delete_bookmarks_tags(where: { bookmarkUuid: { _nin: $objects } }) {
-//       affected_rows
-//       returning {
-//         tagUuid
-//       }
-//     }
-//   }
-// `;
-
 const GET_BOOKMARKS_BY_CAT = gql`
   query getBookmarksByCat($uuid: uuid!) {
     cats(where: { uuid: { _eq: $uuid } }) {

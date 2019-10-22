@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <router-view />
-
     <modal-confirm />
     <modal-form />
   </div>
@@ -10,8 +9,6 @@
 <style lang="scss"></style>
 
 <script>
-// src/App.vue
-
 import modalConfirm from "@/components/organisms/modalConfirm.vue";
 import modalForm from "@/components/organisms/modalForm.vue";
 import * as jwt_decode from "jwt-decode";
@@ -77,7 +74,6 @@ export default {
       if (this.token) {
         const obj = jwt_decode(this.token);
         const userUuid = uuidv4();
-
         this.$store.dispatch("changeCurrentUserUuid", userUuid);
         this.$store.dispatch("changeCurrentUserId", obj.sub);
         localStorage.userUuid = userUuid;

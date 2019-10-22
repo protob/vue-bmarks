@@ -13,19 +13,6 @@ export default {
   components: {
     listingCats,
     listingTags
-  },
-  props: [],
-  data() {
-    return {};
-  },
-  computed: {},
-
-  mounted() {},
-  methods: {}
+  }
 };
 </script>
-
-<style scoped lang="scss">
-.sidebar {
-}
-</style>

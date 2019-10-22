@@ -10,15 +10,7 @@
 
 <script>
 export default {
-  name: "MainContent",
-  components: {},
-  props: [],
-  data() {
-    return {};
-  },
-  computed: {},
-  mounted() {},
-  methods: {}
+  name: "MainContent"
 };
 </script>
 

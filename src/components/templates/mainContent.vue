@@ -20,14 +20,7 @@ export default {
   components: {
     sidebar,
     listingCollection
-  },
-  props: [],
-  data() {
-    return {};
-  },
-  computed: {},
-  mounted() {},
-  methods: {}
+  }
 };
 </script>
 

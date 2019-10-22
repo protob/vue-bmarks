@@ -46,8 +46,6 @@ export default {
     };
   },
 
-  computed: {},
-  mounted() {},
   methods: {
     filterItems() {
       this.$root.$emit("filterItemsByPhrase", { phrase: this.filterPhrase });

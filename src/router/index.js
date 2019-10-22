@@ -38,13 +38,13 @@ export const router = new Router({
       name: "register",
       component: Register
     },
-    // redirect to homefor others
+    // redirect to home
     { path: "*", redirect: "/" }
   ]
 });
 
 router.beforeEach((to, from, next) => {
-  // redirect to login page if not logged in and trying to access a restricted page
+  // redirect to login
   const publicPages = ["/", "/login", "/register", "/callback"];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = store.getters["account/getUser"];

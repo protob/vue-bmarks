@@ -36,13 +36,8 @@
 
 <script>
 import btn from "@/components/atoms/btn.vue";
-import gql from "graphql-tag";
-import {
-  DELETE_BOOKMARK,
-  DELETE_CAT,
-  DELETE_TAG,
-  GET_BOOKMARKS_BY_CAT
-} from "@/queries/modalConfirm.js";
+import DeleteService from "@/services/delete.service.js";
+
 export default {
   components: {
     btn
@@ -50,7 +45,6 @@ export default {
   data() {
     return {
       itemId: null,
-
       itemData: {
         target: "",
         taxName: "",
@@ -60,181 +54,19 @@ export default {
   },
   mounted() {
     this.$root.$on("fireConfirm", data => {
-      // console.log(data);
       this.toggleModal();
       this.itemData = data;
     });
   },
 
   methods: {
-    prepareDeleteBookmarksTagsQuery(arr) {
-      const queryString = `mutation DeleteTags{delete_bookmarks_tags(where: {bookmarkUuid:{
-				_in: ${JSON.stringify(arr)}
-			}}) {
-						affected_rows
-							returning {
-								tagUuid
-							}
-						}
-					}
-					`;
-
-      const query = gql`
-        ${queryString}
-      `;
-
-      return query;
-    },
-
-    generateBookmarkTagMap() {
-      const uuid = this.itemData.taxUuid;
-      this.$apollo
-        .query({
-          query: GET_BOOKMARKS_BY_CAT,
-          variables: {
-            uuid
-          }
-        })
-        .then(result => {
-          const cats = result.data.cats;
-
-          const catItems = cats[0].bookmarks; // currently single cat filter is supported
-          const formattedItems = catItems.map(el => {
-            return { bookmark: el };
-          });
-          let tempItem = {
-            name: this.itemData.name,
-            bookmarks_cats: formattedItems
-          };
-
-          let o = {};
-          tempItem.bookmarks_cats.forEach(item => {
-            const tags = item.bookmark.bookmarks_tags;
-            if (tags) {
-              const arr = tags.map(el => {
-                return {
-                  uuid: el.tag.uuid
-                };
-              });
-              if (arr.length) {
-                o[item.bookmark.uuid] = arr;
-              }
-            }
-          });
-
-          this.deleteBookmarks(o);
-        });
-    },
-    deleteCat() {
-      const uuid = this.itemData.taxUuid;
-      const MUTATION = this.itemData.target == "cat" ? DELETE_CAT : DELETE_TAG;
-      const taxQuery = this.itemData.target == "cat" ? "getCats" : "getTags";
-
-      this.$apollo
-        .mutate({
-          mutation: MUTATION,
-          variables: {
-            uuid
-          },
-          refetchQueries: [taxQuery, "getAllBookmarksByCat"]
-        })
-
-        .then(data => {
-          // eslint-disable-next-line no-console
-          console.log(data);
-        })
-        .catch(error => {
-          // eslint-disable-next-line no-console
-          console.log(error);
-        });
-
-      this.toggleModal();
-    },
-    deleteBookmarks(bookmarkTagsMap) {
-      // const uuid = this.itemData.taxUuid;
-      const bookmarksUuids = Object.keys(bookmarkTagsMap);
-
-      const taxQuery = this.itemData.target == "cat" ? "getCats" : "getTags";
-
-      const DELETE_BOOKMARKS_TAGS = this.prepareDeleteBookmarksTagsQuery(
-        bookmarksUuids
-      );
-
-      this.$apollo
-        .mutate({
-          mutation: DELETE_BOOKMARKS_TAGS,
-
-          refetchQueries: [taxQuery, "getAllBookmarksByCat"]
-        })
-
-        .then(output => {
-          // eslint-disable-next-line no-console
-          console.log(output.data);
-          this.deleteCat();
-        })
-        .catch(error => {
-          // eslint-disable-next-line no-console
-          console.log(error);
-        });
-    },
     deleteItem() {
-      const uuid = this.itemData.taxUuid;
-
-      if (this.itemData.target == "bookmark") {
-        this.$apollo
-          .mutate({
-            mutation: DELETE_BOOKMARK,
-            variables: {
-              uuid
-            },
-            refetchQueries: ["getCats", "getTags", "getAllBookmarksByCat"]
-          })
-
-          .then(data => {
-            // eslint-disable-next-line no-console
-            console.log(data);
-          })
-          .catch(error => {
-            // eslint-disable-next-line no-console
-            console.log(error);
-          });
-        this.toggleModal();
-      } else {
-        //TAG tags
-        const MUTATION =
-          this.itemData.target == "cat" ? DELETE_CAT : DELETE_TAG;
-        const taxQuery = this.itemData.target == "cat" ? "getCats" : "getTags";
-
-        if (this.itemData.target == "cat") {
-          // CAT MUTATION
-          this.generateBookmarkTagMap();
-        } else {
-          //TAG MUTAITON
-          this.$apollo
-            .mutate({
-              mutation: MUTATION,
-              variables: {
-                uuid
-              },
-              refetchQueries: [taxQuery, "getAllBookmarksByCat"]
-            })
-
-            .then(data => {
-              // eslint-disable-next-line no-console
-              console.log(data);
-            })
-            .catch(error => {
-              // eslint-disable-next-line no-console
-              console.log(error);
-            });
-          this.toggleModal();
-        }
-      }
+      DeleteService.deleteItem(this.itemData, this.$apollo);
+      this.toggleModal();
     },
 
     toggleModal() {
       const modal = this.$refs["modal-del-item"];
-
       modal.classList.toggle("opacity-0");
       modal.classList.toggle("pointer-events-none");
     }

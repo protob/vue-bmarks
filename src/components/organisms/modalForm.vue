@@ -19,12 +19,7 @@
         </div>
 
         <div class=" px-8 pt-6 pb-8 mb-4 ">
-          <LoginForm v-if="target == 'login'" :formid="'loginForm'" />
-          <RegisterForm
-            v-else-if="target == 'register'"
-            :formid="'registerForm'"
-          />
-          <CatForm v-else-if="target == 'cat'" :formid="'catForm'" />
+          <CatForm v-if="target == 'cat'" :formid="'catForm'" />
           <TagForm v-else-if="target == 'tag'" :formid="'tagForm'" />
           <BookmarkForm v-else :formid="'bookmarkForm'" />
         </div>
@@ -37,24 +32,12 @@
 import FormBuilder from "@/builders/FormBuilder";
 import FormDirector from "@/builders/FormDirector";
 import { mapGetters } from "vuex";
-const slugify = require("slugify");
-const uuidv4 = require("uuid/v4");
-
-import {
-  ADD_CAT,
-  ADD_TAG,
-  ADD_TAGS,
-  ADD_BOOKMARK,
-  ADD_BOOKMARK_DEEP,
-  GET_TAGS_BY_USERID,
-  UPDATE_BOOKMARK_SHALLOW
-} from "@/queries/modalFrom.js";
+import CreateService from "@/services/create.service.js";
+import UpdateService from "@/services/update.service.js";
 
 export default {
   name: "AddTagForm",
   components: {
-    LoginForm: new FormDirector(new FormBuilder()).makeLoginForm(),
-    RegisterForm: new FormDirector(new FormBuilder()).makeRegisterForm(),
     CatForm: new FormDirector(new FormBuilder()).makeCatForm(),
     TagForm: new FormDirector(new FormBuilder()).makeTagForm(),
     BookmarkForm: new FormDirector(new FormBuilder()).makeBookmarkForm()
@@ -89,18 +72,8 @@ export default {
       this.$root.$on("fireModal", data => {
         this.target = data.target;
         this.$store.dispatch("changeFormMode", { mode: this.target });
-        if (data.isEditing == true) {
-          this.isEditing = true;
-          // edit single bookmark item
-
-          if (data.taxUuid) {
-            this.taxUuid = data.taxUuid;
-          }
-        } else {
-          this.isEditing = false;
-          // this.$store.dispatch("setModalFormData", {});
-        }
-
+        this.isEditing = data.isEditing;
+        data.taxUuid ? (this.taxUuid = data.taxUuid) : (this.taxUuid = null);
         this.toggleModal();
       });
     },
@@ -110,337 +83,71 @@ export default {
         const id = data.formid;
         const obj = data.json;
 
-        if (data.formid == "loginForm") {
-          this.loginWithEmailAndPassword(obj);
-        } else if (data.formid == "registerForm") {
-          this.registerWithEmailAndPassword(obj);
-        } else if (data.formid == "bookmarkForm") {
-          if (data.isEditing) {
-            this.updateCollectionItem(obj);
-          } else {
-            this.addCollectionItem(obj);
-          }
+        if (data.formid == "bookmarkForm") {
+          data.isEditing
+            ? this.updateCollectionItem(obj)
+            : this.addCollectionItemAndMaybeTags(obj);
         } else {
-          if (id == "catForm") {
-            this.addTaxonomyItem(obj, "cat");
-          } else if (id == "tagForm") {
-            this.addTaxonomyItem(obj, "tag");
-          }
+          id == "catForm"
+            ? this.addTaxonomyItem(obj, "cat")
+            : this.addTaxonomyItem(obj, "tag");
         }
       });
     },
 
+    submitForm() {
+      this.isEditing ? this.updatedCat() : this.addCat();
+    },
     //form and modals
     toggleModal() {
       const modal = this.$refs["modal-login"];
       modal.classList.toggle("opacity-0");
       modal.classList.toggle("pointer-events-none");
     },
-    submitForm() {
-      if (this.isEditing) {
-        this.updatedCat();
-      } else {
-        this.addCat();
-      }
-    },
 
-    // login
-    loginWithEmailAndPassword(obj) {
-      this.$store.dispatch("loginWithEmailAndPassword", obj);
-      return obj;
-    },
-    registerWithEmailAndPassword(obj) {
-      return obj;
-    },
-
-    // ADD
+    //----------
 
     addTaxonomyItem(obj, target) {
-      const MUTATION = target == "cat" ? ADD_CAT : ADD_TAG;
-      const query = target == "cat" ? "getCats" : "getTags";
-      const name = obj.name;
-      const userUuid = this.getCurrentUserUuid;
-      const slug = slugify(name);
-      const uuid = obj.uuid ? obj.uuid.trim() : uuidv4();
-      const userId = this.getCurrentUserId;
+      const userUuid = this.getCurrentUserUuid,
+        userId = this.getCurrentUserId;
 
-      const data = {
-        uuid,
-        name,
-        slug,
+      CreateService.addTaxonomyItem(
+        this.$apollo,
+        obj,
+        target,
         userUuid,
         userId
-      };
-
-      this.$apollo
-        .mutate({
-          mutation: MUTATION,
-          variables: data,
-          refetchQueries: [query]
-        })
-
-        .then(data => {
-          // eslint-disable-next-line no-console
-          console.log(data);
-        })
-        .catch(error => {
-          // eslint-disable-next-line no-console
-          console.log(error);
-        });
+      );
       this.toggleModal();
-
       this.$store.dispatch("setModalFormData", {});
     },
-    addCollectionItem(obj) {
-      let tags = !obj.tags ? [] : obj.tags;
-      if (typeof obj.tags == "object") {
-        tags = JSON.parse(JSON.stringify(obj.tags));
-      } else {
-        tags = obj.tags.trim().split(",");
-      }
-
-      const userId = this.userId;
-      const bookmarkObj = {
-        bookmarkUuid: uuidv4(),
-        userUuid: this.getCurrentUserUuid,
-        userId: userId,
-        url: obj.url,
-        slug: slugify(obj.name),
-        name: obj.name,
-        desc: obj.desc,
-        tags: tags.filter(n => n), // remove empty strings
-        // catUuid: this.taxUuid
-        catUuid: obj.catUuid
-      };
-
-      if (tags.length > 0) {
-        const tagsToInsert = bookmarkObj.tags.map(el => {
-          return {
-            name: el,
-            slug: slugify(el),
-            userId: this.userId,
-            userUuid: this.getCurrentUserUuid
-          };
-        });
-
-        this.insertTags(tagsToInsert, bookmarkObj);
-      } else {
-        this.insertBookmark(bookmarkObj, []);
-      }
-
-      this.toggleModal(bookmarkObj);
+    addCollectionItemAndMaybeTags(obj) {
+      const userUuid = this.getCurrentUserUuid,
+        userId = this.getCurrentUserId;
+      CreateService.addCollectionItemAndMaybeTags(
+        this.$apollo,
+        obj,
+        userId,
+        userUuid
+      );
+      this.toggleModal();
     },
-    // INSERT
-
-    insertTags(tagsToInsert, bookmarkObj) {
-      this.$apollo
-        .mutate({
-          mutation: ADD_TAGS,
-          variables: {
-            objects: tagsToInsert
-          },
-          refetchQueries: ["getAllBookmarksByCat", "getTags"]
-        })
-
-        .then(resp => {
-          const respArr = resp.data.insert_tags.returning;
-          const tagsBookmarksMap = respArr.map(item => {
-            return {
-              bookmarkUuid: bookmarkObj.bookmarkUuid,
-              tagUuid: item.uuid
-            };
-          });
-
-          bookmarkObj.tags = tagsBookmarksMap;
-          this.insertBookmark(bookmarkObj);
-        })
-        .catch(error => {
-          // eslint-disable-next-line no-console
-          console.log(error);
-        });
-    },
-
-    insertBookmark(bookmarkObj) {
-      this.$apollo
-        .mutate({
-          mutation: ADD_BOOKMARK,
-          variables: bookmarkObj,
-          refetchQueries: ["getAllBookmarksByCat"]
-        })
-        .then(data => {
-          // eslint-disable-next-line no-console
-          console.log(data);
-        })
-        .catch(error => {
-          // eslint-disable-next-line no-console
-          console.log(error);
-        });
-    },
-
-    // prepare
 
     prepareTagsBeforeSend(itemsObj, bookmarkObj) {
-      const userId = this.getCurrentUserId;
-      const itemsObj2 = itemsObj.filter(
-        (item, index, self) =>
-          index === self.findIndex(elem => elem.slug === item.slug)
-      ); // only unique tag slugs
-
-      const slugsArr = itemsObj2.map(item => item.slug);
-
-      this.$apollo
-        .query({
-          query: GET_TAGS_BY_USERID,
-          variables: {
-            userId: userId,
-            objects: [...slugsArr]
-          },
-          fetchPolicy: "no-cache",
-          refetchQueries: ["getAllBookmarksByCat", "getTags"]
-        })
-        .then(result => {
-          const data = result.data.tags;
-
-          const dataToSend = itemsObj2;
-
-          let updatedData = dataToSend;
-          if (data.length) {
-            const res = data.filter(n =>
-              dataToSend.some(n2 => n.slug == n2.slug)
-            );
-            const responseObj = Object.assign(
-              {},
-              ...res.map(item => ({ [item.slug]: item }))
-            );
-
-            updatedData = dataToSend.map(item => ({
-              ...item,
-              // uuid: responseObj[item.slug].uuid
-
-              uuid: responseObj[item.slug]
-                ? responseObj[item.slug].uuid
-                : uuidv4()
-            }));
-          } else {
-            updatedData = dataToSend.map(item => ({
-              ...item,
-              uuid: uuidv4()
-            }));
-          }
-
-          this.updateTags(updatedData, bookmarkObj);
-        });
+      UpdateService.prepareTagsBeforeSend(itemsObj, bookmarkObj);
     },
-
-    //UPDATE
     updateItemDeep(bookmarkObj) {
-      this.$apollo
-        .mutate({
-          mutation: ADD_BOOKMARK_DEEP,
-          variables: bookmarkObj,
-          refetchQueries: ["getAllBookmarksByCat"]
-        })
-        .then(data => {
-          // eslint-disable-next-line no-console
-          console.log(data);
-        })
-        .catch(error => {
-          // eslint-disable-next-line no-console
-          console.log(error);
-        });
+      UpdateService.updateItemDeep(bookmarkObj);
     },
-
     updateCollectionItem(obj) {
-      let tags = !obj.tags ? [] : obj.tags;
-      if (typeof obj.tags == "object") {
-        tags = JSON.parse(JSON.stringify(obj.tags));
-      } else {
-        tags = obj.tags.trim().split(",");
-      }
-
-      const userId = this.getCurrentUserId;
-
-      const bookmarkObj = {
-        bookmarkUuid: obj.uuid,
-        userUuid: this.getCurrentUserUuid,
-        userId: userId,
-        url: obj.url,
-        slug: slugify(obj.name),
-        name: obj.name,
-        desc: obj.desc,
-        catUuid: obj.catUuid
-        // tags: tags .filter(n => n) // remove empty strings
-      };
-
-      this.$apollo
-        .mutate({
-          mutation: UPDATE_BOOKMARK_SHALLOW,
-          variables: bookmarkObj,
-          refetchQueries: ["getAllBookmarksByCat"]
-        })
-        .then(data => {
-          // eslint-disable-next-line no-console
-          console.log(data);
-        })
-        .catch(error => {
-          // eslint-disable-next-line no-console
-          console.log(error);
-        });
-
-      if (tags.length > 0) {
-        const tagsToInsert = tags.map(el => {
-          return {
-            name: el,
-            slug: slugify(el),
-            userId: this.userId,
-            userUuid: this.getCurrentUserUuid
-          };
-        });
-
-        this.updateTagsStep1(tagsToInsert, bookmarkObj);
-      }
-      this.toggleModal(bookmarkObj);
+      UpdateService.updateCollectionItem(obj);
     },
-
     updateTagsStep1(tagsToInsert, bookmarkObj) {
-      // prevent duplicates
-
-      this.prepareTagsBeforeSend(tagsToInsert, bookmarkObj);
+      UpdateService.updateTagsStep1(tagsToInsert, bookmarkObj);
     },
-
     updateTags(tagsToInsert, bookmarkObj) {
-      this.$apollo
-        .mutate({
-          mutation: ADD_TAGS,
-          variables: {
-            objects: tagsToInsert
-          },
-          refetchQueries: ["getAllBookmarksByCat", "getTags"]
-        })
-
-        .then(resp => {
-          const respArr = resp.data.insert_tags.returning;
-          const tagsBookmarksMap = respArr.map(item => {
-            return {
-              bookmarkUuid: bookmarkObj.bookmarkUuid,
-              tagUuid: item.uuid
-            };
-          });
-
-          bookmarkObj.tags = tagsBookmarksMap;
-
-          this.updateItemDeep(bookmarkObj);
-        })
-        .catch(error => {
-          // eslint-disable-next-line no-console
-          console.log(error);
-        });
+      UpdateService.updateTags(tagsToInsert, bookmarkObj);
     }
   }
 };
 </script>
-
-<style scoped lang="scss">
-.add-cat-form {
-}
-</style>

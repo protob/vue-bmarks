@@ -24,7 +24,7 @@
 <script>
 import btn from "@/components/atoms/btn.vue";
 import taxonamyItem from "@/components/molecules/taxonomyItem.vue";
-import { GET_CATS } from "@/queries/listingTaxonomy.js";
+import { GET_CATS } from "@/queries/readQueries.js";
 
 export default {
   name: "ListingCats",

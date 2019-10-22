@@ -1,4 +1,43 @@
 import gql from "graphql-tag";
+
+// used in update service
+const GET_TAGS_BY_USERID = gql`
+  query getTagsBySLug($userId: String!, $objects: [String!]!) {
+    tags(
+      where: { _and: { userId: { _eq: $userId }, slug: { _in: $objects } } }
+    ) {
+      name
+      slug
+      userUuid
+      userId
+      uuid
+    }
+  }
+`;
+
+//TAXONOMY
+
+const GET_TAGS = gql`
+  query getTags {
+    tags(order_by: { name: asc }) {
+      uuid
+      name
+      slug
+    }
+  }
+`;
+const GET_CATS = gql`
+  query getCats {
+    cats(order_by: { name: asc }) {
+      uuid
+      name
+      slug
+    }
+  }
+`;
+
+// LISTING COLLECTION
+
 const GET_ALL_BOOKMARKS_BY_CAT = gql`
   query getAllBookmarksByCat {
     cats {
@@ -27,7 +66,7 @@ const GET_ALL_BOOKMARKS_BY_CAT = gql`
     }
   }
 `;
-
+// used in delete service
 const GET_BOOKMARKS_BY_CAT = gql`
   query getBookmarksByCat($uuid: uuid!) {
     cats(where: { uuid: { _eq: $uuid } }) {
@@ -116,6 +155,9 @@ const GET_BOOKMARKS_BY_PHRASE = gql`
 `;
 
 export {
+  GET_TAGS_BY_USERID,
+  GET_TAGS,
+  GET_CATS,
   GET_ALL_BOOKMARKS_BY_CAT,
   GET_BOOKMARKS_BY_CAT,
   GET_BOOKMARKS_BY_TAG,

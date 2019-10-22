@@ -95,18 +95,6 @@ export default {
       });
     },
 
-    submitForm() {
-      this.isEditing ? this.updatedCat() : this.addCat();
-    },
-    //form and modals
-    toggleModal() {
-      const modal = this.$refs["modal-login"];
-      modal.classList.toggle("opacity-0");
-      modal.classList.toggle("pointer-events-none");
-    },
-
-    //----------
-
     addTaxonomyItem(obj, target) {
       const userUuid = this.getCurrentUserUuid,
         userId = this.getCurrentUserId;
@@ -132,21 +120,17 @@ export default {
       );
       this.toggleModal();
     },
-
-    prepareTagsBeforeSend(itemsObj, bookmarkObj) {
-      UpdateService.prepareTagsBeforeSend(itemsObj, bookmarkObj);
-    },
-    updateItemDeep(bookmarkObj) {
-      UpdateService.updateItemDeep(bookmarkObj);
-    },
     updateCollectionItem(obj) {
-      UpdateService.updateCollectionItem(obj);
+      const userUuid = this.getCurrentUserUuid,
+        userId = this.getCurrentUserId;
+      UpdateService.updateCollectionItem(this.$apollo, obj, userId, userUuid);
+      this.toggleModal();
     },
-    updateTagsStep1(tagsToInsert, bookmarkObj) {
-      UpdateService.updateTagsStep1(tagsToInsert, bookmarkObj);
-    },
-    updateTags(tagsToInsert, bookmarkObj) {
-      UpdateService.updateTags(tagsToInsert, bookmarkObj);
+    //form and modals
+    toggleModal() {
+      const modal = this.$refs["modal-login"];
+      modal.classList.toggle("opacity-0");
+      modal.classList.toggle("pointer-events-none");
     }
   }
 };

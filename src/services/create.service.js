@@ -7,7 +7,7 @@ import {
   ADD_TAG,
   ADD_TAGS,
   ADD_BOOKMARK
-} from "@/queries/modalFrom.js";
+} from "@/queries/createQueries.js";
 
 const CreateService = {
   // ADD

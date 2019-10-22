@@ -1,11 +1,11 @@
 import gql from "graphql-tag";
 import { log } from "@/utils";
+import { GET_BOOKMARKS_BY_CAT } from "@/queries/readQueries.js";
 import {
   DELETE_BOOKMARK,
   DELETE_CAT,
-  DELETE_TAG,
-  GET_BOOKMARKS_BY_CAT
-} from "@/queries/modalConfirm.js";
+  DELETE_TAG
+} from "@/queries/deleteQueries.js";
 
 const DeleteService = {
   prepareDeleteBookmarksTagsQuery(arr) {

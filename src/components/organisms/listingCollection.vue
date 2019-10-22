@@ -19,7 +19,7 @@ import {
   GET_BOOKMARKS_BY_CAT,
   GET_BOOKMARKS_BY_TAG,
   GET_BOOKMARKS_BY_PHRASE
-} from "@/queries/listingCollection.js";
+} from "@/queries/readQueries.js";
 
 export default {
   name: "ListingCats",

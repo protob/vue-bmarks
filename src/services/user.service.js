@@ -1,4 +1,4 @@
-import { ADD_USER, GET_USER_BY_ID } from "@/queries/user.js";
+import { ADD_USER, GET_USER_BY_ID } from "@/queries/userQueries.js";
 import { log } from "@/utils";
 import * as jwt_decode from "jwt-decode";
 const uuidv4 = require("uuid/v4");

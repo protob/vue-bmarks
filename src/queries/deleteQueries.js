@@ -66,30 +66,4 @@ const DELETE_TAG = gql`
   }
 `;
 
-const GET_BOOKMARKS_BY_CAT = gql`
-  query getBookmarksByCat($uuid: uuid!) {
-    cats(where: { uuid: { _eq: $uuid } }) {
-      name
-      uuid
-      bookmarks {
-        name
-        uuid
-        userUuid
-        url
-        desc
-        updated_at
-        slug
-        bookmarks_tags {
-          tag {
-            uuid
-            name
-            slug
-            uuid
-          }
-        }
-      }
-    }
-  }
-`;
-
-export { DELETE_BOOKMARK, DELETE_CAT, DELETE_TAG, GET_BOOKMARKS_BY_CAT };
+export { DELETE_BOOKMARK, DELETE_CAT, DELETE_TAG };

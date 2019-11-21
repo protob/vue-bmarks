@@ -14,12 +14,11 @@ CREATE TABLE public.bookmarks (
     "userUuid" uuid NOT NULL,
     name text NOT NULL,
     slug text NOT NULL,
-    id text NOT NULL,
-    tags text,
     url text NOT NULL,
     updated_at timestamp with time zone DEFAULT now(),
     "desc" text,
-    "catUuid" uuid
+    "catUuid" uuid,
+    "userId" text
 );
 CREATE TABLE public.bookmarks_cats (
     "bookmarkUuid" uuid NOT NULL,
@@ -31,20 +30,19 @@ CREATE TABLE public.bookmarks_tags (
 );
 CREATE TABLE public.cats (
     uuid uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    id text NOT NULL,
     name text NOT NULL,
     slug text NOT NULL,
-    "bmarksIds" text,
     updated_at timestamp with time zone DEFAULT now(),
-    "userUuid" uuid
+    "userUuid" uuid,
+    "userId" text
 );
 CREATE TABLE public.tags (
     uuid uuid DEFAULT public.gen_random_uuid() NOT NULL,
     name text NOT NULL,
     slug text NOT NULL,
-    id text NOT NULL,
     "userUuid" uuid NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    "userId" text
 );
 CREATE TABLE public.users (
     uuid uuid DEFAULT public.gen_random_uuid() NOT NULL,
@@ -53,7 +51,8 @@ CREATE TABLE public.users (
     email text NOT NULL,
     slug text NOT NULL,
     updated_at timestamp with time zone DEFAULT now(),
-    username text
+    username text,
+    "userId" text NOT NULL
 );
 ALTER TABLE ONLY public.bookmarks_cats
     ADD CONSTRAINT bookmarks_cats_pkey PRIMARY KEY ("bookmarkUuid", "catUuid");

@@ -22,7 +22,8 @@
     "vue": "^2.6.10",
     "vue-apollo": "^3.0.0-beta.28",
     "vue-router": "^3.0.3",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "yorkie": "^2.0.0"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^1.2.0",

@@ -1,0 +1,12 @@
+// Icon Colors
+$icon-colors: (
+  'white': #fff,
+  'black': var(--c-black),
+  'primary': var(--c-primary),
+  'primary-variant': var(--c-primary-variant)
+);
+
+// Convert Hex to RGB
+@function rgbColor($hexColor) {
+  @return #{red($hexColor), green($hexColor), blue($hexColor)};
+}

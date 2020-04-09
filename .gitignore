@@ -102,3 +102,9 @@ docs
 
 yarn.lock
 yarn-error.log
+
+
+src/assets/components
+
+
+git branch new_branch_name $(echo "commit message" | git commit-tree HEAD^{tree})

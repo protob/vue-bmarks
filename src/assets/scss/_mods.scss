@@ -1,43 +1,32 @@
 html {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 *,
 *:before,
 *:after {
-	box-sizing: inherit;
+  box-sizing: inherit;
 }
 
-
-
-@media (max-width: 540px) {
-	.segment-text {
-		padding: 35px 0 20px 0;
-	}
+html,
+body {
+  min-width: 320px;
 }
 
 /*------------------------------------*\
     # Global
 \*------------------------------------*/
+// header,
+// header * {
+//   border: 1px solid red;
+// }
 
-.modal-panel,
-.form-panel {
-	max-width: 480px;
-
-	input[type="text"] {
-		width: 100%;
-	}
+.prt-button {
+  padding-top: var(--button-padding-top, 0.75rem);
+  padding-bottom: var(--button-padding-bottom, 0.75rem);
 }
 
-.form-panel {
-	max-width: 320px;
-
-}
-
-.modal-container {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100vh;
+.prt-tags .prt-button {
+  padding-top: var(--button-padding-top, 0.5rem);
+  padding-bottom: var(--button-padding-bottom, 0.5rem);
 }

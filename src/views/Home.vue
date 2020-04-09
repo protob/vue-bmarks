@@ -1,15 +1,20 @@
 <template>
-  <div class="bg-gray-500 h-full">
-    <top-nav />
-    <main-content />
+  <div class="home">
+    <img class="mx-auto" alt="Vue logo" src="../assets/logo.png" />
+    <HelloWorld msg="Welcome to Your Vue.js App" />
   </div>
 </template>
 
 <script>
-import topNav from "@/components/organisms/topNav.vue";
-import mainContent from "@/components/templates/mainContent.vue";
+// @ is an alias to /src
+import HelloWorld from '@/components/HelloWorld.vue'
+
 export default {
-  name: "Home",
-  components: { mainContent, topNav }
-};
+  name: 'Home',
+  components: {
+    HelloWorld
+  }
+}
 </script>
+
+<style lang="scss"></style>

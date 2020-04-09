@@ -1,0 +1,10 @@
+@mixin centerXY {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// PX to REM - Usage: font-size: rem(37px);
+@function rem($px, $base: $base-font-size) {
+  @return ($px / $base) * 1rem;
+}

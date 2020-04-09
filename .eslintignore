@@ -1,0 +1,13 @@
+util_scripts/**
+util_packages/**
+
+
+*.spec.js
+*.stories.js
+postcss.config.js
+tailwind.config.js
+src/components/global/SchemaForm/**/*
+src/components/icons/**/*
+src/components/**/*.spec.js
+src/components/**/*.stories.js
+src/components/utils/**/*

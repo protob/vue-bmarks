@@ -3,7 +3,7 @@
   <div class="prt-item flex justify-between  flex-wrap">
     <div class="prt-item__panel ">
       <h1 class="prt-item__h">
-        <a href="" target="_blank">name</a>
+        <a href="" target="_blank" class="prt-item__link">{{ title }}</a>
       </h1>
       <p>http://google.pl</p>
       <p>test dec</p>

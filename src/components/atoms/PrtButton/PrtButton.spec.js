@@ -7,7 +7,7 @@ describe('PrtButton.vue', () => {
     expect(component.contains('.prt-button')).toBe(true)
   })
 
-  it('slot renders html', () => {
+  it('renders html in slot', () => {
     const component = shallowMount(PrtButton, {
       slots: {
         default: '<div class="sample-content"></div>'

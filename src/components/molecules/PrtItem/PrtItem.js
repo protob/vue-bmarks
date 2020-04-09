@@ -5,7 +5,7 @@ export default {
   name: 'PrtItem',
   components: { PrtButton, PrtTags, PrtIcon },
   props: {
-    text: {
+    title: {
       type: String,
       default: 'Categories'
     }

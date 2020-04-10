@@ -5,6 +5,14 @@ export default {
   name: 'PrtItem',
   components: { PrtButton, PrtTags, PrtIcon },
   props: {
+    item: {
+      type: Object,
+      required: true,
+      default: () => {
+        return {}
+      }
+    },
+
     title: {
       type: String,
       default: 'Categories'

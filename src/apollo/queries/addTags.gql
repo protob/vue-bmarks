@@ -1,0 +1,12 @@
+mutation upsertTags($objects: [tags_insert_input!]!) {
+  insert_tags(
+    objects: $objects
+    on_conflict: { constraint: tags_pkey, update_columns: updated_at }
+  ) {
+    affected_rows
+    returning {
+      uuid
+      name
+    }
+  }
+}

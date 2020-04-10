@@ -3,12 +3,12 @@
   <div class="prt-item flex justify-between  flex-wrap">
     <div class="prt-item__panel ">
       <h1 class="prt-item__h">
-        <a href="" target="_blank" class="prt-item__link">{{ title }}</a>
+        <a href="" target="_blank" class="prt-item__link">{{ item.name }}</a>
       </h1>
-      <p>http://google.pl</p>
-      <p>test dec</p>
+      <p>{{ item.url }}</p>
+      <p>{{ item.desc }}</p>
       <p>
-        2-04-2020 6:4
+        {{ item.updated_at }}
       </p>
     </div>
 
@@ -22,7 +22,7 @@
     </div>
 
     <div class=" w-full prt-item__tags">
-      <PrtTags />
+      <PrtTags :tags="item.bookmarks_tags" />
     </div>
   </div>
 </template>

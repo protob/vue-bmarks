@@ -1,0 +1,9 @@
+query getTagsBySLug($userId: String!, $objects: [String!]!) {
+  tags(where: { _and: { userId: { _eq: $userId }, slug: { _in: $objects } } }) {
+    name
+    slug
+    userUuid
+    userId
+    uuid
+  }
+}

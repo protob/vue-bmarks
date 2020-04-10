@@ -7,9 +7,10 @@
       <vue-scroll>
         <div class="scrollbar-content">
           <PrtSidebarItem
-            v-for="(item, index) in Array.from(Array(30).keys())"
+            v-for="item in items"
+            :key="item.uuid"
+            :item="item"
             :tax="'cat'"
-            :key="index"
           />
         </div>
       </vue-scroll>

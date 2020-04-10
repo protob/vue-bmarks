@@ -1,0 +1,27 @@
+query getBookmarksByTag($uuid: uuid!) {
+  tags(where: { uuid: { _eq: $uuid } }) {
+    name
+    slug
+    uuid
+    bookmarks_tags {
+      bookmark {
+        desc
+        uuid
+        name
+        slug
+        url
+        desc
+        updated_at
+        uuid
+        bookmarks_tags {
+          tag {
+            updated_at
+            slug
+            name
+            uuid
+          }
+        }
+      }
+    }
+  }
+}

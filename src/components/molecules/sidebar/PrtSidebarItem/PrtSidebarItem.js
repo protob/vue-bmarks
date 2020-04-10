@@ -7,6 +7,12 @@ export default {
     PrtIcon
   },
   props: {
+    item: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
     tax: {
       type: String,
       default: 'cat'

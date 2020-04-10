@@ -1,6 +1,7 @@
 <script src="./PrtTags.js"></script>
 <template>
   <div class="prt-tags flex">
+    {{ tags }}
     <PrtButton
       class="mr-2"
       v-for="(item, index) in Array.from(Array(3).keys())"

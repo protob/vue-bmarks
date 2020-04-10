@@ -16,7 +16,7 @@
 </template>
 <style lang="scss">
 .prt-item-cat-heading {
-  @apply bg-blue-600 flex justify-between p-4;
+  @apply bg-blue-600 flex justify-between px-4 pt-5 pb-4;
 
   &__text {
     @apply text-white py-2 font-bold uppercase;

@@ -1,7 +1,7 @@
 <script src="./PrtCatsListing.js"></script>
 <template>
   <div class="prt-cats-listing">
-    <PrtSidebarHeading />
+    <PrtSidebarHeading :tax="'cat'" />
 
     <div class="prt-tags-listing__items">
       <vue-scroll>

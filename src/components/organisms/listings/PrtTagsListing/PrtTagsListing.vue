@@ -1,7 +1,7 @@
 <script src="./PrtTagsListing.js"></script>
 <template>
   <div class="prt-tags-listing">
-    <PrtSidebarHeading :text="'tags'" />
+    <PrtSidebarHeading :text="'tags'" :tax="'tag'" />
 
     <div class="prt-tags-listing__items">
       <vue-scroll>

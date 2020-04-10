@@ -8,7 +8,7 @@
     <div
       class="prt-sidebar-heading__buttons flex justify-end sm:justify-between xl:justify-end w-1/2 sm:w-full xl:w-1/2 xxl:w-full"
     >
-      <PrtButton class="bg-gray-900 mr-2" @click="openModal('tag')">
+      <PrtButton class="bg-gray-900 mr-2" @click="openModal(tax)">
         <PrtIcon icon="plus" size="15px" color="white"
       /></PrtButton>
       <PrtButton class="bg-gray-900">

@@ -4,7 +4,7 @@
     <PrtModalForm />
     <PrtHeader />
 
-    <main class="app__content flex flex-wrap flex-grow " v-if="getUser()">
+    <main class="app__content flex flex-wrap flex-grow justify-center flex-col">
       <div class="w-full sm:w-3/8 lg:w-2/8" v-if="getUser()">
         <PrtSidebar />
       </div>

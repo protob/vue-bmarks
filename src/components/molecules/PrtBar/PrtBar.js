@@ -1,3 +1,9 @@
 export default {
-  name: 'PrtBar'
+  name: 'PrtBar',
+  props: {
+    title: {
+      type: String,
+      default: 'title'
+    }
+  }
 }

@@ -7,6 +7,10 @@ export default {
     PrtIcon
   },
   props: {
+    tax: {
+      type: String,
+      default: null
+    },
     text: {
       type: String,
       default: null

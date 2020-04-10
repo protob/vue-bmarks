@@ -3,7 +3,7 @@
   <div class="prt-modal-form">
     <PrtModal
       :visible="isModalVisible"
-      :title="'title'"
+      :title="title"
       :overlay="true"
       :cross="true"
       :persistent="false"

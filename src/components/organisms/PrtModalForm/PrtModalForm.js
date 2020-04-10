@@ -14,11 +14,18 @@ export default {
     PrtLoginForm
   },
   mounted() {
-    this.currentModalForm = 'PrtTagForm'
+    this.currentModalForm = ''
     this.enableFireModal()
+  },
+  computed: {
+    title() {
+      const title = this.target === 'cat' ? 'Add Category' : 'Add Tag'
+      return title
+    }
   },
   data: () => {
     return {
+      target: null,
       isModalVisible: false,
       currentModalForm: 'PrtTagForm'
     }
@@ -36,6 +43,8 @@ export default {
     enableFireModal() {
       this.$root.$on('fireModal', data => {
         this.target = data.target
+        this.currentModalForm =
+          this.target === 'cat' ? 'PrtCatForm' : 'PrtTagForm'
 
         this.toggleModal()
       })

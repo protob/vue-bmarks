@@ -1,0 +1,28 @@
+query getBookmarksByPhrase($phrase: String!) {
+  bookmarks(
+    where: {
+      _or: [
+        { name: { _ilike: $phrase } }
+        { desc: { _ilike: $phrase } }
+        { url: { _like: $phrase } }
+      ]
+    }
+  ) {
+    uuid
+    name
+    slug
+    updated_at
+    url
+    desc
+    user {
+      uuid
+    }
+    bookmarks_tags {
+      tag {
+        uuid
+        name
+        slug
+      }
+    }
+  }
+}

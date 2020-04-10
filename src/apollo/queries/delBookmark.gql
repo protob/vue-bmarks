@@ -1,0 +1,20 @@
+mutation DeleteBookmarks($uuid: uuid!) {
+  delete_bookmarks_cats(where: { bookmarkUuid: { _eq: $uuid } }) {
+    affected_rows
+    returning {
+      catUuid
+    }
+  }
+  delete_bookmarks_tags(where: { bookmarkUuid: { _eq: $uuid } }) {
+    affected_rows
+    returning {
+      tagUuid
+    }
+  }
+  delete_bookmarks(where: { uuid: { _eq: $uuid } }) {
+    affected_rows
+    returning {
+      uuid
+    }
+  }
+}

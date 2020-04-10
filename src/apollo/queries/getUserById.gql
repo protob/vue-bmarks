@@ -1,0 +1,6 @@
+query getUserById($userId: String!) {
+  users(where: { userId: { _eq: $userId } }) {
+    name
+    uuid
+  }
+}

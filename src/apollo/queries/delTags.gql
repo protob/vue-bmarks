@@ -1,0 +1,15 @@
+mutation DeleteTags($uuid: uuid!) {
+  delete_bookmarks_tags(where: { tagUuid: { _eq: $uuid } }) {
+    affected_rows
+    returning {
+      tagUuid
+    }
+  }
+
+  delete_tags(where: { uuid: { _eq: $uuid } }) {
+    affected_rows
+    returning {
+      uuid
+    }
+  }
+}

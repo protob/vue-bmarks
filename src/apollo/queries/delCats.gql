@@ -1,0 +1,22 @@
+mutation DeleteCats($uuid: uuid!) {
+  delete_bookmarks_cats(where: { catUuid: { _eq: $uuid } }) {
+    affected_rows
+    returning {
+      catUuid
+    }
+  }
+
+  delete_bookmarks(where: { catUuid: { _eq: $uuid } }) {
+    affected_rows
+    returning {
+      catUuid
+    }
+  }
+
+  delete_cats(where: { uuid: { _eq: $uuid } }) {
+    affected_rows
+    returning {
+      uuid
+    }
+  }
+}

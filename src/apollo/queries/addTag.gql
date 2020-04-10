@@ -1,0 +1,24 @@
+mutation AddTag(
+  $name: String!
+  $slug: String!
+  $userId: String!
+  $userUuid: uuid!
+  $uuid: uuid!
+) {
+  insert_tags(
+    objects: [
+      {
+        uuid: $uuid
+        name: $name
+        slug: $slug
+        userUuid: $userUuid
+        userId: $userId
+      }
+    ]
+    on_conflict: { constraint: tags_pkey, update_columns: [name, slug] }
+  ) {
+    returning {
+      uuid
+    }
+  }
+}

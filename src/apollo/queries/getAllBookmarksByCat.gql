@@ -1,0 +1,26 @@
+query getAllBookmarksByCat {
+  cats {
+    name
+    uuid
+    bookmarks_cats {
+      bookmark {
+        uuid
+        name
+        slug
+        desc
+        updated_at
+        url
+        user {
+          uuid
+        }
+        bookmarks_tags {
+          tag {
+            uuid
+            name
+            slug
+          }
+        }
+      }
+    }
+  }
+}

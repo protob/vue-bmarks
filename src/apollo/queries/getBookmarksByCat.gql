@@ -1,0 +1,23 @@
+query getBookmarksByCat($uuid: uuid!) {
+  cats(where: { uuid: { _eq: $uuid } }) {
+    name
+    uuid
+    bookmarks {
+      name
+      uuid
+      userUuid
+      url
+      desc
+      updated_at
+      slug
+      bookmarks_tags {
+        tag {
+          uuid
+          name
+          slug
+          uuid
+        }
+      }
+    }
+  }
+}

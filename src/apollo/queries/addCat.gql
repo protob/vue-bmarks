@@ -1,0 +1,24 @@
+mutation AddCat(
+  $name: String!
+  $slug: String!
+  $userUuid: uuid!
+  $userId: String!
+  $uuid: uuid!
+) {
+  insert_cats(
+    objects: [
+      {
+        uuid: $uuid
+        name: $name
+        slug: $slug
+        userUuid: $userUuid
+        userId: $userId
+      }
+    ]
+    on_conflict: { constraint: cats_pkey, update_columns: [name, slug] }
+  ) {
+    returning {
+      uuid
+    }
+  }
+}

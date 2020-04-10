@@ -9,8 +9,6 @@
   .prt-button {
     --button-padding-top: 0.7rem;
     --button-padding-bottom: 0.7rem;
-
-    // --button-font-size: 0.875rem;
   }
 }
 </style>

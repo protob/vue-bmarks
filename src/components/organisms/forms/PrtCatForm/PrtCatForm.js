@@ -25,5 +25,30 @@ export default {
     schema() {
       return FORM_SCHEMA
     }
+  },
+  methods: {
+    resetData(forceUpdate = true) {
+      Object.keys(this.data).forEach(key => {
+        this.data[key] = ''
+      })
+
+      if (forceUpdate) {
+        this.$forceUpdate()
+      }
+    },
+    submit() {
+      let data = {
+        uuid: this.data.uuid,
+        name: this.data.name
+      }
+
+      this.$root.$emit('sendData', {
+        json: data,
+        formId: 'catForm',
+        isEditing: false
+      })
+      this.resetData()
+      this.success = true
+    }
   }
 }

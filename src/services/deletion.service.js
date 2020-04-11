@@ -6,10 +6,10 @@ import { log } from '@/utils'
 //   DELETE_CAT,
 //   DELETE_TAG
 // } from '@/queries/deleteQueries.js'
-
-import deleteBookmark from '@/apollo/queries/deleteBookmark.gql'
-import deleteCat from '@/apollo/queries/deleteCat.gql'
-import deleteTag from '@/apollo/queries/deleteTag.gql'
+import gql from 'graphql-tag'
+import deleteBookmark from '@/apollo/queries/delBookmark.gql'
+import deleteCat from '@/apollo/queries/delCats.gql'
+import deleteTag from '@/apollo/queries/delTags.gql'
 import getBookmarksByCat from '@/apollo/queries/getBookmarksByCat.gql'
 const DeleteService = {
   prepareDeleteBookmarksTagsQuery(arr) {
@@ -24,11 +24,11 @@ const DeleteService = {
 					}
 					`
 
-    // const query = gql`
-    //   ${queryString}
-    // `
+    const query = gql`
+      ${queryString}
+    `
 
-    return queryString
+    return query
   },
 
   async generateBookmarkTagMap(itemData, apollo) {
@@ -87,7 +87,7 @@ const DeleteService = {
       bookmarksUuids
     )
 
-    const { data, error } = await this.$apollo.mutate({
+    const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
       mutation: DELETE_BOOKMARKS_TAGS,
       refetchQueries: ['getTags', 'getAllBookmarksByCat']
@@ -114,7 +114,7 @@ const DeleteService = {
     log(error ? error : data)
   },
 
-  async deleteSingleTag2(uuid, apollo) {
+  async deleteSingleTag(uuid, apollo) {
     const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
       mutation: deleteTag,

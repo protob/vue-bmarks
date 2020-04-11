@@ -54,7 +54,7 @@ const CreateService = {
   addCollectionItemAndMaybeTags(apollo, obj, userId, userUuid) {
     let tags = !obj.tags ? [] : obj.tags
     tags = this.normalizeTags(tags)
-
+    // console.log('nanan', obj)
     const bookmarkObj = {
       bookmarkUuid: uuidv4(),
       userUuid: userUuid,

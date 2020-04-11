@@ -24,11 +24,23 @@ export default {
   computed: {
     ...mapGetters(['getCurrentUserUuid', 'getCurrentUserId']),
     title() {
-      const title = this.target === 'cat' ? 'Add Category' : 'Add Tag'
+      const title =
+        this.target === 'cat'
+          ? 'Add Category'
+          : this.target == 'item'
+          ? 'Add Item'
+          : 'Add Tag'
       return title
     },
     currentProperties: function() {
-      return { tax: this.target === 'cat' ? 'cat' : 'tag' }
+      return {
+        tax:
+          this.target === 'cat'
+            ? 'cat'
+            : this.target === 'item'
+            ? 'item'
+            : 'tag'
+      }
     }
   },
   data: () => {
@@ -59,6 +71,7 @@ export default {
     addCollectionItemAndMaybeTags(obj) {
       const userUuid = this.getCurrentUserUuid,
         userId = this.getCurrentUserId
+
       CreateService.addCollectionItemAndMaybeTags(
         this.$apollo,
         obj,
@@ -104,7 +117,9 @@ export default {
         this.target = data.target
         //this.currentModalForm =
         // this.target === 'cat' ? 'PrtCatForm' : 'PrtTagForm'
-        this.currentModalForm = 'PrtTaxForm'
+
+        this.currentModalForm =
+          this.target === 'item' ? 'PrtItemForm' : 'PrtTaxForm'
         this.toggleModal()
       })
     }

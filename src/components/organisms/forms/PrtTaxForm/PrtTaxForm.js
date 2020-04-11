@@ -53,7 +53,7 @@ export default {
 
       this.$root.$emit('sendData', {
         dataObj,
-        formId: this.tax === 'cat' ? 'catForm' : 'tag',
+        formId: this.tax === 'cat' ? 'catForm' : 'tagForm',
         isEditing: false
       })
       this.resetData()

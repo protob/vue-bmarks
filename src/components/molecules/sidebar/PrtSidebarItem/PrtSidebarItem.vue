@@ -9,7 +9,14 @@
       <PrtButton
         v-show="tax != 'tag'"
         class="ml-2 bg-gray-600"
-        @click="openModal('tag')"
+        @click="
+          openModal(
+            'item',
+            item.uuid,
+            { isBookmark: true, taxName: item.name },
+            false
+          )
+        "
       >
         <PrtIcon icon="plus" size="12px" color="white"
       /></PrtButton>

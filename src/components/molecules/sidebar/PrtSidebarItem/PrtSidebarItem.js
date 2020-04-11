@@ -19,9 +19,49 @@ export default {
     }
   },
   methods: {
-    openModal(target) {
-      this.$root.$emit('fireModal', { target })
+    openModal(target, taxUuid, bookmark = null, isEditing = false) {
+      // ediging exsiting bookmark
+      if (bookmark) {
+        if (isEditing) {
+          const tagsArr = bookmark.bookmarks_tags.map(elem => {
+            return {
+              uuid: elem.tag.uuid,
+              name: elem.tag.name
+            }
+          })
+
+          this.$store.dispatch('setModalFormData', {
+            target,
+            taxUuid,
+            taxName: bookmark.name,
+            desc: bookmark.desc,
+            slug: bookmark.slug,
+            url: bookmark.url,
+            tags: tagsArr,
+            catUuid: taxUuid,
+            isBookmark: true,
+            isEditing
+          })
+        } else {
+          const data = {
+            target,
+            taxUuid,
+            taxName: bookmark.taxName,
+            isEditing: false,
+            catUuid: taxUuid,
+            isBookmark: true
+          }
+
+          this.$store.dispatch('setModalFormData', data)
+        }
+      }
+
+      this.$root.$emit('fireModal', { target, taxUuid, bookmark, isEditing })
     }
+
+    // openModal(target) {
+    //   this.$root.$emit('fireModal', { target })
+    // }
     // showAllTags() {
     //   this.$root.$emit('showAllTags')
     // },

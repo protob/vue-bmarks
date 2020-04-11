@@ -39,7 +39,10 @@ const CreateService = {
       userUuid,
       userId
     }
-    const { dataOutput, error } = await this.$apollo.mutate({
+
+    // console.log(data)
+
+    const { dataOutput, error } = await apollo.mutate({
       $loadingKey: 'loading',
       mutation: MUTATION,
       variables: data,
@@ -87,7 +90,7 @@ const CreateService = {
 
   // INSERT
   async insertTags(apollo, tagsToInsert, bookmarkObj) {
-    const { data, error } = await this.$apollo.mutate({
+    const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
       mutation: addTags,
       variables: {
@@ -114,7 +117,7 @@ const CreateService = {
     return data
   },
   async insertCollectionItem(apollo, bookmarkObj) {
-    const { dataOutput, error } = await this.$apollo.mutate({
+    const { dataOutput, error } = await apollo.mutate({
       $loadingKey: 'loading',
       mutation: addBookmark,
       variables: bookmarkObj,

@@ -48,6 +48,9 @@ export default {
       const userUuid = this.getCurrentUserUuid,
         userId = this.getCurrentUserId
 
+      // console.log(userUuid)
+      // console.log(userId)
+
       CreateService.addTaxonomyItem(this.$apollo, obj, target, userUuid, userId)
       this.toggleModal()
       this.$store.dispatch('setModalFormData', {})
@@ -71,16 +74,18 @@ export default {
     },
     enableSendData() {
       this.$root.$on('sendData', data => {
-        const { id, obj } = data
+        const { dataObj, formId, isEditing } = data
 
-        if (data.formid == 'itemForm') {
-          data.isEditing
-            ? this.updateCollectionItem(obj)
-            : this.addCollectionItemAndMaybeTags(obj)
+        // item form
+        if (formId == 'itemForm') {
+          isEditing
+            ? this.updateCollectionItem(dataObj)
+            : this.addCollectionItemAndMaybeTags(dataObj)
         } else {
-          id == 'catForm'
-            ? this.addTaxonomyItem(obj, 'cat')
-            : this.addTaxonomyItem(obj, 'tag')
+          // cat from
+          formId == 'catForm'
+            ? this.addTaxonomyItem(dataObj, 'cat')
+            : this.addTaxonomyItem(dataObj, 'tag')
         }
       })
     },

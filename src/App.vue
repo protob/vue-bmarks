@@ -25,6 +25,8 @@ import PrtHeader from '@/components/organisms/layout/PrtHeader/PrtHeader.vue'
 import PrtFooter from '@/components/organisms/layout/PrtFooter/PrtFooter.vue'
 import PrtSidebar from '@/components/organisms/layout/PrtSidebar/PrtSidebar.vue'
 import PrtModalForm from '@/components/organisms/PrtModalForm/PrtModalForm.vue'
+import UserService from '@/services/user.service.js'
+import { mapGetters, mapState } from 'vuex'
 export default {
   components: {
     PrtHeader,
@@ -33,6 +35,14 @@ export default {
     PrtModalForm
   },
   methods: {
+    setUserUuid() {
+      UserService.setUserUuid(this.$store, this.$apollo)
+    },
+
+    syncUser() {
+      UserService.syncUser(this.$store, this.$apollo, this.token)
+    },
+
     getUser() {
       const userInfo = JSON.parse(localStorage.getItem('user_info'))
       return userInfo && new Date().getTime() < userInfo.expiresAt
@@ -40,7 +50,21 @@ export default {
         : null
     }
   },
-  computed: {}
+  computed: {
+    ...mapGetters(['getCurrentUserUuid', 'getCurrentUserId']),
+    ...mapState('account', {
+      user: 'user',
+      token: 'token'
+    })
+  },
+  watch: {
+    token() {
+      this.syncUser()
+    }
+  },
+  mounted() {
+    this.setUserUuid()
+  }
 }
 </script>
 <style lang="scss">

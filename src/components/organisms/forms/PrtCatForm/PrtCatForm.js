@@ -18,7 +18,8 @@ export default {
   components: { SchemaForm, ValidationObserver, PrtButton, PrtForm },
   data: () => {
     return {
-      formData: {}
+      formData: { uuid: null },
+      success: null
     }
   },
   computed: {
@@ -28,22 +29,23 @@ export default {
   },
   methods: {
     resetData(forceUpdate = true) {
-      Object.keys(this.data).forEach(key => {
-        this.data[key] = ''
+      Object.keys(this.formData).forEach(key => {
+        this.formData[key] = ''
       })
 
       if (forceUpdate) {
         this.$forceUpdate()
       }
     },
-    submit() {
-      let data = {
-        uuid: this.data.uuid,
-        name: this.data.name
+    submitForm() {
+      // uuid is needed for ediuting
+      let dataObj = {
+        uuid: this.formData.uuid,
+        name: this.formData.name
       }
 
       this.$root.$emit('sendData', {
-        json: data,
+        dataObj,
         formId: 'catForm',
         isEditing: false
       })

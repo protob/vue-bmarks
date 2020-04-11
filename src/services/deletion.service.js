@@ -69,12 +69,10 @@ const DeleteService = {
         }
       })
 
-      // return Promise.resolve(o)
-
-      return o
+      return Promise.resolve(o)
     }
   },
-
+  // CATEGORY
   deleteCatWithAllBookmarks(itemData, apollo) {
     this.generateBookmarkTagMap(itemData, apollo).then(obj => {
       this.deleteCatBookmarks(obj, itemData, apollo)
@@ -83,6 +81,10 @@ const DeleteService = {
 
   async deleteCatBookmarks(bookmarkTagsMap, itemData, apollo) {
     const bookmarksUuids = Object.keys(bookmarkTagsMap)
+    // dont bother if empty cat
+    if (!bookmarksUuids.length) {
+      return this.deleteSingleCat(itemData, apollo)
+    }
     const DELETE_BOOKMARKS_TAGS = this.prepareDeleteBookmarksTagsQuery(
       bookmarksUuids
     )

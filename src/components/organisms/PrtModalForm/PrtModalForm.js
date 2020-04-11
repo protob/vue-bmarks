@@ -1,6 +1,7 @@
 import PrtItemForm from '@/components/organisms/forms/PrtItemForm/PrtItemForm.vue'
 import PrtCatForm from '@/components/organisms/forms/PrtCatForm/PrtCatForm.vue'
 import PrtTagForm from '@/components/organisms/forms/PrtTagForm/PrtTagForm.vue'
+import PrtTaxForm from '@/components/organisms/forms/PrtTaxForm/PrtTaxForm.vue'
 import PrtLoginForm from '@/components/organisms/forms/PrtLoginForm/PrtLoginForm.vue'
 import PrtModal from '@/components/molecules/PrtModal/PrtModal.vue'
 
@@ -13,7 +14,7 @@ export default {
   components: {
     PrtModal,
     PrtItemForm,
-
+    PrtTaxForm,
     PrtCatForm,
     PrtTagForm,
     PrtLoginForm
@@ -23,11 +24,15 @@ export default {
     this.enableFireModal()
     this.enableSendData()
   },
+
   computed: {
     ...mapGetters(['getCurrentUserUuid', 'getCurrentUserId']),
     title() {
       const title = this.target === 'cat' ? 'Add Category' : 'Add Tag'
       return title
+    },
+    currentProperties: function() {
+      return { tax: this.target === 'cat' ? 'cat' : 'tag' }
     }
   },
   data: () => {
@@ -101,9 +106,9 @@ export default {
     enableFireModal() {
       this.$root.$on('fireModal', data => {
         this.target = data.target
-        this.currentModalForm =
-          this.target === 'cat' ? 'PrtCatForm' : 'PrtTagForm'
-
+        //this.currentModalForm =
+        // this.target === 'cat' ? 'PrtCatForm' : 'PrtTagForm'
+        this.currentModalForm = 'PrtTaxForm'
         this.toggleModal()
       })
     }

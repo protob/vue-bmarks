@@ -1,6 +1,7 @@
 <script src="./PrtItem.js"></script>
 <template>
   <div class="prt-item flex justify-between  flex-wrap">
+    {{ item }}
     <div class="prt-item__panel ">
       <h1 class="prt-item__h">
         <a href="" target="_blank" class="prt-item__link">{{ item.name }}</a>
@@ -13,10 +14,13 @@
     </div>
 
     <div class="prt-item__buttons">
-      <PrtButton class="mr-2" @click="openModal('tag')">
+      <PrtButton
+        class="mr-2"
+        @click.prevent="openModal('item', item.uuid, item, true)"
+      >
         <PrtIcon icon="edit" size="15px" color="white"
       /></PrtButton>
-      <PrtButton @click="openModal('tag')">
+      <PrtButton @click.prevent="openModal('tag')">
         <PrtIcon icon="times" size="15px" color="white"
       /></PrtButton>
     </div>

@@ -71,7 +71,7 @@ export default {
     addCollectionItemAndMaybeTags(obj) {
       const userUuid = this.getCurrentUserUuid,
         userId = this.getCurrentUserId
-
+      // console.log('oo', obj)
       CreateService.addCollectionItemAndMaybeTags(
         this.$apollo,
         obj,
@@ -114,6 +114,7 @@ export default {
     },
     enableFireModal() {
       this.$root.$on('fireModal', data => {
+        this.$root.$emit('fireModalSetData')
         this.target = data.target
         //this.currentModalForm =
         // this.target === 'cat' ? 'PrtCatForm' : 'PrtTagForm'

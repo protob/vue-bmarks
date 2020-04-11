@@ -19,8 +19,43 @@ export default {
     }
   },
   methods: {
-    openModal(target) {
-      this.$root.$emit('fireModal', { target })
+    openModal(target, taxUuid, bookmark = null, isEditing = true) {
+      // ediging exsiting bookmark
+      if (bookmark) {
+        // console.log('kaka', bookmark)
+        if (isEditing) {
+          const tagsArr = bookmark.bookmarks_tags.map(elem => {
+            return {
+              uuid: elem.tag.uuid,
+              name: elem.tag.name
+            }
+          })
+
+          this.$store.dispatch('setModalFormData', {
+            target,
+            taxUuid,
+            taxName: bookmark.name,
+            desc: bookmark.desc,
+            slug: bookmark.slug,
+            url: bookmark.url,
+            tags: tagsArr,
+            catUuid: this.item.uuid,
+            isBookmark: true,
+            isEditing
+          })
+
+          this.$root.$emit('fireModal', {
+            target,
+            taxUuid,
+            bookmark,
+            isEditing
+          })
+        }
+      }
     }
+
+    // openModal(target) {
+    //   this.$root.$emit('fireModal', { target })
+    // }
   }
 }

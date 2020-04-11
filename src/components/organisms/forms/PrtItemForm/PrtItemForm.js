@@ -37,7 +37,9 @@ export default {
   data: () => {
     return {
       catUuidFromVuex: '',
-      formData: {}
+      isEditing: false,
+      formData: {},
+      success: null
     }
   },
   props: {
@@ -53,7 +55,40 @@ export default {
       return FORM_SCHEMA
     }
   },
+
+  created() {
+    // first run
+    this.setData()
+
+    this.$root.$on('fireModalSetData', () => {
+      //next run
+      this.success = false // It is required to reset form input data
+      this.setData()
+    })
+  },
+
   methods: {
+    setData() {
+      this.resetData(false)
+
+      this.isBookmark = this.getModalForm.isBookmark
+      this.catUuid = this.getModalForm.catUuid
+      if (this.getModalForm.isEditing) {
+        this.formData.uuid = this.getModalForm.taxUuid // tax uid is itemuid
+        this.formData.name = this.getModalForm.taxName
+
+        //------
+
+        this.formData.slug = this.getModalForm.slug
+        this.formData.url = this.getModalForm.url
+        this.formData.tags = this.getModalForm.tags
+          ? this.getModalForm.tags.map(item => item.name).join(',') // make sting from array
+          : ''
+        this.formData.desc = this.getModalForm.desc
+      }
+      this.$forceUpdate()
+    },
+
     resetData(forceUpdate = true) {
       Object.keys(this.formData).forEach(key => {
         this.formData[key] = ''

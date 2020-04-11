@@ -5,8 +5,23 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 describe('PrtLoginToolbar.vue', () => {
-  it('renders a login  toolbar component', () => {
-    const component = mount(PrtLoginToolbar, { localVue })
+  let getters
+  let store
+
+  beforeEach(() => {
+    getters = {
+      getUser: () => 'auth0|00000000000000000000'
+    }
+    store = new Vuex.Store({
+      modules: {
+        account: {
+          getters
+        }
+      }
+    })
+  })
+  it('renders a login  toolbar component x', () => {
+    const component = mount(PrtLoginToolbar, { store, localVue })
     expect(component.contains('.prt-login-toolbar')).toBe(true)
   })
 })

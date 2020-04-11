@@ -10,7 +10,7 @@ describe('PrtSidebarItem.vue', () => {
   it('renders a component with props', () => {
     const component = shallowMount(PrtSidebarItem, {
       propsData: {
-        tax: 'tag'
+        item: { name: 'tag' }
       }
     })
 

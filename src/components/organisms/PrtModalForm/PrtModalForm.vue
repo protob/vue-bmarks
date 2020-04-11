@@ -11,9 +11,6 @@
       @close="isModalVisible = false"
     >
       <component :is="currentModalForm" v-bind="currentProperties"></component>
-      <!-- <PrtCatForm />
-      <PrtTagForm />
-      <PrtLoginForm /> -->
     </PrtModal>
   </div>
 </template>

@@ -52,7 +52,7 @@ export default {
       userUuid: localStorage.userUuid ? localStorage.userUuid : '',
       userId: localStorage.userId ? localStorage.userId : '',
       isModalVisible: false,
-      currentModalForm: 'PrtTagForm'
+      currentModalForm: 'PrtTaxForm'
     }
   },
 
@@ -120,7 +120,7 @@ export default {
         this.$root.$emit('fireModalSetData')
         this.target = data.target
         //this.currentModalForm =
-        // this.target === 'cat' ? 'PrtCatForm' : 'PrtTagForm'
+
         this.isEditing = data.isEditing
         data.taxUuid ? (this.taxUuid = data.taxUuid) : (this.taxUuid = null)
         this.currentModalForm =

@@ -19,6 +19,25 @@ export default {
     }
   },
   methods: {
+    toggleDeleteTaxModal(target, taxUuid, taxName) {
+      this.$root.$emit('fireConfirm', { target, taxUuid, taxName })
+    },
+    openModalTax(target, taxUuid, taxName, isEditing = false) {
+      const isBookmark = target == 'bookmark' ? true : false
+      const data = {
+        target,
+        taxUuid,
+        taxName,
+        isEditing,
+        catUuid: taxUuid,
+        isBookmark: isBookmark
+      }
+
+      this.$store.dispatch('setModalFormData', data)
+
+      this.$root.$emit('fireModal', { target, taxUuid, taxName, isEditing })
+    },
+
     openModal(target, taxUuid, bookmark = null, isEditing = false) {
       // ediging exsiting bookmark
       if (bookmark) {

@@ -1,7 +1,6 @@
 <script src="./PrtItem.js"></script>
 <template>
   <div class="prt-item flex justify-between  flex-wrap">
-    {{ item }}
     <div class="prt-item__panel ">
       <h1 class="prt-item__h">
         <a href="" target="_blank" class="prt-item__link">{{ item.name }}</a>

@@ -48,6 +48,7 @@ export default {
       isEditing: false,
       form: {},
       target: null,
+      taxUuid: null,
       userUuid: localStorage.userUuid ? localStorage.userUuid : '',
       userId: localStorage.userId ? localStorage.userId : '',
       isModalVisible: false,
@@ -120,7 +121,8 @@ export default {
         this.target = data.target
         //this.currentModalForm =
         // this.target === 'cat' ? 'PrtCatForm' : 'PrtTagForm'
-
+        this.isEditing = data.isEditing
+        data.taxUuid ? (this.taxUuid = data.taxUuid) : (this.taxUuid = null)
         this.currentModalForm =
           this.target === 'item' ? 'PrtItemForm' : 'PrtTaxForm'
         this.toggleModal()

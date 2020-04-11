@@ -10,7 +10,7 @@
 
         <div class="prt-form__buttons flex justify-between">
           <PrtButton class="w-full sm:w-1/4" @click.prevent="submitForm">
-            ADD
+            {{ submitLabel }}
           </PrtButton>
 
           <PrtButton

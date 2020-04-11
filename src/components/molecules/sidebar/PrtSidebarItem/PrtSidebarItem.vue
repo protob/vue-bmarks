@@ -20,10 +20,16 @@
       >
         <PrtIcon icon="plus" size="12px" color="white"
       /></PrtButton>
-      <PrtButton class="ml-2 bg-gray-600" @click="openModal('tag')">
+      <PrtButton
+        class="ml-2 bg-gray-600"
+        @click="openModalTax(tax, item.uuid, item.name, true)"
+      >
         <PrtIcon icon="edit" size="12px" color="white"
       /></PrtButton>
-      <PrtButton class="ml-2  bg-gray-600" @click="openModal('tag')">
+      <PrtButton
+        class="ml-2  bg-gray-600"
+        @click="toggleDeleteTaxModal(tax, item.uuid, item.name)"
+      >
         <PrtIcon icon="times" size="12px" color="white"
       /></PrtButton>
     </div>

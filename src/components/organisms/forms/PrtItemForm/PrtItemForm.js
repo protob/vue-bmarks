@@ -53,6 +53,9 @@ export default {
     ...mapGetters(['getCurrentUserUuid', 'getModalForm', 'getFormMode']),
     schema() {
       return FORM_SCHEMA
+    },
+    submitLabel() {
+      return this.getModalForm.isEditing ? 'Submit' : 'Add'
     }
   },
 

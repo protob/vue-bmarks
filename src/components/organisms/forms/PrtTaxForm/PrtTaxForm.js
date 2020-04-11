@@ -6,6 +6,7 @@ import PrtButton from '@/components/atoms/PrtButton/PrtButton.vue'
 import PrtInput from '@/components/atoms/form/PrtInput/PrtInput.vue'
 
 import PrtForm from '@/components/organisms/forms/PrtForm/PrtForm.vue'
+import { mapGetters } from 'vuex'
 const FORM_SCHEMA = {
   name: {
     component: PrtInput,
@@ -29,9 +30,21 @@ export default {
       default: 'cat'
     }
   },
+  created() {
+    this.setData()
+    this.$root.$on('fireModalSetData', () => {
+      //next run
+      this.success = false // It is required to reset form input data
+      this.setData()
+    })
+  },
   computed: {
+    ...mapGetters(['getCurrentUserUuid', 'getModalForm', 'getFormMode']),
     schema() {
       return FORM_SCHEMA
+    },
+    submitLabel() {
+      return this.getModalForm.isEditing ? 'Submit' : 'Add'
     }
   },
   methods: {
@@ -44,6 +57,27 @@ export default {
         this.$forceUpdate()
       }
     },
+    setData() {
+      this.resetData(false)
+
+      this.isBookmark = this.getModalForm.isBookmark
+      this.catUuid = this.getModalForm.catUuid
+      if (this.getModalForm.isEditing) {
+        this.formData.uuid = this.getModalForm.taxUuid // tax uid is itemuid
+        this.formData.name = this.getModalForm.taxName
+
+        //------
+
+        this.formData.slug = this.getModalForm.slug
+        this.formData.url = this.getModalForm.url
+        this.formData.tags = this.getModalForm.tags
+          ? this.getModalForm.tags.map(item => item.name).join(',') // make sting from array
+          : ''
+        this.formData.desc = this.getModalForm.desc
+      }
+      this.$forceUpdate()
+    },
+
     submitForm() {
       // uuid is needed for ediuting
       let dataObj = {

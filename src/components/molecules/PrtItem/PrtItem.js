@@ -23,6 +23,10 @@ export default {
     }
   },
   methods: {
+    toggleDeleteItemModal(target, taxUuid, taxName) {
+      this.$root.$emit('fireConfirm', { target, taxUuid, taxName })
+    },
+
     openModal(target, taxUuid, bookmark = null, isEditing = true) {
       // ediging exsiting bookmark
       if (bookmark) {

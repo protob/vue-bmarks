@@ -19,7 +19,9 @@
       >
         <PrtIcon icon="edit" size="15px" color="white"
       /></PrtButton>
-      <PrtButton @click.prevent="openModal('tag')">
+      <PrtButton
+        @click.prevent="toggleDeleteItemModal('item', item.uuid, item.name)"
+      >
         <PrtIcon icon="times" size="15px" color="white"
       /></PrtButton>
     </div>

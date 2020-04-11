@@ -72,7 +72,7 @@ const DeleteService = {
       return Promise.resolve(o)
     }
   },
-  // CATEGORY
+  //- CATEGORY
   deleteCatWithAllBookmarks(itemData, apollo) {
     this.generateBookmarkTagMap(itemData, apollo).then(obj => {
       this.deleteCatBookmarks(obj, itemData, apollo)
@@ -143,7 +143,7 @@ const DeleteService = {
   deleteItem(itemData, apollo) {
     const uuid = itemData.taxUuid
     // COLLECTION ITEMS / TAXONOMY ITEMS
-    itemData.target === 'bookmark'
+    itemData.target === 'item'
       ? this.deleteSingleBookmark(uuid, apollo)
       : itemData.target === 'cat'
       ? this.deleteCatWithAllBookmarks(itemData, apollo)

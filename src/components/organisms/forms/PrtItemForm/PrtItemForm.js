@@ -103,8 +103,7 @@ export default {
       this.catUuidFromVuex = this.getModalForm.catUuid
 
       let dataObj = {
-        //uuid: this.getModalForm.isEditing ? this.data.uuid : uuidv4(),
-        uuid: uuidv4(),
+        uuid: this.getModalForm.isEditing ? this.formData.uuid : uuidv4(),
         name: this.formData.name,
         slug: slugify(this.formData.name),
         url: this.formData.url,
@@ -116,7 +115,7 @@ export default {
       this.$root.$emit('sendData', {
         dataObj,
         formId: 'itemForm',
-        isEditing: false
+        isEditing: this.getModalForm.isEditing
       })
       this.resetData()
       this.success = true

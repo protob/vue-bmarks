@@ -12,7 +12,11 @@ export default {
         return {}
       }
     },
-
+    catUuid: {
+      type: String,
+      required: true,
+      default: null
+    },
     title: {
       type: String,
       default: 'Categories'
@@ -39,7 +43,7 @@ export default {
             slug: bookmark.slug,
             url: bookmark.url,
             tags: tagsArr,
-            catUuid: this.item.uuid,
+            catUuid: this.catUuid,
             isBookmark: true,
             isEditing
           })

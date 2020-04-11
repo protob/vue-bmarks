@@ -83,6 +83,7 @@ export default {
     updateCollectionItem(obj) {
       const userUuid = this.getCurrentUserUuid,
         userId = this.getCurrentUserId
+
       UpdateService.updateCollectionItem(this.$apollo, obj, userId, userUuid)
       this.toggleModal()
     },
@@ -90,6 +91,7 @@ export default {
       this.$root.$on('sendData', data => {
         const { dataObj, formId, isEditing } = data
 
+        // console.log('dataObj', dataObj)
         // item form
         if (formId == 'itemForm') {
           isEditing

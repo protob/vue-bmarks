@@ -1,6 +1,4 @@
 import PrtItemForm from '@/components/organisms/forms/PrtItemForm/PrtItemForm.vue'
-import PrtCatForm from '@/components/organisms/forms/PrtCatForm/PrtCatForm.vue'
-import PrtTagForm from '@/components/organisms/forms/PrtTagForm/PrtTagForm.vue'
 import PrtTaxForm from '@/components/organisms/forms/PrtTaxForm/PrtTaxForm.vue'
 import PrtLoginForm from '@/components/organisms/forms/PrtLoginForm/PrtLoginForm.vue'
 import PrtModal from '@/components/molecules/PrtModal/PrtModal.vue'
@@ -15,8 +13,6 @@ export default {
     PrtModal,
     PrtItemForm,
     PrtTaxForm,
-    PrtCatForm,
-    PrtTagForm,
     PrtLoginForm
   },
   mounted() {

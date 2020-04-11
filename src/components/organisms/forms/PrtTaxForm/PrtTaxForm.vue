@@ -1,7 +1,7 @@
-<script src="./PrtTagForm.js"></script>
+<script src="./PrtTaxForm.js"></script>
 
 <template>
-  <div class="prt-tag-form">
+  <div class="prt-tax-form">
     <PrtForm>
       <ValidationObserver ref="obs">
         <SchemaForm v-model="formData" :schema="schema">
@@ -9,8 +9,8 @@
         </SchemaForm>
 
         <div class="prt-form__buttons flex justify-between">
-          <PrtButton class="w-full sm:w-1/4" @click.prevent="alert('a')">
-            ADD
+          <PrtButton class="w-full sm:w-1/4" @click.prevent="submitForm">
+            {{ submitLabel }}
           </PrtButton>
 
           <PrtButton
@@ -24,3 +24,4 @@
     </PrtForm>
   </div>
 </template>
+<style lang="scss"></style>

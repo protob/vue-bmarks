@@ -1,44 +1,25 @@
-const slugify = require('slugify')
-const uuidv4 = require('uuid/v4')
 import { ValidationObserver } from 'vee-validate'
 import { SchemaForm } from 'formvuelatte'
 
 import PrtButton from '@/components/atoms/PrtButton/PrtButton.vue'
-import PrtInput from '@/components/atoms/form/PrtInput/PrtInput.vue'
-import PrtTextarea from '@/components/atoms/form/PrtTextarea/PrtTextarea.vue'
-import PrtForm from '@/components/organisms/forms/PrtForm/PrtForm.vue'
 
+import PrtInput from '@/components/atoms/form/PrtInput/PrtInput.vue'
+
+import PrtForm from '@/components/organisms/forms/PrtForm/PrtForm.vue'
 import { mapGetters } from 'vuex'
 const FORM_SCHEMA = {
   name: {
     component: PrtInput,
     label: 'name',
     rules: 'required'
-  },
-  url: {
-    component: PrtInput,
-    label: 'url',
-    rules: 'required'
-  },
-  desc: {
-    component: PrtTextarea,
-    label: 'desc',
-    rules: 'required|max:500'
-  },
-  tags: {
-    component: PrtInput,
-    label: 'tags',
-    rules: ''
   }
 }
 export default {
-  name: 'PrtItemForm',
+  name: 'PrtTaxForm',
   components: { SchemaForm, ValidationObserver, PrtButton, PrtForm },
   data: () => {
     return {
-      catUuidFromVuex: '',
-      isEditing: false,
-      formData: {},
+      formData: { uuid: null },
       success: null
     }
   },
@@ -46,8 +27,16 @@ export default {
     tax: {
       type: String,
       required: true,
-      default: 'item'
+      default: 'cat'
     }
+  },
+  created() {
+    this.setData()
+    this.$root.$on('fireModalSetData', () => {
+      //next run
+      this.success = false // It is required to reset form input data
+      this.setData()
+    })
   },
   computed: {
     ...mapGetters(['getCurrentUserUuid', 'getModalForm', 'getFormMode']),
@@ -58,19 +47,16 @@ export default {
       return this.getModalForm.isEditing ? 'Submit' : 'Add'
     }
   },
-
-  created() {
-    // first run
-    this.setData()
-
-    this.$root.$on('fireModalSetData', () => {
-      //next run
-      this.success = false // It is required to reset form input data
-      this.setData()
-    })
-  },
-
   methods: {
+    resetData(forceUpdate = true) {
+      Object.keys(this.formData).forEach(key => {
+        this.formData[key] = ''
+      })
+
+      if (forceUpdate) {
+        this.$forceUpdate()
+      }
+    },
     setData() {
       this.resetData(false)
 
@@ -92,33 +78,17 @@ export default {
       this.$forceUpdate()
     },
 
-    resetData(forceUpdate = true) {
-      Object.keys(this.formData).forEach(key => {
-        this.formData[key] = ''
-      })
-
-      if (forceUpdate) {
-        this.$forceUpdate()
-      }
-    },
     submitForm() {
       // uuid is needed for ediuting
-      this.catUuidFromVuex = this.getModalForm.catUuid
-
       let dataObj = {
-        uuid: this.getModalForm.isEditing ? this.formData.uuid : uuidv4(),
-        name: this.formData.name,
-        slug: slugify(this.formData.name),
-        url: this.formData.url,
-        desc: this.formData.desc,
-        tags: this.formData.tags,
-        catUuid: this.catUuidFromVuex
+        uuid: this.formData.uuid,
+        name: this.formData.name
       }
 
       this.$root.$emit('sendData', {
         dataObj,
-        formId: 'itemForm',
-        isEditing: this.getModalForm.isEditing
+        formId: this.tax === 'cat' ? 'catForm' : 'tagForm',
+        isEditing: false
       })
       this.resetData()
       this.success = true

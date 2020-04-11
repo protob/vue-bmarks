@@ -13,10 +13,15 @@
     </div>
 
     <div class="prt-item__buttons">
-      <PrtButton class="mr-2" @click="openModal('tag')">
+      <PrtButton
+        class="mr-2"
+        @click.prevent="openModal('item', item.uuid, item, true)"
+      >
         <PrtIcon icon="edit" size="15px" color="white"
       /></PrtButton>
-      <PrtButton @click="openModal('tag')">
+      <PrtButton
+        @click.prevent="toggleDeleteItemModal('item', item.uuid, item.name)"
+      >
         <PrtIcon icon="times" size="15px" color="white"
       /></PrtButton>
     </div>

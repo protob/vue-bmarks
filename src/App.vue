@@ -1,6 +1,7 @@
 <template>
   <div id="app" class="flex flex flex-col min-h-screen bg-gray-400">
     <!-- <PrtOverlay :visible="false" /> -->
+    <PrtModalConfirm />
     <PrtModalForm />
     <PrtHeader />
 
@@ -25,6 +26,7 @@ import PrtHeader from '@/components/organisms/layout/PrtHeader/PrtHeader.vue'
 import PrtFooter from '@/components/organisms/layout/PrtFooter/PrtFooter.vue'
 import PrtSidebar from '@/components/organisms/layout/PrtSidebar/PrtSidebar.vue'
 import PrtModalForm from '@/components/organisms/PrtModalForm/PrtModalForm.vue'
+import PrtModalConfirm from '@/components/organisms/PrtModalConfirm/PrtModalConfirm.vue'
 import UserService from '@/services/user.service.js'
 import { mapGetters, mapState } from 'vuex'
 export default {
@@ -32,7 +34,8 @@ export default {
     PrtHeader,
     PrtFooter,
     PrtSidebar,
-    PrtModalForm
+    PrtModalForm,
+    PrtModalConfirm
   },
   methods: {
     setUserUuid() {

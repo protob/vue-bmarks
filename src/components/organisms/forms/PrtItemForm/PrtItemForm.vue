@@ -8,8 +8,8 @@
         </SchemaForm>
 
         <div class="prt-form__buttons flex justify-between">
-          <PrtButton class="w-full sm:w-1/4" @click.prevent="alert('a')">
-            ADD
+          <PrtButton class="w-full sm:w-1/4" @click.prevent="submitForm">
+            {{ submitLabel }}
           </PrtButton>
 
           <PrtButton

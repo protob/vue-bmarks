@@ -39,7 +39,7 @@ const UpdateService = {
       catUuid: obj.catUuid
     }
 
-    const { data, error } = await this.$apollo.mutate({
+    const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
       mutation: updateBookmarkAndIgnoreTags,
       variables: bookmarkObj,
@@ -71,7 +71,7 @@ const UpdateService = {
     }
   },
   async updateTags(apollo, tagsToInsert, bookmarkObj) {
-    const { data, error } = await this.$apollo.mutate({
+    const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
       mutation: addTags,
       variables: {
@@ -97,7 +97,7 @@ const UpdateService = {
   },
 
   async updateCollectionItemWithTags(apollo, bookmarkObj) {
-    const { data, error } = await this.$apollo.mutate({
+    const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
       mutation: updateBookmarkWithTags,
       variables: bookmarkObj,
@@ -116,7 +116,7 @@ const UpdateService = {
 
     // only existing user tags
 
-    const { data, error } = await this.$apollo.query({
+    const { data, error } = await apollo.query({
       $loadingKey: 'loading',
       query: getTagsByUserId,
       variables: {
@@ -127,16 +127,20 @@ const UpdateService = {
       refetchQueries: ['getAllBookmarksByCat', 'getTags']
     })
 
+    const data2 = data
     if (error) {
       log(error)
     } else {
-      const data = data.tags
+      const dataTags = data2.tags
       const dataToSend = uniqueSlugsItemsArr
 
       let updatedData = dataToSend
-      if (data.length) {
+      if (dataTags.length) {
         //Array of objects intersection
-        const res = data.filter(n => dataToSend.some(n2 => n.slug == n2.slug))
+
+        const res = dataTags.filter(n =>
+          dataToSend.some(n2 => n.slug == n2.slug)
+        )
 
         // convert array of Objects into one Object
         const responseObj = Object.assign(
@@ -158,7 +162,6 @@ const UpdateService = {
         return Promise.resolve(updatedData)
       }
     }
-    return data
   }
 }
 

@@ -6,6 +6,7 @@
     <PrtItem
       v-for="item in collectionItem.bookmarks_cats"
       :key="item.uuid"
+      :catUuid="collectionItem.uuid"
       :item="item.bookmark"
     />
   </div>

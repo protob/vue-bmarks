@@ -10,7 +10,7 @@
       :ariaLabelClose="'Close'"
       @close="isModalVisible = false"
     >
-      <component v-bind:is="currentModalForm"></component>
+      <component :is="currentModalForm" v-bind="currentProperties"></component>
       <!-- <PrtCatForm />
       <PrtTagForm />
       <PrtLoginForm /> -->

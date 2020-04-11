@@ -6,10 +6,10 @@ import { log } from '@/utils'
 //   DELETE_CAT,
 //   DELETE_TAG
 // } from '@/queries/deleteQueries.js'
-
-import deleteBookmark from '@/apollo/queries/deleteBookmark.gql'
-import deleteCat from '@/apollo/queries/deleteCat.gql'
-import deleteTag from '@/apollo/queries/deleteTag.gql'
+import gql from 'graphql-tag'
+import deleteBookmark from '@/apollo/queries/delBookmark.gql'
+import deleteCat from '@/apollo/queries/delCats.gql'
+import deleteTag from '@/apollo/queries/delTags.gql'
 import getBookmarksByCat from '@/apollo/queries/getBookmarksByCat.gql'
 const DeleteService = {
   prepareDeleteBookmarksTagsQuery(arr) {
@@ -24,11 +24,11 @@ const DeleteService = {
 					}
 					`
 
-    // const query = gql`
-    //   ${queryString}
-    // `
+    const query = gql`
+      ${queryString}
+    `
 
-    return queryString
+    return query
   },
 
   async generateBookmarkTagMap(itemData, apollo) {
@@ -69,12 +69,10 @@ const DeleteService = {
         }
       })
 
-      // return Promise.resolve(o)
-
-      return o
+      return Promise.resolve(o)
     }
   },
-
+  //- CATEGORY
   deleteCatWithAllBookmarks(itemData, apollo) {
     this.generateBookmarkTagMap(itemData, apollo).then(obj => {
       this.deleteCatBookmarks(obj, itemData, apollo)
@@ -83,11 +81,16 @@ const DeleteService = {
 
   async deleteCatBookmarks(bookmarkTagsMap, itemData, apollo) {
     const bookmarksUuids = Object.keys(bookmarkTagsMap)
+
+    // dont bother if empty cat
+    if (!bookmarksUuids.length) {
+      return this.deleteSingleCat(itemData, apollo)
+    }
     const DELETE_BOOKMARKS_TAGS = this.prepareDeleteBookmarksTagsQuery(
       bookmarksUuids
     )
 
-    const { data, error } = await this.$apollo.mutate({
+    const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
       mutation: DELETE_BOOKMARKS_TAGS,
       refetchQueries: ['getTags', 'getAllBookmarksByCat']
@@ -114,7 +117,7 @@ const DeleteService = {
     log(error ? error : data)
   },
 
-  async deleteSingleTag2(uuid, apollo) {
+  async deleteSingleTag(uuid, apollo) {
     const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
       mutation: deleteTag,
@@ -140,7 +143,7 @@ const DeleteService = {
   deleteItem(itemData, apollo) {
     const uuid = itemData.taxUuid
     // COLLECTION ITEMS / TAXONOMY ITEMS
-    itemData.target === 'bookmark'
+    itemData.target === 'item'
       ? this.deleteSingleBookmark(uuid, apollo)
       : itemData.target === 'cat'
       ? this.deleteCatWithAllBookmarks(itemData, apollo)

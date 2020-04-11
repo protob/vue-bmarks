@@ -81,6 +81,7 @@ const DeleteService = {
 
   async deleteCatBookmarks(bookmarkTagsMap, itemData, apollo) {
     const bookmarksUuids = Object.keys(bookmarkTagsMap)
+
     // dont bother if empty cat
     if (!bookmarksUuids.length) {
       return this.deleteSingleCat(itemData, apollo)

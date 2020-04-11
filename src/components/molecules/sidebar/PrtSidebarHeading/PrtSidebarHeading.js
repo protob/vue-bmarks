@@ -8,6 +8,10 @@ export default {
   },
 
   props: {
+    tax: {
+      type: String,
+      default: 'cat'
+    },
     text: {
       type: String,
       default: 'Categories'

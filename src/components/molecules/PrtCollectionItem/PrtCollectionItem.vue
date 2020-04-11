@@ -7,7 +7,6 @@
       v-for="item in collectionItem.bookmarks_cats"
       :key="item.uuid"
       :item="item.bookmark"
-      :text="'item-' + index"
     />
   </div>
 </template>

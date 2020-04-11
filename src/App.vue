@@ -4,7 +4,10 @@
     <PrtModalForm />
     <PrtHeader />
 
-    <main class="app__content flex flex-wrap flex-grow " v-if="getUser()">
+    <main
+      class="app__content flex flex-wrap flex-grow "
+      :class="!getUser() ? 'justify-center flex-col' : ''"
+    >
       <div class="w-full sm:w-3/8 lg:w-2/8" v-if="getUser()">
         <PrtSidebar />
       </div>
@@ -22,6 +25,8 @@ import PrtHeader from '@/components/organisms/layout/PrtHeader/PrtHeader.vue'
 import PrtFooter from '@/components/organisms/layout/PrtFooter/PrtFooter.vue'
 import PrtSidebar from '@/components/organisms/layout/PrtSidebar/PrtSidebar.vue'
 import PrtModalForm from '@/components/organisms/PrtModalForm/PrtModalForm.vue'
+import UserService from '@/services/user.service.js'
+import { mapGetters, mapState } from 'vuex'
 export default {
   components: {
     PrtHeader,
@@ -30,6 +35,14 @@ export default {
     PrtModalForm
   },
   methods: {
+    setUserUuid() {
+      UserService.setUserUuid(this.$store, this.$apollo)
+    },
+
+    syncUser() {
+      UserService.syncUser(this.$store, this.$apollo, this.token)
+    },
+
     getUser() {
       const userInfo = JSON.parse(localStorage.getItem('user_info'))
       return userInfo && new Date().getTime() < userInfo.expiresAt
@@ -37,7 +50,21 @@ export default {
         : null
     }
   },
-  computed: {}
+  computed: {
+    ...mapGetters(['getCurrentUserUuid', 'getCurrentUserId']),
+    ...mapState('account', {
+      user: 'user',
+      token: 'token'
+    })
+  },
+  watch: {
+    token() {
+      this.syncUser()
+    }
+  },
+  mounted() {
+    this.setUserUuid()
+  }
 }
 </script>
 <style lang="scss">

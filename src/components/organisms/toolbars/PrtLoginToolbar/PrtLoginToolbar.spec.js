@@ -1,4 +1,4 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import { mount, createLocalVue } from '@vue/test-utils'
 import PrtLoginToolbar from './PrtLoginToolbar.vue'
 import Vuex from 'vuex'
 const localVue = createLocalVue()
@@ -10,14 +10,14 @@ describe('PrtLoginToolbar.vue', () => {
 
   beforeEach(() => {
     getters = {
-      getUser: () => 'auth0|00000000000000000000'
+      getUser: () => 'auth0|00000000000000000000',
     }
     store = new Vuex.Store({
       modules: {
         account: {
-          getters
-        }
-      }
+          getters,
+        },
+      },
     })
   })
   it('renders a login  toolbar component x', () => {

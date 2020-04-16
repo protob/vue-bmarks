@@ -1,4 +1,4 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import { mount, createLocalVue } from '@vue/test-utils'
 import PrtHeader from './PrtHeader.vue'
 
 import Vuex from 'vuex'
@@ -11,14 +11,14 @@ describe('PrtHeader.vue', () => {
 
   beforeEach(() => {
     getters = {
-      getUser: () => 'auth0|00000000000000000000'
+      getUser: () => 'auth0|00000000000000000000',
     }
     store = new Vuex.Store({
       modules: {
         account: {
-          getters
-        }
-      }
+          getters,
+        },
+      },
     })
   })
   it('renders a component', () => {

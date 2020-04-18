@@ -79,14 +79,7 @@ const DeleteService = {
     return this.deleteCatBookmarks(BookmarkTagMapObj, itemData, apollo)
   },
 
-  async deleteCatBookmarks(bookmarkTagsMap, itemData, apollo) {
-    const bookmarksUuids = Object.keys(bookmarkTagsMap)
-
-    // dont bother if cat is empty
-    if (!bookmarksUuids.length) {
-      return this.deleteSingleCat(itemData, apollo)
-    }
-
+  async deleteCatTags(itemData, bookmarksUuids, apollo) {
     const DELETE_BOOKMARKS_TAGS = this.prepareDeleteBookmarksTagsQuery(
       bookmarksUuids
     )
@@ -97,13 +90,16 @@ const DeleteService = {
       mutation: DELETE_BOOKMARKS_TAGS
     })
 
-    if (error) {
-      log(error)
-      return false
-    }
+    log(error ? error : data)
+    return error ? error : this.deleteSingleCat(itemData, apollo)
+  },
 
-    log(data)
-    return await this.deleteSingleCat(itemData, apollo)
+  async deleteCatBookmarks(bookmarkTagsMap, itemData, apollo) {
+    const bookmarksUuids = Object.keys(bookmarkTagsMap)
+
+    return !bookmarksUuids.length
+      ? this.deleteSingleCat(itemData, apollo)
+      : this.deleteCatTags(itemData, bookmarksUuids, apollo)
   },
 
   async deleteSingleCat(itemData, apollo) {

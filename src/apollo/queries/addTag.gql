@@ -15,7 +15,10 @@ mutation AddTag(
         userId: $userId
       }
     ]
-    on_conflict: { constraint: tags_pkey, update_columns: [name, slug] }
+    on_conflict: {
+      constraint: tags_slug_userId_key
+      update_columns: [name, slug]
+    }
   ) {
     returning {
       uuid

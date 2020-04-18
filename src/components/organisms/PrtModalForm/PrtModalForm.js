@@ -57,7 +57,6 @@ export default {
   },
 
   methods: {
-    // enable event handlers
     async addTaxonomyItem(obj, target) {
       const userUuid = this.getCurrentUserUuid,
         userId = this.getCurrentUserId

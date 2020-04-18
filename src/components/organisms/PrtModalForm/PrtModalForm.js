@@ -73,17 +73,19 @@ export default {
       this.$store.dispatch('setModalFormData', {})
       this.$root.$emit('refetchTax')
     },
-    addCollectionItemAndMaybeTags(obj) {
+    async addCollectionItemAndMaybeTags(obj) {
       const userUuid = this.getCurrentUserUuid,
         userId = this.getCurrentUserId
       // console.log('oo', obj)
-      CreateService.addCollectionItemAndMaybeTags(
+      await CreateService.addCollectionItemAndMaybeTags(
         this.$apollo,
         obj,
         userId,
         userUuid
       )
       this.toggleModal()
+      this.$root.$emit('refetchItems')
+      this.$root.$emit('refetchTax')
     },
     updateCollectionItem(obj) {
       const userUuid = this.getCurrentUserUuid,

@@ -48,10 +48,24 @@ const CreateService = {
     return error ? false : data
   },
 
-  addCollectionItemAndMaybeTags(apollo, obj, userId, userUuid) {
+  async insertTagsBeforeCollectionItem(apollo, bookmarkObj) {
+    // preparetags
+    const tagsToInsert = bookmarkObj.tags.map(el => {
+      return {
+        name: el,
+        slug: slugify(el),
+        userId: bookmarkObj.userId,
+        userUuid: bookmarkObj.userUuid
+      }
+    })
+
+    return await this.insertTags(apollo, tagsToInsert, bookmarkObj)
+  },
+
+  async addCollectionItemAndMaybeTags(apollo, obj, userId, userUuid) {
     let tags = !obj.tags ? [] : obj.tags
     tags = this.normalizeTags(tags)
-    // console.log('nanan', obj)
+
     const bookmarkObj = {
       bookmarkUuid: uuidv4(),
       userUuid: userUuid,
@@ -64,25 +78,12 @@ const CreateService = {
       tags: tags
     }
 
-    if (tags.length > 0) {
-      // preparetags
-      const tagsToInsert = bookmarkObj.tags.map(el => {
-        return {
-          name: el,
-          slug: slugify(el),
-          userId: userId,
-          userUuid: userUuid
-        }
-      })
+    const bookmarkObjToInsert =
+      tags.length > 0
+        ? await this.insertTagsBeforeCollectionItem(apollo, bookmarkObj)
+        : bookmarkObj
 
-      this.insertTags(apollo, tagsToInsert, bookmarkObj).then(
-        updatedBookmarkObj => {
-          this.insertCollectionItem(apollo, updatedBookmarkObj)
-        }
-      )
-    } else {
-      this.insertCollectionItem(apollo, bookmarkObj)
-    }
+    return await this.insertCollectionItem(apollo, bookmarkObjToInsert)
   },
 
   // INSERT
@@ -92,35 +93,31 @@ const CreateService = {
       mutation: addTags,
       variables: {
         objects: tagsToInsert
-      },
-      refetchQueries: ['getAllBookmarksByCat', 'getTags']
+      }
     })
+
     if (error) {
       log(error)
-    } else {
-      const respArr = data.insert_tags.returning
-      const tagsBookmarksMap = respArr.map(item => {
-        return {
-          bookmarkUuid: bookmarkObj.bookmarkUuid,
-          tagUuid: item.uuid
-        }
-      })
-
-      bookmarkObj.tags = tagsBookmarksMap
-
-      return Promise.resolve(bookmarkObj)
+      return data
     }
-
-    return data
+    const tagsBookmarksMap = await data.insert_tags.returning.map(item => {
+      return {
+        bookmarkUuid: bookmarkObj.bookmarkUuid,
+        tagUuid: item.uuid
+      }
+    })
+    bookmarkObj.tags = tagsBookmarksMap
+    return bookmarkObj
   },
   async insertCollectionItem(apollo, bookmarkObj) {
-    const { dataOutput, error } = await apollo.mutate({
+    const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
       mutation: addBookmark,
-      variables: bookmarkObj,
-      refetchQueries: ['getAllBookmarksByCat']
+      variables: bookmarkObj
     })
-    log(error ? error : dataOutput)
+    log(error ? error : data)
+
+    return error ? false : data
   }
 }
 

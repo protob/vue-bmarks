@@ -17,12 +17,19 @@ export default {
 
   mounted() {
     this.getItems()
+    this.enableRefetchListener()
   },
   methods: {
+    enableRefetchListener() {
+      this.$root.$on('refetchItems', () => {
+        this.getItems()
+      })
+    },
     async getItems() {
       const { data, error } = await this.$apollo.query({
         $loadingKey: 'loading',
         query: getAllBookmarksByCat,
+        fetchPolicy: 'no-cache',
         variables: {}
       })
       if (error) {

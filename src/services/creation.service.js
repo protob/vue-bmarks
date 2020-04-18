@@ -2,12 +2,6 @@ const slugify = require('slugify')
 const uuidv4 = require('uuid/v4')
 
 import { log } from '@/utils'
-// import {
-//   ADD_CAT,
-//   ADD_TAG,
-//   ADD_TAGS,
-//   ADD_BOOKMARK
-// } from '@/queries/createQueries.js'
 
 import addCat from '@/apollo/queries/addCat.gql'
 import addTag from '@/apollo/queries/addTag.gql'
@@ -98,7 +92,7 @@ const CreateService = {
 
     if (error) {
       log(error)
-      return data
+      return false
     }
     const tagsBookmarksMap = await data.insert_tags.returning.map(item => {
       return {

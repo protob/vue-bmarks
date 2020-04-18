@@ -26,13 +26,11 @@ const CreateService = {
 
   // ADD
   async addTaxonomyItem(apollo, obj, target, userUuid, userId) {
-    const MUTATION = target == 'cat' ? addCat : addTag
-    const query = target == 'cat' ? 'getCats' : 'getTags'
     const name = obj.name
     const slug = slugify(name)
     const uuid = obj.uuid ? obj.uuid.trim() : uuidv4()
 
-    const data = {
+    const dataInput = {
       uuid,
       name,
       slug,
@@ -40,15 +38,14 @@ const CreateService = {
       userId
     }
 
-    // console.log(data)
-
-    const { dataOutput, error } = await apollo.mutate({
+    const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
-      mutation: MUTATION,
-      variables: data,
-      refetchQueries: [query]
+      mutation: target == 'cat' ? addCat : addTag,
+      variables: { ...dataInput }
     })
-    log(error ? error : dataOutput)
+
+    log(error ? error : data)
+    return error ? false : data
   },
 
   addCollectionItemAndMaybeTags(apollo, obj, userId, userUuid) {

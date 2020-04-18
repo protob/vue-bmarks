@@ -58,16 +58,21 @@ export default {
 
   methods: {
     // enable event handlers
-    addTaxonomyItem(obj, target) {
+    async addTaxonomyItem(obj, target) {
       const userUuid = this.getCurrentUserUuid,
         userId = this.getCurrentUserId
 
-      // console.log(userUuid)
-      // console.log(userId)
+      await CreateService.addTaxonomyItem(
+        this.$apollo,
+        obj,
+        target,
+        userUuid,
+        userId
+      )
 
-      CreateService.addTaxonomyItem(this.$apollo, obj, target, userUuid, userId)
       this.toggleModal()
       this.$store.dispatch('setModalFormData', {})
+      this.$root.$emit('refetchTax')
     },
     addCollectionItemAndMaybeTags(obj) {
       const userUuid = this.getCurrentUserUuid,

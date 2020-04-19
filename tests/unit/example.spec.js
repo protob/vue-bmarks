@@ -1,12 +1,26 @@
 import { shallowMount } from '@vue/test-utils'
-import HelloWorld from '@/components/HelloWorld.vue'
+import PrtButton from '@/components/atoms/PrtButton/PrtButton.vue'
 
-describe('HelloWorld.vue', () => {
-  it('renders props.msg when passed', () => {
-    const msg = 'new message'
-    const wrapper = shallowMount(HelloWorld, {
-      propsData: { msg }
+describe('PrtButton.vue', () => {
+  it('renders a component', () => {
+    const component = shallowMount(PrtButton)
+    expect(component.contains('.prt-button')).toBe(true)
+  })
+
+  it('renders html in slot', () => {
+    const component = shallowMount(PrtButton, {
+      slots: {
+        default: '<div class="sample-content"></div>'
+      }
     })
-    expect(wrapper.text()).toMatch(msg)
+    expect(component.findAll('.sample-content').length).toBe(1)
+  })
+  it('slot renders text', () => {
+    const component = shallowMount(PrtButton, {
+      slots: {
+        default: 'sample'
+      }
+    })
+    expect(component.text()).toBe('sample')
   })
 })

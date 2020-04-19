@@ -8,7 +8,7 @@
       <p>{{ item.url }}</p>
       <p>{{ item.desc }}</p>
       <p>
-        {{ item.updated_at }}
+        {{ formatedDate }}
       </p>
     </div>
 
@@ -38,7 +38,7 @@
     @apply text-white  pb-2;
   }
   &__h {
-    @apply text-white text-2xl pb-2;
+    @apply text-white text-2xl pb-2 capitalize;
   }
 }
 </style>

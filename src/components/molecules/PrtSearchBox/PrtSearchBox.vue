@@ -1,7 +1,12 @@
 <script src="./PrtSearchBox.js"></script>
 <template>
   <div class="prt-search-box">
-    <PrtInput class="pb-0" placeholder="Search" />
+    <PrtInput
+      class="pb-0"
+      placeholder="Search"
+      v-model="filterPhrase"
+      @input="filterItems"
+    />
   </div>
 </template>
 <style lang="scss">

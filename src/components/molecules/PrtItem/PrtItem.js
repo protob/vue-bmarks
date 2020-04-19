@@ -13,13 +13,18 @@ export default {
       }
     },
     catUuid: {
-      type: String,
+      type: String | Number,
       required: true,
       default: null
     },
     title: {
-      type: String,
+      type: String | Number,
       default: 'Categories'
+    }
+  },
+  computed: {
+    formatedDate() {
+      return new Date(this.item.updated_at).toLocaleDateString('en-AU') // 9/17/2016
     }
   },
   methods: {
@@ -28,9 +33,8 @@ export default {
     },
 
     openModal(target, taxUuid, bookmark = null, isEditing = true) {
-      // ediging exsiting bookmark
+      // edit exsiting bookmark
       if (bookmark) {
-        // console.log('kaka', bookmark)
         if (isEditing) {
           const tagsArr = bookmark.bookmarks_tags.map(elem => {
             return {
@@ -61,9 +65,5 @@ export default {
         }
       }
     }
-
-    // openModal(target) {
-    //   this.$root.$emit('fireModal', { target })
-    // }
   }
 }

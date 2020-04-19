@@ -19,6 +19,12 @@ export default {
     }
   },
   methods: {
+    filterItemsByTax(uuid, name, tax) {
+      return tax === 'cats'
+        ? this.$root.$emit('filterItemsByCat', { uuid, catName: name })
+        : this.$root.$emit('filterItemsByTag', { uuid, tagName: name })
+    },
+
     toggleDeleteTaxModal(target, taxUuid, taxName) {
       this.$root.$emit('fireConfirm', { target, taxUuid, taxName })
     },

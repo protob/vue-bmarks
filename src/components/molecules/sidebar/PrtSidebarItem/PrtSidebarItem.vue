@@ -2,7 +2,12 @@
 <template>
   <div class="prt-sidebar-item flex flex-wrap justify-between">
     <a class="w-auto sm:w-full lg:w-auto" href="#"
-      ><h2 class="prt-sidebar-item__text">{{ item.name }}</h2></a
+      ><h2
+        class="prt-sidebar-item__text"
+        @click="filterItemsByTax(item.uuid, item.name, item.__typename)"
+      >
+        {{ item.name }}
+      </h2></a
     >
 
     <div class="prt-sidebar-item__btns w-auto sm:w-full lg:w-auto">

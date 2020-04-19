@@ -9,5 +9,10 @@ export default {
       type: Array,
       default: () => []
     }
+  },
+  methods: {
+    filterItemsByTag(uuid, name) {
+      this.$root.$emit('filterItemsByTag', { uuid, tagName: name })
+    }
   }
 }

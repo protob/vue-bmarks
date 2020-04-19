@@ -20,12 +20,19 @@ export default {
 
   mounted() {
     this.getCats()
+    this.enableRefetchListener()
   },
   methods: {
+    enableRefetchListener() {
+      this.$root.$on('refetchTax', () => {
+        this.getCats()
+      })
+    },
     async getCats() {
       const { data, error } = await this.$apollo.query({
         $loadingKey: 'loading',
         query: getCats,
+        fetchPolicy: 'no-cache',
         variables: {}
       })
       if (error) {

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <loader /> -->
     loader
   </div>
 </template>
@@ -18,5 +17,3 @@ export default {
   }
 }
 </script>
-
-<style scoped></style>

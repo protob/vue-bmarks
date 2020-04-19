@@ -2,12 +2,6 @@ const slugify = require('slugify')
 const uuidv4 = require('uuid/v4')
 
 import { log } from '@/utils'
-// import {
-//   ADD_CAT,
-//   ADD_TAG,
-//   ADD_TAGS,
-//   ADD_BOOKMARK
-// } from '@/queries/createQueries.js'
 
 import addCat from '@/apollo/queries/addCat.gql'
 import addTag from '@/apollo/queries/addTag.gql'
@@ -25,14 +19,13 @@ const CreateService = {
   },
 
   // ADD
+  // add or updatete teampny item
   async addTaxonomyItem(apollo, obj, target, userUuid, userId) {
-    const MUTATION = target == 'cat' ? addCat : addTag
-    const query = target == 'cat' ? 'getCats' : 'getTags'
     const name = obj.name
     const slug = slugify(name)
     const uuid = obj.uuid ? obj.uuid.trim() : uuidv4()
 
-    const data = {
+    const dataInput = {
       uuid,
       name,
       slug,
@@ -40,21 +33,34 @@ const CreateService = {
       userId
     }
 
-    // console.log(data)
-
-    const { dataOutput, error } = await apollo.mutate({
+    const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
-      mutation: MUTATION,
-      variables: data,
-      refetchQueries: [query]
+      mutation: target == 'cat' ? addCat : addTag,
+      variables: { ...dataInput }
     })
-    log(error ? error : dataOutput)
+
+    log(error ? error : data)
+    return error ? false : data
   },
 
-  addCollectionItemAndMaybeTags(apollo, obj, userId, userUuid) {
+  async insertTagsBeforeCollectionItem(apollo, bookmarkObj) {
+    // preparetags
+    const tagsToInsert = bookmarkObj.tags.map(el => {
+      return {
+        name: el,
+        slug: slugify(el),
+        userId: bookmarkObj.userId,
+        userUuid: bookmarkObj.userUuid
+      }
+    })
+
+    return await this.insertTags(apollo, tagsToInsert, bookmarkObj)
+  },
+
+  async addCollectionItemAndMaybeTags(apollo, obj, userId, userUuid) {
     let tags = !obj.tags ? [] : obj.tags
     tags = this.normalizeTags(tags)
-    // console.log('nanan', obj)
+
     const bookmarkObj = {
       bookmarkUuid: uuidv4(),
       userUuid: userUuid,
@@ -67,25 +73,12 @@ const CreateService = {
       tags: tags
     }
 
-    if (tags.length > 0) {
-      // preparetags
-      const tagsToInsert = bookmarkObj.tags.map(el => {
-        return {
-          name: el,
-          slug: slugify(el),
-          userId: userId,
-          userUuid: userUuid
-        }
-      })
+    const bookmarkObjToInsert =
+      tags.length > 0
+        ? await this.insertTagsBeforeCollectionItem(apollo, bookmarkObj)
+        : bookmarkObj
 
-      this.insertTags(apollo, tagsToInsert, bookmarkObj).then(
-        updatedBookmarkObj => {
-          this.insertCollectionItem(apollo, updatedBookmarkObj)
-        }
-      )
-    } else {
-      this.insertCollectionItem(apollo, bookmarkObj)
-    }
+    return await this.insertCollectionItem(apollo, bookmarkObjToInsert)
   },
 
   // INSERT
@@ -95,35 +88,31 @@ const CreateService = {
       mutation: addTags,
       variables: {
         objects: tagsToInsert
-      },
-      refetchQueries: ['getAllBookmarksByCat', 'getTags']
+      }
     })
+
     if (error) {
       log(error)
-    } else {
-      const respArr = data.insert_tags.returning
-      const tagsBookmarksMap = respArr.map(item => {
-        return {
-          bookmarkUuid: bookmarkObj.bookmarkUuid,
-          tagUuid: item.uuid
-        }
-      })
-
-      bookmarkObj.tags = tagsBookmarksMap
-
-      return Promise.resolve(bookmarkObj)
+      return false
     }
-
-    return data
+    const tagsBookmarksMap = await data.insert_tags.returning.map(item => {
+      return {
+        bookmarkUuid: bookmarkObj.bookmarkUuid,
+        tagUuid: item.uuid
+      }
+    })
+    bookmarkObj.tags = tagsBookmarksMap
+    return bookmarkObj
   },
   async insertCollectionItem(apollo, bookmarkObj) {
-    const { dataOutput, error } = await apollo.mutate({
+    const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
       mutation: addBookmark,
-      variables: bookmarkObj,
-      refetchQueries: ['getAllBookmarksByCat']
+      variables: bookmarkObj
     })
-    log(error ? error : dataOutput)
+    log(error ? error : data)
+
+    return error ? false : data
   }
 }
 

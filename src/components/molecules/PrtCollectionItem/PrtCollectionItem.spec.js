@@ -1,10 +1,36 @@
-import { shallowMount } from "@vue/test-utils";
-import PrtCollectionItem from "./PrtCollectionItem.vue";
+import { shallowMount } from '@vue/test-utils'
+import PrtCollectionItem from './PrtCollectionItem.vue'
 
-describe("PrtCollectionItem.vue", () => {
-  it("renders a component", () => {
-    const component = shallowMount(PrtCollectionItem);
-    expect(component.contains(".prt-collection-item")).toBe(true);
-  });
-});
-
+describe('PrtCollectionItem.vue', () => {
+  it('renders a component', () => {
+    const component = shallowMount(PrtCollectionItem, {
+      propsData: {
+        collectionItem: {
+          name: 'vue',
+          uuid: '0cbd7327-5e96-493e-af59-203da9e0de22',
+          bookmarks_cats: [
+            {
+              bookmark: {
+                uuid: '6370cc14-2d83-4e54-a6e3-bee56f782c6c',
+                name: 'vue',
+                slug: 'vue',
+                desc: 'The Progressive JavaScript Framework',
+                updated_at: '2020-04-09T21:17:50.964745+00:00',
+                url: 'https://vuejs.org',
+                user: {
+                  uuid: '7b913740-33b7-422e-a540-236a327b6b75',
+                  __typename: 'users'
+                },
+                bookmarks_tags: [],
+                __typename: 'bookmarks'
+              },
+              __typename: 'bookmarks_cats'
+            }
+          ],
+          __typename: 'cats'
+        }
+      }
+    })
+    expect(component.contains('.prt-collection-item')).toBe(true)
+  })
+})

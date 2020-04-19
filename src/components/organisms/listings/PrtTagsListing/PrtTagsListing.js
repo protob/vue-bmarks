@@ -19,11 +19,19 @@ export default {
 
   mounted() {
     this.getTags()
+    this.enableRefetchListener()
   },
   methods: {
+    enableRefetchListener() {
+      this.$root.$on('refetchTax', () => {
+        this.getTags()
+      })
+    },
     async getTags() {
       const { data, error } = await this.$apollo.query({
         $loadingKey: 'loading',
+
+        fetchPolicy: 'no-cache',
         query: getTags,
         variables: {}
       })

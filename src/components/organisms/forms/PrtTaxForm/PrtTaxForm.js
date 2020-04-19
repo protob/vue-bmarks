@@ -88,7 +88,7 @@ export default {
       this.$root.$emit('sendData', {
         dataObj,
         formId: this.tax === 'cat' ? 'catForm' : 'tagForm',
-        isEditing: false
+        isEditing: this.getModalForm.isEditing
       })
       this.resetData()
       this.success = true

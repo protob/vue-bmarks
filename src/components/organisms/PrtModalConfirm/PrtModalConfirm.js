@@ -47,9 +47,12 @@ export default {
   },
 
   methods: {
-    deleteItem() {
-      DeleteService.deleteItem(this.itemData, this.$apollo)
+    async deleteItem() {
+      await DeleteService.deleteItem(this.itemData, this.$apollo)
+
       this.toggleModal()
+      this.$root.$emit('refetchItems')
+      this.$root.$emit('refetchTax')
     },
 
     toggleModal() {

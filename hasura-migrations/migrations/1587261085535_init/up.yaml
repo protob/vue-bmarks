@@ -1,0 +1,382 @@
+- args:
+    tables:
+    - array_relationships:
+      - name: bookmarks
+        using:
+          manual_configuration:
+            column_mapping:
+              userUuid: uuid
+            remote_table:
+              name: users
+              schema: public
+      - name: bookmarks_cats
+        using:
+          foreign_key_constraint_on:
+            column: bookmarkUuid
+            table:
+              name: bookmarks_cats
+              schema: public
+      - name: bookmarks_tags
+        using:
+          foreign_key_constraint_on:
+            column: bookmarkUuid
+            table:
+              name: bookmarks_tags
+              schema: public
+      delete_permissions:
+      - permission:
+          filter:
+            _or:
+            - userId:
+                _eq: X-Hasura-User-Id
+        role: user
+      insert_permissions:
+      - permission:
+          check: {}
+          columns:
+          - uuid
+          - userUuid
+          - name
+          - slug
+          - url
+          - updated_at
+          - desc
+          - catUuid
+          - userId
+        role: user
+      object_relationships:
+      - name: cat
+        using:
+          foreign_key_constraint_on: catUuid
+      - name: user
+        using:
+          foreign_key_constraint_on: userUuid
+      select_permissions:
+      - permission:
+          allow_aggregations: true
+          columns:
+          - catUuid
+          - desc
+          - name
+          - slug
+          - updated_at
+          - url
+          - userId
+          - userUuid
+          - uuid
+          filter:
+            _or:
+            - userId:
+                _eq: X-Hasura-User-Id
+        role: user
+      table:
+        name: bookmarks
+        schema: public
+      update_permissions:
+      - permission:
+          check: null
+          columns:
+          - uuid
+          - userUuid
+          - name
+          - slug
+          - url
+          - updated_at
+          - desc
+          - catUuid
+          - userId
+          filter:
+            _or:
+            - userId:
+                _eq: X-Hasura-User-Id
+        role: user
+    - delete_permissions:
+      - permission:
+          filter: {}
+        role: user
+      insert_permissions:
+      - permission:
+          check: {}
+          columns:
+          - bookmarkUuid
+          - catUuid
+        role: user
+      object_relationships:
+      - name: bookmark
+        using:
+          foreign_key_constraint_on: bookmarkUuid
+      - name: cat
+        using:
+          foreign_key_constraint_on: catUuid
+      select_permissions:
+      - permission:
+          allow_aggregations: true
+          columns:
+          - bookmarkUuid
+          - catUuid
+          filter: {}
+        role: user
+      table:
+        name: bookmarks_cats
+        schema: public
+      update_permissions:
+      - permission:
+          check: null
+          columns:
+          - bookmarkUuid
+          - catUuid
+          filter: {}
+        role: user
+    - delete_permissions:
+      - permission:
+          filter: {}
+        role: user
+      insert_permissions:
+      - permission:
+          check: {}
+          columns:
+          - bookmarkUuid
+          - tagUuid
+        role: user
+      object_relationships:
+      - name: bookmark
+        using:
+          foreign_key_constraint_on: bookmarkUuid
+      - name: tag
+        using:
+          manual_configuration:
+            column_mapping:
+              tagUuid: uuid
+            remote_table:
+              name: tags
+              schema: public
+      select_permissions:
+      - permission:
+          allow_aggregations: true
+          columns:
+          - bookmarkUuid
+          - tagUuid
+          filter: {}
+        role: user
+      table:
+        name: bookmarks_tags
+        schema: public
+      update_permissions:
+      - permission:
+          check: null
+          columns:
+          - bookmarkUuid
+          - tagUuid
+          filter: {}
+        role: user
+    - array_relationships:
+      - name: bookmarks
+        using:
+          foreign_key_constraint_on:
+            column: catUuid
+            table:
+              name: bookmarks
+              schema: public
+      - name: bookmarks_cats
+        using:
+          foreign_key_constraint_on:
+            column: catUuid
+            table:
+              name: bookmarks_cats
+              schema: public
+      delete_permissions:
+      - permission:
+          filter:
+            _or:
+            - userId:
+                _eq: X-Hasura-User-Id
+        role: user
+      insert_permissions:
+      - permission:
+          check: {}
+          columns:
+          - uuid
+          - name
+          - slug
+          - updated_at
+          - userUuid
+          - userId
+        role: user
+      object_relationships:
+      - name: user
+        using:
+          foreign_key_constraint_on: userUuid
+      select_permissions:
+      - permission:
+          allow_aggregations: true
+          columns:
+          - uuid
+          - name
+          - slug
+          - updated_at
+          - userUuid
+          - userId
+          filter:
+            _or:
+            - userId:
+                _eq: X-Hasura-User-Id
+        role: user
+      table:
+        name: cats
+        schema: public
+      update_permissions:
+      - permission:
+          check: null
+          columns:
+          - name
+          - slug
+          - userId
+          - updated_at
+          - userUuid
+          - uuid
+          filter:
+            _or:
+            - userId:
+                _eq: X-Hasura-User-Id
+        role: user
+    - array_relationships:
+      - name: bookmarks_tags
+        using:
+          foreign_key_constraint_on:
+            column: tagUuid
+            table:
+              name: bookmarks_tags
+              schema: public
+      delete_permissions:
+      - permission:
+          filter: {}
+        role: user
+      insert_permissions:
+      - permission:
+          check: {}
+          columns:
+          - uuid
+          - name
+          - slug
+          - userUuid
+          - updated_at
+          - userId
+        role: user
+      object_relationships:
+      - name: user
+        using:
+          foreign_key_constraint_on: userUuid
+      select_permissions:
+      - permission:
+          allow_aggregations: true
+          columns:
+          - uuid
+          - name
+          - slug
+          - userUuid
+          - updated_at
+          - userId
+          filter:
+            _or:
+            - userId:
+                _eq: X-Hasura-User-Id
+        role: user
+      table:
+        name: tags
+        schema: public
+      update_permissions:
+      - permission:
+          check: null
+          columns:
+          - name
+          - slug
+          - userId
+          - updated_at
+          - userUuid
+          - uuid
+          filter: {}
+        role: user
+    - array_relationships:
+      - name: bookmarks
+        using:
+          foreign_key_constraint_on:
+            column: userUuid
+            table:
+              name: bookmarks
+              schema: public
+      - name: cats
+        using:
+          foreign_key_constraint_on:
+            column: userUuid
+            table:
+              name: cats
+              schema: public
+      - name: tags
+        using:
+          foreign_key_constraint_on:
+            column: userUuid
+            table:
+              name: tags
+              schema: public
+      delete_permissions:
+      - permission:
+          filter:
+            _and:
+            - userId:
+                _eq: X-Hasura-User-Id
+        role: user
+      insert_permissions:
+      - permission:
+          check:
+            _and:
+            - userId:
+                _eq: X-Hasura-User-Id
+          columns:
+          - email
+          - id
+          - name
+          - slug
+          - updated_at
+          - userId
+          - username
+          - uuid
+        role: user
+      select_permissions:
+      - permission:
+          allow_aggregations: true
+          columns:
+          - email
+          - id
+          - name
+          - slug
+          - updated_at
+          - userId
+          - username
+          - uuid
+          filter:
+            _and:
+            - userId:
+                _eq: X-Hasura-User-Id
+        role: user
+      table:
+        name: users
+        schema: public
+      update_permissions:
+      - permission:
+          check: null
+          columns:
+          - email
+          - id
+          - name
+          - slug
+          - updated_at
+          - userId
+          - username
+          - uuid
+          filter:
+            _and:
+            - userId:
+                _eq: X-Hasura-User-Id
+        role: user
+    version: 2
+  type: replace_metadata

@@ -24,13 +24,14 @@ export default {
   computed: {
     ...mapGetters(['getCurrentUserUuid', 'getCurrentUserId']),
     title() {
+      const action = this.isEditing ? 'Edit' : 'Add'
       const title =
         this.target === 'cat'
-          ? 'Add Category'
+          ? 'Category'
           : this.target == 'item'
-          ? 'Add Item'
-          : 'Add Tag'
-      return title
+          ? 'Item'
+          : 'Tag'
+      return `${action} ${title}`
     },
     currentProperties: function() {
       return {
@@ -52,41 +53,73 @@ export default {
       userUuid: localStorage.userUuid ? localStorage.userUuid : '',
       userId: localStorage.userId ? localStorage.userId : '',
       isModalVisible: false,
-      currentModalForm: 'PrtTagForm'
+      currentModalForm: 'PrtTaxForm'
     }
   },
 
   methods: {
-    // enable event handlers
-    addTaxonomyItem(obj, target) {
+    async addTaxonomyItem(obj, target) {
       const userUuid = this.getCurrentUserUuid,
         userId = this.getCurrentUserId
 
-      // console.log(userUuid)
-      // console.log(userId)
+      await CreateService.addTaxonomyItem(
+        this.$apollo,
+        obj,
+        target,
+        userUuid,
+        userId
+      )
 
-      CreateService.addTaxonomyItem(this.$apollo, obj, target, userUuid, userId)
       this.toggleModal()
       this.$store.dispatch('setModalFormData', {})
+      this.$root.$emit('refetchTax')
     },
-    addCollectionItemAndMaybeTags(obj) {
+    async addCollectionItemAndMaybeTags(obj) {
       const userUuid = this.getCurrentUserUuid,
         userId = this.getCurrentUserId
       // console.log('oo', obj)
-      CreateService.addCollectionItemAndMaybeTags(
+      await CreateService.addCollectionItemAndMaybeTags(
         this.$apollo,
         obj,
         userId,
         userUuid
       )
       this.toggleModal()
+      this.$root.$emit('refetchItems')
+      this.$root.$emit('refetchTax')
     },
-    updateCollectionItem(obj) {
+
+    async updateTaxonomyItem(obj, target) {
       const userUuid = this.getCurrentUserUuid,
         userId = this.getCurrentUserId
 
-      UpdateService.updateCollectionItem(this.$apollo, obj, userId, userUuid)
+      await UpdateService.updateTaxonomyItem(
+        this.$apollo,
+        obj,
+        target,
+        userUuid,
+        userId
+      )
+
       this.toggleModal()
+      this.$store.dispatch('setModalFormData', {})
+      this.$root.$emit('refetchItems')
+      this.$root.$emit('refetchTax')
+    },
+
+    async updateCollectionItem(obj) {
+      const userUuid = this.getCurrentUserUuid,
+        userId = this.getCurrentUserId
+
+      await UpdateService.updateCollectionItem(
+        this.$apollo,
+        obj,
+        userId,
+        userUuid
+      )
+      this.toggleModal()
+      this.$root.$emit('refetchTax')
+      this.$root.$emit('refetchItems')
     },
     enableSendData() {
       this.$root.$on('sendData', data => {
@@ -100,9 +133,10 @@ export default {
             : this.addCollectionItemAndMaybeTags(dataObj)
         } else {
           // cat from
-          formId == 'catForm'
-            ? this.addTaxonomyItem(dataObj, 'cat')
-            : this.addTaxonomyItem(dataObj, 'tag')
+          const tax = formId === 'catForm' ? 'cat' : 'tag'
+          isEditing
+            ? this.updateTaxonomyItem(dataObj, tax)
+            : this.addTaxonomyItem(dataObj, tax)
         }
       })
     },
@@ -120,8 +154,9 @@ export default {
         this.$root.$emit('fireModalSetData')
         this.target = data.target
         //this.currentModalForm =
-        // this.target === 'cat' ? 'PrtCatForm' : 'PrtTagForm'
+
         this.isEditing = data.isEditing
+
         data.taxUuid ? (this.taxUuid = data.taxUuid) : (this.taxUuid = null)
         this.currentModalForm =
           this.target === 'item' ? 'PrtItemForm' : 'PrtTaxForm'

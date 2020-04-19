@@ -2,4 +2,3 @@
 <template>
   <div class="prt-filter-box">prt-filter-box</div>
 </template>
-<style lang="scss"></style>

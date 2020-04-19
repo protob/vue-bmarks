@@ -23,14 +23,14 @@ export default {
       this.$root.$emit('fireConfirm', { target, taxUuid, taxName })
     },
     openModalTax(target, taxUuid, taxName, isEditing = false) {
-      const isBookmark = target == 'bookmark' ? true : false
+      // const isBookmark = target == 'bookmark' ? true : false
       const data = {
         target,
         taxUuid,
         taxName,
         isEditing,
         catUuid: taxUuid,
-        isBookmark: isBookmark
+        isBookmark: false
       }
 
       this.$store.dispatch('setModalFormData', data)

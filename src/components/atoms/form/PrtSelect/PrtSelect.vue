@@ -53,28 +53,9 @@
 </template>
 <style lang="scss">
 @import '@/assets/scss/helpers';
-.prt-select {
-  @apply appearance-none  block w-full bg-white text-gray-700 rounded leading-tight;
-}
-.prt-select__inner {
-  box-sizing: border-box;
-  // @apply py-3 px-4;
-}
 
-.prt-select__selected {
-  @apply py-3 px-4;
-}
-.prt-select--is-active {
-  @apply rounded-b-none;
-
-  .prt-select__selected {
-    @apply rounded-b-none;
-  }
-}
 .prt-select-option {
   @apply appearance-none  block w-full bg-white text-gray-700 border border-white rounded py-3 px-4 leading-tight;
-}
-.prt-select-option {
   background: white;
   display: flex;
   align-items: center;
@@ -151,6 +132,24 @@
     --select-dropdown-bottom: auto;
     --select-animation-enter: ssdesktop 150ms;
     --select-animation-leave: ssdesktop 150ms revers;
+  }
+  //-----------mods
+  @apply appearance-none  block w-full bg-white text-gray-700 rounded leading-tight;
+
+  &__inner {
+    box-sizing: border-box;
+  }
+
+  &__selected {
+    @apply py-3 px-4;
+  }
+
+  &--is-active {
+    @apply rounded-b-none;
+
+    .prt-select__selected {
+      @apply rounded-b-none;
+    }
   }
 }
 

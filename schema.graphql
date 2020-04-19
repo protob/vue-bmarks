@@ -1,0 +1,2700 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+# columns and relationships of "cats"
+type cats {
+  # An array relationship
+  items(
+    # distinct select on columns
+    distinct_on: [items_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_order_by!]
+
+    # filter the rows returned
+    where: items_bool_exp
+  ): [items!]!
+
+  # An aggregated array relationship
+  items_aggregate(
+    # distinct select on columns
+    distinct_on: [items_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_order_by!]
+
+    # filter the rows returned
+    where: items_bool_exp
+  ): items_aggregate!
+
+  # An array relationship
+  items_cats(
+    # distinct select on columns
+    distinct_on: [items_cats_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_cats_order_by!]
+
+    # filter the rows returned
+    where: items_cats_bool_exp
+  ): [items_cats!]!
+
+  # An aggregated array relationship
+  items_cats_aggregate(
+    # distinct select on columns
+    distinct_on: [items_cats_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_cats_order_by!]
+
+    # filter the rows returned
+    where: items_cats_bool_exp
+  ): items_cats_aggregate!
+  name: String!
+  slug: String!
+  updated_at: timestamptz
+
+  # An object relationship
+  user: users
+  userId: String
+  userUuid: uuid
+  uuid: uuid!
+}
+
+# aggregated selection of "cats"
+type cats_aggregate {
+  aggregate: cats_aggregate_fields
+  nodes: [cats!]!
+}
+
+# aggregate fields of "cats"
+type cats_aggregate_fields {
+  count(columns: [cats_select_column!], distinct: Boolean): Int
+  max: cats_max_fields
+  min: cats_min_fields
+}
+
+# order by aggregate values of table "cats"
+input cats_aggregate_order_by {
+  count: order_by
+  max: cats_max_order_by
+  min: cats_min_order_by
+}
+
+# input type for inserting array relation for remote table "cats"
+input cats_arr_rel_insert_input {
+  data: [cats_insert_input!]!
+  on_conflict: cats_on_conflict
+}
+
+# Boolean expression to filter rows from the table "cats". All fields are combined with a logical 'AND'.
+input cats_bool_exp {
+  _and: [cats_bool_exp]
+  _not: cats_bool_exp
+  _or: [cats_bool_exp]
+  items: items_bool_exp
+  items_cats: items_cats_bool_exp
+  name: String_comparison_exp
+  slug: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+  user: users_bool_exp
+  userId: String_comparison_exp
+  userUuid: uuid_comparison_exp
+  uuid: uuid_comparison_exp
+}
+
+# unique or primary key constraints on table "cats"
+enum cats_constraint {
+  # unique or primary key constraint
+  cats_pkey
+
+  # unique or primary key constraint
+  cats_slug_userId_key
+}
+
+# input type for inserting data into table "cats"
+input cats_insert_input {
+  items: items_arr_rel_insert_input
+  items_cats: items_cats_arr_rel_insert_input
+  name: String
+  slug: String
+  updated_at: timestamptz
+  user: users_obj_rel_insert_input
+  userId: String
+  userUuid: uuid
+  uuid: uuid
+}
+
+# aggregate max on columns
+type cats_max_fields {
+  name: String
+  slug: String
+  updated_at: timestamptz
+  userId: String
+  userUuid: uuid
+  uuid: uuid
+}
+
+# order by max() on columns of table "cats"
+input cats_max_order_by {
+  name: order_by
+  slug: order_by
+  updated_at: order_by
+  userId: order_by
+  userUuid: order_by
+  uuid: order_by
+}
+
+# aggregate min on columns
+type cats_min_fields {
+  name: String
+  slug: String
+  updated_at: timestamptz
+  userId: String
+  userUuid: uuid
+  uuid: uuid
+}
+
+# order by min() on columns of table "cats"
+input cats_min_order_by {
+  name: order_by
+  slug: order_by
+  updated_at: order_by
+  userId: order_by
+  userUuid: order_by
+  uuid: order_by
+}
+
+# response of any mutation on the table "cats"
+type cats_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [cats!]!
+}
+
+# input type for inserting object relation for remote table "cats"
+input cats_obj_rel_insert_input {
+  data: cats_insert_input!
+  on_conflict: cats_on_conflict
+}
+
+# on conflict condition type for table "cats"
+input cats_on_conflict {
+  constraint: cats_constraint!
+  update_columns: [cats_update_column!]!
+  where: cats_bool_exp
+}
+
+# ordering options when selecting data from "cats"
+input cats_order_by {
+  items_aggregate: items_aggregate_order_by
+  items_cats_aggregate: items_cats_aggregate_order_by
+  name: order_by
+  slug: order_by
+  updated_at: order_by
+  user: users_order_by
+  userId: order_by
+  userUuid: order_by
+  uuid: order_by
+}
+
+# primary key columns input for table: "cats"
+input cats_pk_columns_input {
+  uuid: uuid!
+}
+
+# select columns of table "cats"
+enum cats_select_column {
+  # column name
+  name
+
+  # column name
+  slug
+
+  # column name
+  updated_at
+
+  # column name
+  userId
+
+  # column name
+  userUuid
+
+  # column name
+  uuid
+}
+
+# input type for updating data in table "cats"
+input cats_set_input {
+  name: String
+  slug: String
+  updated_at: timestamptz
+  userId: String
+  userUuid: uuid
+  uuid: uuid
+}
+
+# update columns of table "cats"
+enum cats_update_column {
+  # column name
+  name
+
+  # column name
+  slug
+
+  # column name
+  updated_at
+
+  # column name
+  userId
+
+  # column name
+  userUuid
+
+  # column name
+  uuid
+}
+
+# expression to compare columns of type Int. All fields are combined with logical 'AND'.
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+# columns and relationships of "items"
+type items {
+  # An object relationship
+  cat: cats
+  catUuid: uuid
+  desc: String
+
+  # An array relationship
+  items_cats(
+    # distinct select on columns
+    distinct_on: [items_cats_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_cats_order_by!]
+
+    # filter the rows returned
+    where: items_cats_bool_exp
+  ): [items_cats!]!
+
+  # An aggregated array relationship
+  items_cats_aggregate(
+    # distinct select on columns
+    distinct_on: [items_cats_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_cats_order_by!]
+
+    # filter the rows returned
+    where: items_cats_bool_exp
+  ): items_cats_aggregate!
+
+  # An array relationship
+  items_tags(
+    # distinct select on columns
+    distinct_on: [items_tags_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_tags_order_by!]
+
+    # filter the rows returned
+    where: items_tags_bool_exp
+  ): [items_tags!]!
+
+  # An aggregated array relationship
+  items_tags_aggregate(
+    # distinct select on columns
+    distinct_on: [items_tags_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_tags_order_by!]
+
+    # filter the rows returned
+    where: items_tags_bool_exp
+  ): items_tags_aggregate!
+  name: String!
+  slug: String!
+  updated_at: timestamptz
+  url: String!
+
+  # An object relationship
+  user: users!
+  userId: String
+  userUuid: uuid!
+  uuid: uuid!
+}
+
+# aggregated selection of "items"
+type items_aggregate {
+  aggregate: items_aggregate_fields
+  nodes: [items!]!
+}
+
+# aggregate fields of "items"
+type items_aggregate_fields {
+  count(columns: [items_select_column!], distinct: Boolean): Int
+  max: items_max_fields
+  min: items_min_fields
+}
+
+# order by aggregate values of table "items"
+input items_aggregate_order_by {
+  count: order_by
+  max: items_max_order_by
+  min: items_min_order_by
+}
+
+# input type for inserting array relation for remote table "items"
+input items_arr_rel_insert_input {
+  data: [items_insert_input!]!
+  on_conflict: items_on_conflict
+}
+
+# Boolean expression to filter rows from the table "items". All fields are combined with a logical 'AND'.
+input items_bool_exp {
+  _and: [items_bool_exp]
+  _not: items_bool_exp
+  _or: [items_bool_exp]
+  cat: cats_bool_exp
+  catUuid: uuid_comparison_exp
+  desc: String_comparison_exp
+  items_cats: items_cats_bool_exp
+  items_tags: items_tags_bool_exp
+  name: String_comparison_exp
+  slug: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+  url: String_comparison_exp
+  user: users_bool_exp
+  userId: String_comparison_exp
+  userUuid: uuid_comparison_exp
+  uuid: uuid_comparison_exp
+}
+
+# columns and relationships of "items_cats"
+type items_cats {
+  # An object relationship
+  cat: cats!
+  catUuid: uuid!
+
+  # An object relationship
+  item: items!
+  itemUuid: uuid!
+}
+
+# aggregated selection of "items_cats"
+type items_cats_aggregate {
+  aggregate: items_cats_aggregate_fields
+  nodes: [items_cats!]!
+}
+
+# aggregate fields of "items_cats"
+type items_cats_aggregate_fields {
+  count(columns: [items_cats_select_column!], distinct: Boolean): Int
+  max: items_cats_max_fields
+  min: items_cats_min_fields
+}
+
+# order by aggregate values of table "items_cats"
+input items_cats_aggregate_order_by {
+  count: order_by
+  max: items_cats_max_order_by
+  min: items_cats_min_order_by
+}
+
+# input type for inserting array relation for remote table "items_cats"
+input items_cats_arr_rel_insert_input {
+  data: [items_cats_insert_input!]!
+  on_conflict: items_cats_on_conflict
+}
+
+# Boolean expression to filter rows from the table "items_cats". All fields are combined with a logical 'AND'.
+input items_cats_bool_exp {
+  _and: [items_cats_bool_exp]
+  _not: items_cats_bool_exp
+  _or: [items_cats_bool_exp]
+  cat: cats_bool_exp
+  catUuid: uuid_comparison_exp
+  item: items_bool_exp
+  itemUuid: uuid_comparison_exp
+}
+
+# unique or primary key constraints on table "items_cats"
+enum items_cats_constraint {
+  # unique or primary key constraint
+  items_cats_pkey
+}
+
+# input type for inserting data into table "items_cats"
+input items_cats_insert_input {
+  cat: cats_obj_rel_insert_input
+  catUuid: uuid
+  item: items_obj_rel_insert_input
+  itemUuid: uuid
+}
+
+# aggregate max on columns
+type items_cats_max_fields {
+  catUuid: uuid
+  itemUuid: uuid
+}
+
+# order by max() on columns of table "items_cats"
+input items_cats_max_order_by {
+  catUuid: order_by
+  itemUuid: order_by
+}
+
+# aggregate min on columns
+type items_cats_min_fields {
+  catUuid: uuid
+  itemUuid: uuid
+}
+
+# order by min() on columns of table "items_cats"
+input items_cats_min_order_by {
+  catUuid: order_by
+  itemUuid: order_by
+}
+
+# response of any mutation on the table "items_cats"
+type items_cats_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [items_cats!]!
+}
+
+# input type for inserting object relation for remote table "items_cats"
+input items_cats_obj_rel_insert_input {
+  data: items_cats_insert_input!
+  on_conflict: items_cats_on_conflict
+}
+
+# on conflict condition type for table "items_cats"
+input items_cats_on_conflict {
+  constraint: items_cats_constraint!
+  update_columns: [items_cats_update_column!]!
+  where: items_cats_bool_exp
+}
+
+# ordering options when selecting data from "items_cats"
+input items_cats_order_by {
+  cat: cats_order_by
+  catUuid: order_by
+  item: items_order_by
+  itemUuid: order_by
+}
+
+# primary key columns input for table: "items_cats"
+input items_cats_pk_columns_input {
+  catUuid: uuid!
+  itemUuid: uuid!
+}
+
+# select columns of table "items_cats"
+enum items_cats_select_column {
+  # column name
+  catUuid
+
+  # column name
+  itemUuid
+}
+
+# input type for updating data in table "items_cats"
+input items_cats_set_input {
+  catUuid: uuid
+  itemUuid: uuid
+}
+
+# update columns of table "items_cats"
+enum items_cats_update_column {
+  # column name
+  catUuid
+
+  # column name
+  itemUuid
+}
+
+# unique or primary key constraints on table "items"
+enum items_constraint {
+  # unique or primary key constraint
+  items_pkey
+}
+
+# input type for inserting data into table "items"
+input items_insert_input {
+  cat: cats_obj_rel_insert_input
+  catUuid: uuid
+  desc: String
+  items_cats: items_cats_arr_rel_insert_input
+  items_tags: items_tags_arr_rel_insert_input
+  name: String
+  slug: String
+  updated_at: timestamptz
+  url: String
+  user: users_obj_rel_insert_input
+  userId: String
+  userUuid: uuid
+  uuid: uuid
+}
+
+# aggregate max on columns
+type items_max_fields {
+  catUuid: uuid
+  desc: String
+  name: String
+  slug: String
+  updated_at: timestamptz
+  url: String
+  userId: String
+  userUuid: uuid
+  uuid: uuid
+}
+
+# order by max() on columns of table "items"
+input items_max_order_by {
+  catUuid: order_by
+  desc: order_by
+  name: order_by
+  slug: order_by
+  updated_at: order_by
+  url: order_by
+  userId: order_by
+  userUuid: order_by
+  uuid: order_by
+}
+
+# aggregate min on columns
+type items_min_fields {
+  catUuid: uuid
+  desc: String
+  name: String
+  slug: String
+  updated_at: timestamptz
+  url: String
+  userId: String
+  userUuid: uuid
+  uuid: uuid
+}
+
+# order by min() on columns of table "items"
+input items_min_order_by {
+  catUuid: order_by
+  desc: order_by
+  name: order_by
+  slug: order_by
+  updated_at: order_by
+  url: order_by
+  userId: order_by
+  userUuid: order_by
+  uuid: order_by
+}
+
+# response of any mutation on the table "items"
+type items_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [items!]!
+}
+
+# input type for inserting object relation for remote table "items"
+input items_obj_rel_insert_input {
+  data: items_insert_input!
+  on_conflict: items_on_conflict
+}
+
+# on conflict condition type for table "items"
+input items_on_conflict {
+  constraint: items_constraint!
+  update_columns: [items_update_column!]!
+  where: items_bool_exp
+}
+
+# ordering options when selecting data from "items"
+input items_order_by {
+  cat: cats_order_by
+  catUuid: order_by
+  desc: order_by
+  items_cats_aggregate: items_cats_aggregate_order_by
+  items_tags_aggregate: items_tags_aggregate_order_by
+  name: order_by
+  slug: order_by
+  updated_at: order_by
+  url: order_by
+  user: users_order_by
+  userId: order_by
+  userUuid: order_by
+  uuid: order_by
+}
+
+# primary key columns input for table: "items"
+input items_pk_columns_input {
+  uuid: uuid!
+}
+
+# select columns of table "items"
+enum items_select_column {
+  # column name
+  catUuid
+
+  # column name
+  desc
+
+  # column name
+  name
+
+  # column name
+  slug
+
+  # column name
+  updated_at
+
+  # column name
+  url
+
+  # column name
+  userId
+
+  # column name
+  userUuid
+
+  # column name
+  uuid
+}
+
+# input type for updating data in table "items"
+input items_set_input {
+  catUuid: uuid
+  desc: String
+  name: String
+  slug: String
+  updated_at: timestamptz
+  url: String
+  userId: String
+  userUuid: uuid
+  uuid: uuid
+}
+
+# columns and relationships of "items_tags"
+type items_tags {
+  # An object relationship
+  item: items!
+  itemUuid: uuid!
+
+  # An object relationship
+  tag: tags!
+  tagUuid: uuid!
+}
+
+# aggregated selection of "items_tags"
+type items_tags_aggregate {
+  aggregate: items_tags_aggregate_fields
+  nodes: [items_tags!]!
+}
+
+# aggregate fields of "items_tags"
+type items_tags_aggregate_fields {
+  count(columns: [items_tags_select_column!], distinct: Boolean): Int
+  max: items_tags_max_fields
+  min: items_tags_min_fields
+}
+
+# order by aggregate values of table "items_tags"
+input items_tags_aggregate_order_by {
+  count: order_by
+  max: items_tags_max_order_by
+  min: items_tags_min_order_by
+}
+
+# input type for inserting array relation for remote table "items_tags"
+input items_tags_arr_rel_insert_input {
+  data: [items_tags_insert_input!]!
+  on_conflict: items_tags_on_conflict
+}
+
+# Boolean expression to filter rows from the table "items_tags". All fields are combined with a logical 'AND'.
+input items_tags_bool_exp {
+  _and: [items_tags_bool_exp]
+  _not: items_tags_bool_exp
+  _or: [items_tags_bool_exp]
+  item: items_bool_exp
+  itemUuid: uuid_comparison_exp
+  tag: tags_bool_exp
+  tagUuid: uuid_comparison_exp
+}
+
+# unique or primary key constraints on table "items_tags"
+enum items_tags_constraint {
+  # unique or primary key constraint
+  items_tags_pkey
+}
+
+# input type for inserting data into table "items_tags"
+input items_tags_insert_input {
+  item: items_obj_rel_insert_input
+  itemUuid: uuid
+  tag: tags_obj_rel_insert_input
+  tagUuid: uuid
+}
+
+# aggregate max on columns
+type items_tags_max_fields {
+  itemUuid: uuid
+  tagUuid: uuid
+}
+
+# order by max() on columns of table "items_tags"
+input items_tags_max_order_by {
+  itemUuid: order_by
+  tagUuid: order_by
+}
+
+# aggregate min on columns
+type items_tags_min_fields {
+  itemUuid: uuid
+  tagUuid: uuid
+}
+
+# order by min() on columns of table "items_tags"
+input items_tags_min_order_by {
+  itemUuid: order_by
+  tagUuid: order_by
+}
+
+# response of any mutation on the table "items_tags"
+type items_tags_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [items_tags!]!
+}
+
+# input type for inserting object relation for remote table "items_tags"
+input items_tags_obj_rel_insert_input {
+  data: items_tags_insert_input!
+  on_conflict: items_tags_on_conflict
+}
+
+# on conflict condition type for table "items_tags"
+input items_tags_on_conflict {
+  constraint: items_tags_constraint!
+  update_columns: [items_tags_update_column!]!
+  where: items_tags_bool_exp
+}
+
+# ordering options when selecting data from "items_tags"
+input items_tags_order_by {
+  item: items_order_by
+  itemUuid: order_by
+  tag: tags_order_by
+  tagUuid: order_by
+}
+
+# primary key columns input for table: "items_tags"
+input items_tags_pk_columns_input {
+  itemUuid: uuid!
+  tagUuid: uuid!
+}
+
+# select columns of table "items_tags"
+enum items_tags_select_column {
+  # column name
+  itemUuid
+
+  # column name
+  tagUuid
+}
+
+# input type for updating data in table "items_tags"
+input items_tags_set_input {
+  itemUuid: uuid
+  tagUuid: uuid
+}
+
+# update columns of table "items_tags"
+enum items_tags_update_column {
+  # column name
+  itemUuid
+
+  # column name
+  tagUuid
+}
+
+# update columns of table "items"
+enum items_update_column {
+  # column name
+  catUuid
+
+  # column name
+  desc
+
+  # column name
+  name
+
+  # column name
+  slug
+
+  # column name
+  updated_at
+
+  # column name
+  url
+
+  # column name
+  userId
+
+  # column name
+  userUuid
+
+  # column name
+  uuid
+}
+
+# mutation root
+type mutation_root {
+  # delete data from the table: "cats"
+  delete_cats(
+    # filter the rows which have to be deleted
+    where: cats_bool_exp!
+  ): cats_mutation_response
+
+  # delete single row from the table: "cats"
+  delete_cats_by_pk(uuid: uuid!): cats
+
+  # delete data from the table: "items"
+  delete_items(
+    # filter the rows which have to be deleted
+    where: items_bool_exp!
+  ): items_mutation_response
+
+  # delete single row from the table: "items"
+  delete_items_by_pk(uuid: uuid!): items
+
+  # delete data from the table: "items_cats"
+  delete_items_cats(
+    # filter the rows which have to be deleted
+    where: items_cats_bool_exp!
+  ): items_cats_mutation_response
+
+  # delete single row from the table: "items_cats"
+  delete_items_cats_by_pk(catUuid: uuid!, itemUuid: uuid!): items_cats
+
+  # delete data from the table: "items_tags"
+  delete_items_tags(
+    # filter the rows which have to be deleted
+    where: items_tags_bool_exp!
+  ): items_tags_mutation_response
+
+  # delete single row from the table: "items_tags"
+  delete_items_tags_by_pk(itemUuid: uuid!, tagUuid: uuid!): items_tags
+
+  # delete data from the table: "tags"
+  delete_tags(
+    # filter the rows which have to be deleted
+    where: tags_bool_exp!
+  ): tags_mutation_response
+
+  # delete single row from the table: "tags"
+  delete_tags_by_pk(uuid: uuid!): tags
+
+  # delete data from the table: "test"
+  delete_test(
+    # filter the rows which have to be deleted
+    where: test_bool_exp!
+  ): test_mutation_response
+
+  # delete single row from the table: "test"
+  delete_test_by_pk(id: uuid!): test
+
+  # delete data from the table: "users"
+  delete_users(
+    # filter the rows which have to be deleted
+    where: users_bool_exp!
+  ): users_mutation_response
+
+  # delete single row from the table: "users"
+  delete_users_by_pk(uuid: uuid!): users
+
+  # insert data into the table: "cats"
+  insert_cats(
+    # the rows to be inserted
+    objects: [cats_insert_input!]!
+
+    # on conflict condition
+    on_conflict: cats_on_conflict
+  ): cats_mutation_response
+
+  # insert a single row into the table: "cats"
+  insert_cats_one(
+    # the row to be inserted
+    object: cats_insert_input!
+
+    # on conflict condition
+    on_conflict: cats_on_conflict
+  ): cats
+
+  # insert data into the table: "items"
+  insert_items(
+    # the rows to be inserted
+    objects: [items_insert_input!]!
+
+    # on conflict condition
+    on_conflict: items_on_conflict
+  ): items_mutation_response
+
+  # insert data into the table: "items_cats"
+  insert_items_cats(
+    # the rows to be inserted
+    objects: [items_cats_insert_input!]!
+
+    # on conflict condition
+    on_conflict: items_cats_on_conflict
+  ): items_cats_mutation_response
+
+  # insert a single row into the table: "items_cats"
+  insert_items_cats_one(
+    # the row to be inserted
+    object: items_cats_insert_input!
+
+    # on conflict condition
+    on_conflict: items_cats_on_conflict
+  ): items_cats
+
+  # insert a single row into the table: "items"
+  insert_items_one(
+    # the row to be inserted
+    object: items_insert_input!
+
+    # on conflict condition
+    on_conflict: items_on_conflict
+  ): items
+
+  # insert data into the table: "items_tags"
+  insert_items_tags(
+    # the rows to be inserted
+    objects: [items_tags_insert_input!]!
+
+    # on conflict condition
+    on_conflict: items_tags_on_conflict
+  ): items_tags_mutation_response
+
+  # insert a single row into the table: "items_tags"
+  insert_items_tags_one(
+    # the row to be inserted
+    object: items_tags_insert_input!
+
+    # on conflict condition
+    on_conflict: items_tags_on_conflict
+  ): items_tags
+
+  # insert data into the table: "tags"
+  insert_tags(
+    # the rows to be inserted
+    objects: [tags_insert_input!]!
+
+    # on conflict condition
+    on_conflict: tags_on_conflict
+  ): tags_mutation_response
+
+  # insert a single row into the table: "tags"
+  insert_tags_one(
+    # the row to be inserted
+    object: tags_insert_input!
+
+    # on conflict condition
+    on_conflict: tags_on_conflict
+  ): tags
+
+  # insert data into the table: "test"
+  insert_test(
+    # the rows to be inserted
+    objects: [test_insert_input!]!
+
+    # on conflict condition
+    on_conflict: test_on_conflict
+  ): test_mutation_response
+
+  # insert a single row into the table: "test"
+  insert_test_one(
+    # the row to be inserted
+    object: test_insert_input!
+
+    # on conflict condition
+    on_conflict: test_on_conflict
+  ): test
+
+  # insert data into the table: "users"
+  insert_users(
+    # the rows to be inserted
+    objects: [users_insert_input!]!
+
+    # on conflict condition
+    on_conflict: users_on_conflict
+  ): users_mutation_response
+
+  # insert a single row into the table: "users"
+  insert_users_one(
+    # the row to be inserted
+    object: users_insert_input!
+
+    # on conflict condition
+    on_conflict: users_on_conflict
+  ): users
+
+  # update data of the table: "cats"
+  update_cats(
+    # sets the columns of the filtered rows to the given values
+    _set: cats_set_input
+
+    # filter the rows which have to be updated
+    where: cats_bool_exp!
+  ): cats_mutation_response
+
+  # update single row of the table: "cats"
+  update_cats_by_pk(
+    # sets the columns of the filtered rows to the given values
+    _set: cats_set_input
+    pk_columns: cats_pk_columns_input!
+  ): cats
+
+  # update data of the table: "items"
+  update_items(
+    # sets the columns of the filtered rows to the given values
+    _set: items_set_input
+
+    # filter the rows which have to be updated
+    where: items_bool_exp!
+  ): items_mutation_response
+
+  # update single row of the table: "items"
+  update_items_by_pk(
+    # sets the columns of the filtered rows to the given values
+    _set: items_set_input
+    pk_columns: items_pk_columns_input!
+  ): items
+
+  # update data of the table: "items_cats"
+  update_items_cats(
+    # sets the columns of the filtered rows to the given values
+    _set: items_cats_set_input
+
+    # filter the rows which have to be updated
+    where: items_cats_bool_exp!
+  ): items_cats_mutation_response
+
+  # update single row of the table: "items_cats"
+  update_items_cats_by_pk(
+    # sets the columns of the filtered rows to the given values
+    _set: items_cats_set_input
+    pk_columns: items_cats_pk_columns_input!
+  ): items_cats
+
+  # update data of the table: "items_tags"
+  update_items_tags(
+    # sets the columns of the filtered rows to the given values
+    _set: items_tags_set_input
+
+    # filter the rows which have to be updated
+    where: items_tags_bool_exp!
+  ): items_tags_mutation_response
+
+  # update single row of the table: "items_tags"
+  update_items_tags_by_pk(
+    # sets the columns of the filtered rows to the given values
+    _set: items_tags_set_input
+    pk_columns: items_tags_pk_columns_input!
+  ): items_tags
+
+  # update data of the table: "tags"
+  update_tags(
+    # sets the columns of the filtered rows to the given values
+    _set: tags_set_input
+
+    # filter the rows which have to be updated
+    where: tags_bool_exp!
+  ): tags_mutation_response
+
+  # update single row of the table: "tags"
+  update_tags_by_pk(
+    # sets the columns of the filtered rows to the given values
+    _set: tags_set_input
+    pk_columns: tags_pk_columns_input!
+  ): tags
+
+  # update data of the table: "test"
+  update_test(
+    # increments the integer columns with given value of the filtered values
+    _inc: test_inc_input
+
+    # sets the columns of the filtered rows to the given values
+    _set: test_set_input
+
+    # filter the rows which have to be updated
+    where: test_bool_exp!
+  ): test_mutation_response
+
+  # update single row of the table: "test"
+  update_test_by_pk(
+    # increments the integer columns with given value of the filtered values
+    _inc: test_inc_input
+
+    # sets the columns of the filtered rows to the given values
+    _set: test_set_input
+    pk_columns: test_pk_columns_input!
+  ): test
+
+  # update data of the table: "users"
+  update_users(
+    # sets the columns of the filtered rows to the given values
+    _set: users_set_input
+
+    # filter the rows which have to be updated
+    where: users_bool_exp!
+  ): users_mutation_response
+
+  # update single row of the table: "users"
+  update_users_by_pk(
+    # sets the columns of the filtered rows to the given values
+    _set: users_set_input
+    pk_columns: users_pk_columns_input!
+  ): users
+}
+
+# column ordering options
+enum order_by {
+  # in the ascending order, nulls last
+  asc
+
+  # in the ascending order, nulls first
+  asc_nulls_first
+
+  # in the ascending order, nulls last
+  asc_nulls_last
+
+  # in the descending order, nulls first
+  desc
+
+  # in the descending order, nulls first
+  desc_nulls_first
+
+  # in the descending order, nulls last
+  desc_nulls_last
+}
+
+# query root
+type query_root {
+  # fetch data from the table: "cats"
+  cats(
+    # distinct select on columns
+    distinct_on: [cats_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [cats_order_by!]
+
+    # filter the rows returned
+    where: cats_bool_exp
+  ): [cats!]!
+
+  # fetch aggregated fields from the table: "cats"
+  cats_aggregate(
+    # distinct select on columns
+    distinct_on: [cats_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [cats_order_by!]
+
+    # filter the rows returned
+    where: cats_bool_exp
+  ): cats_aggregate!
+
+  # fetch data from the table: "cats" using primary key columns
+  cats_by_pk(uuid: uuid!): cats
+
+  # fetch data from the table: "items"
+  items(
+    # distinct select on columns
+    distinct_on: [items_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_order_by!]
+
+    # filter the rows returned
+    where: items_bool_exp
+  ): [items!]!
+
+  # fetch aggregated fields from the table: "items"
+  items_aggregate(
+    # distinct select on columns
+    distinct_on: [items_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_order_by!]
+
+    # filter the rows returned
+    where: items_bool_exp
+  ): items_aggregate!
+
+  # fetch data from the table: "items" using primary key columns
+  items_by_pk(uuid: uuid!): items
+
+  # fetch data from the table: "items_cats"
+  items_cats(
+    # distinct select on columns
+    distinct_on: [items_cats_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_cats_order_by!]
+
+    # filter the rows returned
+    where: items_cats_bool_exp
+  ): [items_cats!]!
+
+  # fetch aggregated fields from the table: "items_cats"
+  items_cats_aggregate(
+    # distinct select on columns
+    distinct_on: [items_cats_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_cats_order_by!]
+
+    # filter the rows returned
+    where: items_cats_bool_exp
+  ): items_cats_aggregate!
+
+  # fetch data from the table: "items_cats" using primary key columns
+  items_cats_by_pk(catUuid: uuid!, itemUuid: uuid!): items_cats
+
+  # fetch data from the table: "items_tags"
+  items_tags(
+    # distinct select on columns
+    distinct_on: [items_tags_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_tags_order_by!]
+
+    # filter the rows returned
+    where: items_tags_bool_exp
+  ): [items_tags!]!
+
+  # fetch aggregated fields from the table: "items_tags"
+  items_tags_aggregate(
+    # distinct select on columns
+    distinct_on: [items_tags_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_tags_order_by!]
+
+    # filter the rows returned
+    where: items_tags_bool_exp
+  ): items_tags_aggregate!
+
+  # fetch data from the table: "items_tags" using primary key columns
+  items_tags_by_pk(itemUuid: uuid!, tagUuid: uuid!): items_tags
+
+  # fetch data from the table: "tags"
+  tags(
+    # distinct select on columns
+    distinct_on: [tags_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [tags_order_by!]
+
+    # filter the rows returned
+    where: tags_bool_exp
+  ): [tags!]!
+
+  # fetch aggregated fields from the table: "tags"
+  tags_aggregate(
+    # distinct select on columns
+    distinct_on: [tags_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [tags_order_by!]
+
+    # filter the rows returned
+    where: tags_bool_exp
+  ): tags_aggregate!
+
+  # fetch data from the table: "tags" using primary key columns
+  tags_by_pk(uuid: uuid!): tags
+
+  # fetch data from the table: "test"
+  test(
+    # distinct select on columns
+    distinct_on: [test_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [test_order_by!]
+
+    # filter the rows returned
+    where: test_bool_exp
+  ): [test!]!
+
+  # fetch aggregated fields from the table: "test"
+  test_aggregate(
+    # distinct select on columns
+    distinct_on: [test_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [test_order_by!]
+
+    # filter the rows returned
+    where: test_bool_exp
+  ): test_aggregate!
+
+  # fetch data from the table: "test" using primary key columns
+  test_by_pk(id: uuid!): test
+
+  # fetch data from the table: "users"
+  users(
+    # distinct select on columns
+    distinct_on: [users_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [users_order_by!]
+
+    # filter the rows returned
+    where: users_bool_exp
+  ): [users!]!
+
+  # fetch aggregated fields from the table: "users"
+  users_aggregate(
+    # distinct select on columns
+    distinct_on: [users_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [users_order_by!]
+
+    # filter the rows returned
+    where: users_bool_exp
+  ): users_aggregate!
+
+  # fetch data from the table: "users" using primary key columns
+  users_by_pk(uuid: uuid!): users
+}
+
+# expression to compare columns of type String. All fields are combined with logical 'AND'.
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+  _ilike: String
+  _in: [String!]
+  _is_null: Boolean
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+  _nilike: String
+  _nin: [String!]
+  _nlike: String
+  _nsimilar: String
+  _similar: String
+}
+
+# subscription root
+type subscription_root {
+  # fetch data from the table: "cats"
+  cats(
+    # distinct select on columns
+    distinct_on: [cats_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [cats_order_by!]
+
+    # filter the rows returned
+    where: cats_bool_exp
+  ): [cats!]!
+
+  # fetch aggregated fields from the table: "cats"
+  cats_aggregate(
+    # distinct select on columns
+    distinct_on: [cats_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [cats_order_by!]
+
+    # filter the rows returned
+    where: cats_bool_exp
+  ): cats_aggregate!
+
+  # fetch data from the table: "cats" using primary key columns
+  cats_by_pk(uuid: uuid!): cats
+
+  # fetch data from the table: "items"
+  items(
+    # distinct select on columns
+    distinct_on: [items_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_order_by!]
+
+    # filter the rows returned
+    where: items_bool_exp
+  ): [items!]!
+
+  # fetch aggregated fields from the table: "items"
+  items_aggregate(
+    # distinct select on columns
+    distinct_on: [items_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_order_by!]
+
+    # filter the rows returned
+    where: items_bool_exp
+  ): items_aggregate!
+
+  # fetch data from the table: "items" using primary key columns
+  items_by_pk(uuid: uuid!): items
+
+  # fetch data from the table: "items_cats"
+  items_cats(
+    # distinct select on columns
+    distinct_on: [items_cats_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_cats_order_by!]
+
+    # filter the rows returned
+    where: items_cats_bool_exp
+  ): [items_cats!]!
+
+  # fetch aggregated fields from the table: "items_cats"
+  items_cats_aggregate(
+    # distinct select on columns
+    distinct_on: [items_cats_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_cats_order_by!]
+
+    # filter the rows returned
+    where: items_cats_bool_exp
+  ): items_cats_aggregate!
+
+  # fetch data from the table: "items_cats" using primary key columns
+  items_cats_by_pk(catUuid: uuid!, itemUuid: uuid!): items_cats
+
+  # fetch data from the table: "items_tags"
+  items_tags(
+    # distinct select on columns
+    distinct_on: [items_tags_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_tags_order_by!]
+
+    # filter the rows returned
+    where: items_tags_bool_exp
+  ): [items_tags!]!
+
+  # fetch aggregated fields from the table: "items_tags"
+  items_tags_aggregate(
+    # distinct select on columns
+    distinct_on: [items_tags_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_tags_order_by!]
+
+    # filter the rows returned
+    where: items_tags_bool_exp
+  ): items_tags_aggregate!
+
+  # fetch data from the table: "items_tags" using primary key columns
+  items_tags_by_pk(itemUuid: uuid!, tagUuid: uuid!): items_tags
+
+  # fetch data from the table: "tags"
+  tags(
+    # distinct select on columns
+    distinct_on: [tags_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [tags_order_by!]
+
+    # filter the rows returned
+    where: tags_bool_exp
+  ): [tags!]!
+
+  # fetch aggregated fields from the table: "tags"
+  tags_aggregate(
+    # distinct select on columns
+    distinct_on: [tags_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [tags_order_by!]
+
+    # filter the rows returned
+    where: tags_bool_exp
+  ): tags_aggregate!
+
+  # fetch data from the table: "tags" using primary key columns
+  tags_by_pk(uuid: uuid!): tags
+
+  # fetch data from the table: "test"
+  test(
+    # distinct select on columns
+    distinct_on: [test_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [test_order_by!]
+
+    # filter the rows returned
+    where: test_bool_exp
+  ): [test!]!
+
+  # fetch aggregated fields from the table: "test"
+  test_aggregate(
+    # distinct select on columns
+    distinct_on: [test_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [test_order_by!]
+
+    # filter the rows returned
+    where: test_bool_exp
+  ): test_aggregate!
+
+  # fetch data from the table: "test" using primary key columns
+  test_by_pk(id: uuid!): test
+
+  # fetch data from the table: "users"
+  users(
+    # distinct select on columns
+    distinct_on: [users_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [users_order_by!]
+
+    # filter the rows returned
+    where: users_bool_exp
+  ): [users!]!
+
+  # fetch aggregated fields from the table: "users"
+  users_aggregate(
+    # distinct select on columns
+    distinct_on: [users_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [users_order_by!]
+
+    # filter the rows returned
+    where: users_bool_exp
+  ): users_aggregate!
+
+  # fetch data from the table: "users" using primary key columns
+  users_by_pk(uuid: uuid!): users
+}
+
+# columns and relationships of "tags"
+type tags {
+  # An array relationship
+  items_tags(
+    # distinct select on columns
+    distinct_on: [items_tags_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_tags_order_by!]
+
+    # filter the rows returned
+    where: items_tags_bool_exp
+  ): [items_tags!]!
+
+  # An aggregated array relationship
+  items_tags_aggregate(
+    # distinct select on columns
+    distinct_on: [items_tags_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_tags_order_by!]
+
+    # filter the rows returned
+    where: items_tags_bool_exp
+  ): items_tags_aggregate!
+  name: String!
+  slug: String!
+  updated_at: timestamptz!
+
+  # An object relationship
+  user: users!
+  userId: String
+  userUuid: uuid!
+  uuid: uuid!
+}
+
+# aggregated selection of "tags"
+type tags_aggregate {
+  aggregate: tags_aggregate_fields
+  nodes: [tags!]!
+}
+
+# aggregate fields of "tags"
+type tags_aggregate_fields {
+  count(columns: [tags_select_column!], distinct: Boolean): Int
+  max: tags_max_fields
+  min: tags_min_fields
+}
+
+# order by aggregate values of table "tags"
+input tags_aggregate_order_by {
+  count: order_by
+  max: tags_max_order_by
+  min: tags_min_order_by
+}
+
+# input type for inserting array relation for remote table "tags"
+input tags_arr_rel_insert_input {
+  data: [tags_insert_input!]!
+  on_conflict: tags_on_conflict
+}
+
+# Boolean expression to filter rows from the table "tags". All fields are combined with a logical 'AND'.
+input tags_bool_exp {
+  _and: [tags_bool_exp]
+  _not: tags_bool_exp
+  _or: [tags_bool_exp]
+  items_tags: items_tags_bool_exp
+  name: String_comparison_exp
+  slug: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+  user: users_bool_exp
+  userId: String_comparison_exp
+  userUuid: uuid_comparison_exp
+  uuid: uuid_comparison_exp
+}
+
+# unique or primary key constraints on table "tags"
+enum tags_constraint {
+  # unique or primary key constraint
+  tags_pkey
+
+  # unique or primary key constraint
+  tags_slug_userId_key
+}
+
+# input type for inserting data into table "tags"
+input tags_insert_input {
+  items_tags: items_tags_arr_rel_insert_input
+  name: String
+  slug: String
+  updated_at: timestamptz
+  user: users_obj_rel_insert_input
+  userId: String
+  userUuid: uuid
+  uuid: uuid
+}
+
+# aggregate max on columns
+type tags_max_fields {
+  name: String
+  slug: String
+  updated_at: timestamptz
+  userId: String
+  userUuid: uuid
+  uuid: uuid
+}
+
+# order by max() on columns of table "tags"
+input tags_max_order_by {
+  name: order_by
+  slug: order_by
+  updated_at: order_by
+  userId: order_by
+  userUuid: order_by
+  uuid: order_by
+}
+
+# aggregate min on columns
+type tags_min_fields {
+  name: String
+  slug: String
+  updated_at: timestamptz
+  userId: String
+  userUuid: uuid
+  uuid: uuid
+}
+
+# order by min() on columns of table "tags"
+input tags_min_order_by {
+  name: order_by
+  slug: order_by
+  updated_at: order_by
+  userId: order_by
+  userUuid: order_by
+  uuid: order_by
+}
+
+# response of any mutation on the table "tags"
+type tags_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [tags!]!
+}
+
+# input type for inserting object relation for remote table "tags"
+input tags_obj_rel_insert_input {
+  data: tags_insert_input!
+  on_conflict: tags_on_conflict
+}
+
+# on conflict condition type for table "tags"
+input tags_on_conflict {
+  constraint: tags_constraint!
+  update_columns: [tags_update_column!]!
+  where: tags_bool_exp
+}
+
+# ordering options when selecting data from "tags"
+input tags_order_by {
+  items_tags_aggregate: items_tags_aggregate_order_by
+  name: order_by
+  slug: order_by
+  updated_at: order_by
+  user: users_order_by
+  userId: order_by
+  userUuid: order_by
+  uuid: order_by
+}
+
+# primary key columns input for table: "tags"
+input tags_pk_columns_input {
+  uuid: uuid!
+}
+
+# select columns of table "tags"
+enum tags_select_column {
+  # column name
+  name
+
+  # column name
+  slug
+
+  # column name
+  updated_at
+
+  # column name
+  userId
+
+  # column name
+  userUuid
+
+  # column name
+  uuid
+}
+
+# input type for updating data in table "tags"
+input tags_set_input {
+  name: String
+  slug: String
+  updated_at: timestamptz
+  userId: String
+  userUuid: uuid
+  uuid: uuid
+}
+
+# update columns of table "tags"
+enum tags_update_column {
+  # column name
+  name
+
+  # column name
+  slug
+
+  # column name
+  updated_at
+
+  # column name
+  userId
+
+  # column name
+  userUuid
+
+  # column name
+  uuid
+}
+
+# columns and relationships of "test"
+type test {
+  content: String!
+  id: uuid!
+  name: String!
+  nr: Int!
+}
+
+# aggregated selection of "test"
+type test_aggregate {
+  aggregate: test_aggregate_fields
+  nodes: [test!]!
+}
+
+# aggregate fields of "test"
+type test_aggregate_fields {
+  avg: test_avg_fields
+  count(columns: [test_select_column!], distinct: Boolean): Int
+  max: test_max_fields
+  min: test_min_fields
+  stddev: test_stddev_fields
+  stddev_pop: test_stddev_pop_fields
+  stddev_samp: test_stddev_samp_fields
+  sum: test_sum_fields
+  var_pop: test_var_pop_fields
+  var_samp: test_var_samp_fields
+  variance: test_variance_fields
+}
+
+# order by aggregate values of table "test"
+input test_aggregate_order_by {
+  avg: test_avg_order_by
+  count: order_by
+  max: test_max_order_by
+  min: test_min_order_by
+  stddev: test_stddev_order_by
+  stddev_pop: test_stddev_pop_order_by
+  stddev_samp: test_stddev_samp_order_by
+  sum: test_sum_order_by
+  var_pop: test_var_pop_order_by
+  var_samp: test_var_samp_order_by
+  variance: test_variance_order_by
+}
+
+# input type for inserting array relation for remote table "test"
+input test_arr_rel_insert_input {
+  data: [test_insert_input!]!
+  on_conflict: test_on_conflict
+}
+
+# aggregate avg on columns
+type test_avg_fields {
+  nr: Float
+}
+
+# order by avg() on columns of table "test"
+input test_avg_order_by {
+  nr: order_by
+}
+
+# Boolean expression to filter rows from the table "test". All fields are combined with a logical 'AND'.
+input test_bool_exp {
+  _and: [test_bool_exp]
+  _not: test_bool_exp
+  _or: [test_bool_exp]
+  content: String_comparison_exp
+  id: uuid_comparison_exp
+  name: String_comparison_exp
+  nr: Int_comparison_exp
+}
+
+# unique or primary key constraints on table "test"
+enum test_constraint {
+  # unique or primary key constraint
+  test_id_key
+
+  # unique or primary key constraint
+  test_pkey
+}
+
+# input type for incrementing integer columne in table "test"
+input test_inc_input {
+  nr: Int
+}
+
+# input type for inserting data into table "test"
+input test_insert_input {
+  content: String
+  id: uuid
+  name: String
+  nr: Int
+}
+
+# aggregate max on columns
+type test_max_fields {
+  content: String
+  id: uuid
+  name: String
+  nr: Int
+}
+
+# order by max() on columns of table "test"
+input test_max_order_by {
+  content: order_by
+  id: order_by
+  name: order_by
+  nr: order_by
+}
+
+# aggregate min on columns
+type test_min_fields {
+  content: String
+  id: uuid
+  name: String
+  nr: Int
+}
+
+# order by min() on columns of table "test"
+input test_min_order_by {
+  content: order_by
+  id: order_by
+  name: order_by
+  nr: order_by
+}
+
+# response of any mutation on the table "test"
+type test_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [test!]!
+}
+
+# input type for inserting object relation for remote table "test"
+input test_obj_rel_insert_input {
+  data: test_insert_input!
+  on_conflict: test_on_conflict
+}
+
+# on conflict condition type for table "test"
+input test_on_conflict {
+  constraint: test_constraint!
+  update_columns: [test_update_column!]!
+  where: test_bool_exp
+}
+
+# ordering options when selecting data from "test"
+input test_order_by {
+  content: order_by
+  id: order_by
+  name: order_by
+  nr: order_by
+}
+
+# primary key columns input for table: "test"
+input test_pk_columns_input {
+  id: uuid!
+}
+
+# select columns of table "test"
+enum test_select_column {
+  # column name
+  content
+
+  # column name
+  id
+
+  # column name
+  name
+
+  # column name
+  nr
+}
+
+# input type for updating data in table "test"
+input test_set_input {
+  content: String
+  id: uuid
+  name: String
+  nr: Int
+}
+
+# aggregate stddev on columns
+type test_stddev_fields {
+  nr: Float
+}
+
+# order by stddev() on columns of table "test"
+input test_stddev_order_by {
+  nr: order_by
+}
+
+# aggregate stddev_pop on columns
+type test_stddev_pop_fields {
+  nr: Float
+}
+
+# order by stddev_pop() on columns of table "test"
+input test_stddev_pop_order_by {
+  nr: order_by
+}
+
+# aggregate stddev_samp on columns
+type test_stddev_samp_fields {
+  nr: Float
+}
+
+# order by stddev_samp() on columns of table "test"
+input test_stddev_samp_order_by {
+  nr: order_by
+}
+
+# aggregate sum on columns
+type test_sum_fields {
+  nr: Int
+}
+
+# order by sum() on columns of table "test"
+input test_sum_order_by {
+  nr: order_by
+}
+
+# update columns of table "test"
+enum test_update_column {
+  # column name
+  content
+
+  # column name
+  id
+
+  # column name
+  name
+
+  # column name
+  nr
+}
+
+# aggregate var_pop on columns
+type test_var_pop_fields {
+  nr: Float
+}
+
+# order by var_pop() on columns of table "test"
+input test_var_pop_order_by {
+  nr: order_by
+}
+
+# aggregate var_samp on columns
+type test_var_samp_fields {
+  nr: Float
+}
+
+# order by var_samp() on columns of table "test"
+input test_var_samp_order_by {
+  nr: order_by
+}
+
+# aggregate variance on columns
+type test_variance_fields {
+  nr: Float
+}
+
+# order by variance() on columns of table "test"
+input test_variance_order_by {
+  nr: order_by
+}
+
+scalar timestamptz
+
+# expression to compare columns of type timestamptz. All fields are combined with logical 'AND'.
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
+
+# columns and relationships of "users"
+type users {
+  # An array relationship
+  cats(
+    # distinct select on columns
+    distinct_on: [cats_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [cats_order_by!]
+
+    # filter the rows returned
+    where: cats_bool_exp
+  ): [cats!]!
+
+  # An aggregated array relationship
+  cats_aggregate(
+    # distinct select on columns
+    distinct_on: [cats_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [cats_order_by!]
+
+    # filter the rows returned
+    where: cats_bool_exp
+  ): cats_aggregate!
+  email: String!
+  id: String!
+
+  # An array relationship
+  items(
+    # distinct select on columns
+    distinct_on: [items_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_order_by!]
+
+    # filter the rows returned
+    where: items_bool_exp
+  ): [items!]!
+
+  # An aggregated array relationship
+  items_aggregate(
+    # distinct select on columns
+    distinct_on: [items_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [items_order_by!]
+
+    # filter the rows returned
+    where: items_bool_exp
+  ): items_aggregate!
+  name: String!
+  slug: String!
+
+  # An array relationship
+  tags(
+    # distinct select on columns
+    distinct_on: [tags_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [tags_order_by!]
+
+    # filter the rows returned
+    where: tags_bool_exp
+  ): [tags!]!
+
+  # An aggregated array relationship
+  tags_aggregate(
+    # distinct select on columns
+    distinct_on: [tags_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [tags_order_by!]
+
+    # filter the rows returned
+    where: tags_bool_exp
+  ): tags_aggregate!
+  updated_at: timestamptz
+  userId: String!
+  username: String
+  uuid: uuid!
+}
+
+# aggregated selection of "users"
+type users_aggregate {
+  aggregate: users_aggregate_fields
+  nodes: [users!]!
+}
+
+# aggregate fields of "users"
+type users_aggregate_fields {
+  count(columns: [users_select_column!], distinct: Boolean): Int
+  max: users_max_fields
+  min: users_min_fields
+}
+
+# order by aggregate values of table "users"
+input users_aggregate_order_by {
+  count: order_by
+  max: users_max_order_by
+  min: users_min_order_by
+}
+
+# input type for inserting array relation for remote table "users"
+input users_arr_rel_insert_input {
+  data: [users_insert_input!]!
+  on_conflict: users_on_conflict
+}
+
+# Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'.
+input users_bool_exp {
+  _and: [users_bool_exp]
+  _not: users_bool_exp
+  _or: [users_bool_exp]
+  cats: cats_bool_exp
+  email: String_comparison_exp
+  id: String_comparison_exp
+  items: items_bool_exp
+  name: String_comparison_exp
+  slug: String_comparison_exp
+  tags: tags_bool_exp
+  updated_at: timestamptz_comparison_exp
+  userId: String_comparison_exp
+  username: String_comparison_exp
+  uuid: uuid_comparison_exp
+}
+
+# unique or primary key constraints on table "users"
+enum users_constraint {
+  # unique or primary key constraint
+  users_pkey
+}
+
+# input type for inserting data into table "users"
+input users_insert_input {
+  cats: cats_arr_rel_insert_input
+  email: String
+  id: String
+  items: items_arr_rel_insert_input
+  name: String
+  slug: String
+  tags: tags_arr_rel_insert_input
+  updated_at: timestamptz
+  userId: String
+  username: String
+  uuid: uuid
+}
+
+# aggregate max on columns
+type users_max_fields {
+  email: String
+  id: String
+  name: String
+  slug: String
+  updated_at: timestamptz
+  userId: String
+  username: String
+  uuid: uuid
+}
+
+# order by max() on columns of table "users"
+input users_max_order_by {
+  email: order_by
+  id: order_by
+  name: order_by
+  slug: order_by
+  updated_at: order_by
+  userId: order_by
+  username: order_by
+  uuid: order_by
+}
+
+# aggregate min on columns
+type users_min_fields {
+  email: String
+  id: String
+  name: String
+  slug: String
+  updated_at: timestamptz
+  userId: String
+  username: String
+  uuid: uuid
+}
+
+# order by min() on columns of table "users"
+input users_min_order_by {
+  email: order_by
+  id: order_by
+  name: order_by
+  slug: order_by
+  updated_at: order_by
+  userId: order_by
+  username: order_by
+  uuid: order_by
+}
+
+# response of any mutation on the table "users"
+type users_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [users!]!
+}
+
+# input type for inserting object relation for remote table "users"
+input users_obj_rel_insert_input {
+  data: users_insert_input!
+  on_conflict: users_on_conflict
+}
+
+# on conflict condition type for table "users"
+input users_on_conflict {
+  constraint: users_constraint!
+  update_columns: [users_update_column!]!
+  where: users_bool_exp
+}
+
+# ordering options when selecting data from "users"
+input users_order_by {
+  cats_aggregate: cats_aggregate_order_by
+  email: order_by
+  id: order_by
+  items_aggregate: items_aggregate_order_by
+  name: order_by
+  slug: order_by
+  tags_aggregate: tags_aggregate_order_by
+  updated_at: order_by
+  userId: order_by
+  username: order_by
+  uuid: order_by
+}
+
+# primary key columns input for table: "users"
+input users_pk_columns_input {
+  uuid: uuid!
+}
+
+# select columns of table "users"
+enum users_select_column {
+  # column name
+  email
+
+  # column name
+  id
+
+  # column name
+  name
+
+  # column name
+  slug
+
+  # column name
+  updated_at
+
+  # column name
+  userId
+
+  # column name
+  username
+
+  # column name
+  uuid
+}
+
+# input type for updating data in table "users"
+input users_set_input {
+  email: String
+  id: String
+  name: String
+  slug: String
+  updated_at: timestamptz
+  userId: String
+  username: String
+  uuid: uuid
+}
+
+# update columns of table "users"
+enum users_update_column {
+  # column name
+  email
+
+  # column name
+  id
+
+  # column name
+  name
+
+  # column name
+  slug
+
+  # column name
+  updated_at
+
+  # column name
+  userId
+
+  # column name
+  username
+
+  # column name
+  uuid
+}
+
+scalar uuid
+
+# expression to compare columns of type uuid. All fields are combined with logical 'AND'.
+input uuid_comparison_exp {
+  _eq: uuid
+  _gt: uuid
+  _gte: uuid
+  _in: [uuid!]
+  _is_null: Boolean
+  _lt: uuid
+  _lte: uuid
+  _neq: uuid
+  _nin: [uuid!]
+}
+

@@ -45,6 +45,7 @@ const CreateService = {
 
   async insertTagsBeforeCollectionItem(apollo, itemObj) {
     // preparetags
+
     const tagsToInsert = itemObj.tags.map(el => {
       return {
         name: el,

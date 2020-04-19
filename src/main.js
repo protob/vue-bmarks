@@ -56,7 +56,7 @@ const authLink = setContext((_, { headers }) => {
 })
 
 const httpLink = new HttpLink({
-  uri: 'https://vue-bm.herokuapp.com/v1/graphql'
+  uri: 'https://vue-bm-items.herokuapp.com/v1/graphql'
 })
 
 const apolloClient = new ApolloClient({

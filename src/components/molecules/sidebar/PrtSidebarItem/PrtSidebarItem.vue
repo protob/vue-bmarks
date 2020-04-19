@@ -18,7 +18,7 @@
           openModal(
             'item',
             item.uuid,
-            { isBookmark: true, taxName: item.name },
+            { isItem: true, taxName: item.name },
             false
           )
         "

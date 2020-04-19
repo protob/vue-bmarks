@@ -4,10 +4,10 @@
     <PrtItemCatHeading :text="collectionItem.name" />
 
     <PrtItem
-      v-for="item in collectionItem.bookmarks_cats"
+      v-for="item in collectionItem.items_cats"
       :key="item.uuid"
       :catUuid="collectionItem.uuid"
-      :item="item.bookmark"
+      :item="item.item"
     />
   </div>
 </template>

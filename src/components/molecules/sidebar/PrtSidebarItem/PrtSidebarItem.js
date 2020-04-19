@@ -29,14 +29,14 @@ export default {
       this.$root.$emit('fireConfirm', { target, taxUuid, taxName })
     },
     openModalTax(target, taxUuid, taxName, isEditing = false) {
-      // const isBookmark = target == 'bookmark' ? true : false
+      // const isItem = target == 'item' ? true : false
       const data = {
         target,
         taxUuid,
         taxName,
         isEditing,
         catUuid: taxUuid,
-        isBookmark: false
+        isItem: false
       }
 
       this.$store.dispatch('setModalFormData', data)
@@ -44,11 +44,11 @@ export default {
       this.$root.$emit('fireModal', { target, taxUuid, taxName, isEditing })
     },
 
-    openModal(target, taxUuid, bookmark = null, isEditing = false) {
-      // ediging exsiting bookmark
-      if (bookmark) {
+    openModal(target, taxUuid, item = null, isEditing = false) {
+      // ediging exsiting item
+      if (item) {
         if (isEditing) {
-          const tagsArr = bookmark.bookmarks_tags.map(elem => {
+          const tagsArr = item.items_tags.map(elem => {
             return {
               uuid: elem.tag.uuid,
               name: elem.tag.name
@@ -58,30 +58,30 @@ export default {
           this.$store.dispatch('setModalFormData', {
             target,
             taxUuid,
-            taxName: bookmark.name,
-            desc: bookmark.desc,
-            slug: bookmark.slug,
-            url: bookmark.url,
+            taxName: item.name,
+            desc: item.desc,
+            slug: item.slug,
+            url: item.url,
             tags: tagsArr,
             catUuid: taxUuid,
-            isBookmark: true,
+            isItem: true,
             isEditing
           })
         } else {
           const data = {
             target,
             taxUuid,
-            taxName: bookmark.taxName,
+            taxName: item.taxName,
             isEditing: false,
             catUuid: taxUuid,
-            isBookmark: true
+            isItem: true
           }
 
           this.$store.dispatch('setModalFormData', data)
         }
       }
 
-      this.$root.$emit('fireModal', { target, taxUuid, bookmark, isEditing })
+      this.$root.$emit('fireModal', { target, taxUuid, item, isEditing })
     }
 
     // openModal(target) {

@@ -1,10 +1,10 @@
-query getBookmarksByTag($uuid: uuid!) {
+query getItemsByTag($uuid: uuid!) {
   tags(where: { uuid: { _eq: $uuid } }) {
     name
     slug
     uuid
-    bookmarks_tags {
-      bookmark {
+    items_tags {
+      item {
         desc
         uuid
         name
@@ -13,7 +13,7 @@ query getBookmarksByTag($uuid: uuid!) {
         desc
         updated_at
         uuid
-        bookmarks_tags {
+        items_tags {
           tag {
             updated_at
             slug

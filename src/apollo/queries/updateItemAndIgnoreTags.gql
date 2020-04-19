@@ -1,17 +1,17 @@
-mutation AddBookmark(
-  $bookmarkUuid: uuid!
+mutation AddItem(
+  $itemUuid: uuid!
   $userUuid: uuid!
   $userId: String!
   $name: String!
   $slug: String!
   $url: String!
   $desc: String!
-  $catUuid: uuid! # $tags: [bookmarks_tags_insert_input!]!
+  $catUuid: uuid! # $tags: [items_tags_insert_input!]!
 ) {
-  insert_bookmarks(
+  insert_items(
     objects: [
       {
-        uuid: $bookmarkUuid
+        uuid: $itemUuid
         name: $name
         slug: $slug
         url: $url
@@ -22,7 +22,7 @@ mutation AddBookmark(
       }
     ]
     on_conflict: {
-      constraint: bookmarks_pkey
+      constraint: items_pkey
       update_columns: [name, url, slug, desc]
     }
   ) {
@@ -32,15 +32,15 @@ mutation AddBookmark(
       uuid
     }
   }
-  insert_bookmarks_cats(
-    objects: { bookmarkUuid: $bookmarkUuid, catUuid: $catUuid }
+  insert_items_cats(
+    objects: { itemUuid: $itemUuid, catUuid: $catUuid }
     on_conflict: {
-      constraint: bookmarks_cats_pkey
-      update_columns: bookmarkUuid
+      constraint: items_cats_pkey
+      update_columns: itemUuid
     }
   ) {
     returning {
-      bookmarkUuid
+      itemUuid
       catUuid
     }
   }

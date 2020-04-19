@@ -17,7 +17,7 @@ export default new Vuex.Store({
       taxName: null,
       isEditing: null
     },
-    bookmarks: [],
+    items: [],
     cats: [],
     tags: []
   },
@@ -43,7 +43,7 @@ export default new Vuex.Store({
       return state.currentUserUuid
     },
     getItems: state => {
-      return state.bookmarks
+      return state.items
     },
     getCats: state => {
       return state.cats

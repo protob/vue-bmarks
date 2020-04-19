@@ -3,8 +3,8 @@ const uuidv4 = require('uuid/v4')
 import { log } from '@/utils'
 
 import addTags from '@/apollo/queries/addTags.gql'
-import updateBookmarkAndIgnoreTags from '@/apollo/queries/updateBookmarkAndIgnoreTags.gql'
-import updateBookmarkWithTags from '@/apollo/queries/updateBookmarkWithTags.gql'
+import updateItemAndIgnoreTags from '@/apollo/queries/updateItemAndIgnoreTags.gql'
+import updateItemWithTags from '@/apollo/queries/updateItemWithTags.gql'
 import getTagsByUserId from '@/apollo/queries/getTagsByUserId.gql'
 // mpove to update servie
 import updateCat from '@/apollo/queries/updateCat.gql'
@@ -12,8 +12,8 @@ import updateTag from '@/apollo/queries/updateTag.gql'
 import gql from 'graphql-tag'
 const UpdateService = {
   // prepare
-  prepareDeleteBookmarksTagsQuery(arr) {
-    const queryString = `mutation DeleteTags{delete_bookmarks_tags(where: {bookmarkUuid:{_in: 
+  prepareDeleteItemsTagsQuery(arr) {
+    const queryString = `mutation DeleteTags{delete_items_tags(where: {itemUuid:{_in: 
       ${JSON.stringify(arr)}}}) {affected_rows returning { tagUuid}}}`
 
     const query = gql`
@@ -58,8 +58,8 @@ const UpdateService = {
     let tags = !obj.tags ? [] : obj.tags
     tags = this.normalizeTags(tags)
 
-    const bookmarkObj = {
-      bookmarkUuid: obj.uuid,
+    const itemObj = {
+      itemUuid: obj.uuid,
       userUuid: userUuid,
       userId: userId,
       url: obj.url,
@@ -71,28 +71,26 @@ const UpdateService = {
 
     const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
-      mutation: updateBookmarkAndIgnoreTags,
-      variables: bookmarkObj,
-      refetchQueries: ['getAllBookmarksByCat']
+      mutation: updateItemAndIgnoreTags,
+      variables: itemObj,
+      refetchQueries: ['getAllItemsByCat']
     })
     log(error ? error : data)
 
     //------
 
-    await this.clearCollectionItemTags(apollo, bookmarkObj)
+    await this.clearCollectionItemTags(apollo, itemObj)
 
     if (tags.length > 0) {
-      await this.updateCollectionItemTags(apollo, bookmarkObj, tags)
+      await this.updateCollectionItemTags(apollo, itemObj, tags)
     }
     return error ? false : data
   },
-  async clearCollectionItemTags(apollo, bookmarkObj) {
-    const bookmarksUuids = [bookmarkObj.bookmarkUuid]
+  async clearCollectionItemTags(apollo, itemObj) {
+    const itemsUuids = [itemObj.itemUuid]
 
-    const DELETE_BOOKMARKS_TAGS = this.prepareDeleteBookmarksTagsQuery(
-      bookmarksUuids
-    )
-    // it  removes only mapping from bookmark_tags table not tag itself
+    const DELETE_BOOKMARKS_TAGS = this.prepareDeleteItemsTagsQuery(itemsUuids)
+    // it  removes only mapping from item_tags table not tag itself
     const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
       mutation: DELETE_BOOKMARKS_TAGS
@@ -102,8 +100,8 @@ const UpdateService = {
     return error ? error : data
   },
 
-  async updateCollectionItemTags(apollo, bookmarkObj, tags) {
-    const { userId, userUuid } = bookmarkObj
+  async updateCollectionItemTags(apollo, itemObj, tags) {
+    const { userId, userUuid } = itemObj
     const tagsToInsert = tags.map(el => {
       return {
         name: el,
@@ -119,17 +117,13 @@ const UpdateService = {
       tagsToInsert
     )
 
-    const updatedBookmarkObj = await this.updateTags(
-      apollo,
-      updatedData,
-      bookmarkObj
-    )
+    const updatedItemObj = await this.updateTags(apollo, updatedData, itemObj)
 
-    return await this.updateCollectionItemWithTags(apollo, updatedBookmarkObj)
+    return await this.updateCollectionItemWithTags(apollo, updatedItemObj)
   },
 
   // to be fefactored creation service.line 97
-  async updateTags(apollo, tagsToInsert, bookmarkObj) {
+  async updateTags(apollo, tagsToInsert, itemObj) {
     const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
       mutation: addTags,
@@ -141,21 +135,21 @@ const UpdateService = {
       log(error)
       return false
     }
-    const tagsBookmarksMap = await data.insert_tags.returning.map(item => {
+    const tagsItemsMap = await data.insert_tags.returning.map(item => {
       return {
-        bookmarkUuid: bookmarkObj.bookmarkUuid,
+        itemUuid: itemObj.itemUuid,
         tagUuid: item.uuid
       }
     })
-    bookmarkObj.tags = tagsBookmarksMap
-    return bookmarkObj
+    itemObj.tags = tagsItemsMap
+    return itemObj
   },
 
-  async updateCollectionItemWithTags(apollo, bookmarkObj) {
+  async updateCollectionItemWithTags(apollo, itemObj) {
     const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
-      mutation: updateBookmarkWithTags,
-      variables: bookmarkObj
+      mutation: updateItemWithTags,
+      variables: itemObj
     })
     log(error ? error : data)
     return error ? false : data

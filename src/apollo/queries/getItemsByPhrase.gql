@@ -1,5 +1,5 @@
-query getBookmarksByPhrase($phrase: String!) {
-  bookmarks(
+query getItemsByPhrase($phrase: String!) {
+  items(
     where: {
       _or: [
         { name: { _ilike: $phrase } }
@@ -17,7 +17,7 @@ query getBookmarksByPhrase($phrase: String!) {
     user {
       uuid
     }
-    bookmarks_tags {
+    items_tags {
       tag {
         uuid
         name

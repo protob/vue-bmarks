@@ -1,8 +1,8 @@
-query getBookmarksByCat($uuid: uuid!) {
+query getItemsByCat($uuid: uuid!) {
   cats(where: { uuid: { _eq: $uuid } }) {
     name
     uuid
-    bookmarks {
+    items {
       name
       uuid
       userUuid
@@ -10,7 +10,7 @@ query getBookmarksByCat($uuid: uuid!) {
       desc
       updated_at
       slug
-      bookmarks_tags {
+      items_tags {
         tag {
           uuid
           name

@@ -7,16 +7,8 @@ import deleteTag from '@/apollo/queries/delTags.gql'
 import getBookmarksByCat from '@/apollo/queries/getBookmarksByCat.gql'
 const DeleteService = {
   prepareDeleteBookmarksTagsQuery(arr) {
-    const queryString = `mutation DeleteTags{delete_bookmarks_tags(where: {bookmarkUuid:{_in: ${JSON.stringify(
-      arr
-    )}}}) {
-						affected_rows
-							returning {
-								tagUuid
-							}
-						}
-					}
-					`
+    const queryString = `mutation DeleteTags{delete_bookmarks_tags(where: {bookmarkUuid:{_in: 
+      ${JSON.stringify(arr)}}}) {affected_rows returning { tagUuid}}}`
 
     const query = gql`
       ${queryString}

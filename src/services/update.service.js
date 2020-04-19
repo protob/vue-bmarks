@@ -13,16 +13,8 @@ import gql from 'graphql-tag'
 const UpdateService = {
   // prepare
   prepareDeleteBookmarksTagsQuery(arr) {
-    const queryString = `mutation DeleteTags{delete_bookmarks_tags(where: {bookmarkUuid:{_in: ${JSON.stringify(
-      arr
-    )}}}) {
-						affected_rows
-							returning {
-								tagUuid
-							}
-						}
-					}
-					`
+    const queryString = `mutation DeleteTags{delete_bookmarks_tags(where: {bookmarkUuid:{_in: 
+      ${JSON.stringify(arr)}}}) {affected_rows returning { tagUuid}}}`
 
     const query = gql`
       ${queryString}

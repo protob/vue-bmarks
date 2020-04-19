@@ -8,9 +8,9 @@ describe('PrtCollectionItem.vue', () => {
         collectionItem: {
           name: 'vue',
           uuid: '0cbd7327-5e96-493e-af59-203da9e0de22',
-          bookmarks_cats: [
+          items_cats: [
             {
-              bookmark: {
+              item: {
                 uuid: '6370cc14-2d83-4e54-a6e3-bee56f782c6c',
                 name: 'vue',
                 slug: 'vue',
@@ -21,10 +21,10 @@ describe('PrtCollectionItem.vue', () => {
                   uuid: '7b913740-33b7-422e-a540-236a327b6b75',
                   __typename: 'users'
                 },
-                bookmarks_tags: [],
-                __typename: 'bookmarks'
+                items_tags: [],
+                __typename: 'items'
               },
-              __typename: 'bookmarks_cats'
+              __typename: 'items_cats'
             }
           ],
           __typename: 'cats'

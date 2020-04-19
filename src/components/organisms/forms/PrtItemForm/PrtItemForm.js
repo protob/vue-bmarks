@@ -74,7 +74,7 @@ export default {
     setData() {
       this.resetData(false)
 
-      this.isBookmark = this.getModalForm.isBookmark
+      this.isItem = this.getModalForm.isItem
       this.catUuid = this.getModalForm.catUuid
       if (this.getModalForm.isEditing) {
         this.formData.uuid = this.getModalForm.taxUuid // tax uid is itemuid

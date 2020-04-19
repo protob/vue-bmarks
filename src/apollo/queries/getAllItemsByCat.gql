@@ -1,9 +1,9 @@
-query getAllBookmarksByCat {
+query getAllItemsByCat {
   cats {
     name
     uuid
-    bookmarks_cats {
-      bookmark {
+    items_cats {
+      item {
         uuid
         name
         slug
@@ -13,7 +13,7 @@ query getAllBookmarksByCat {
         user {
           uuid
         }
-        bookmarks_tags {
+        items_tags {
           tag {
             uuid
             name

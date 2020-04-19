@@ -2,11 +2,11 @@ import PrtCollectionItem from '@/components/molecules/PrtCollectionItem/PrtColle
 
 import gql from 'graphql-tag'
 import { log } from '@/utils'
-import getAllBookmarksByCat from '@/apollo/queries/getAllBookmarksByCat.gql'
-import getBookmarksByTag from '@/apollo/queries/getBookmarksByTag.gql'
-import getBookmarksByCat from '@/apollo/queries/getBookmarksByCat.gql'
+import getAllItemsByCat from '@/apollo/queries/getAllItemsByCat.gql'
+import getItemsByTag from '@/apollo/queries/getItemsByTag.gql'
+import getItemsByCat from '@/apollo/queries/getItemsByCat.gql'
 
-import getBookmarksByPhrase from '@/apollo/queries/getBookmarksByPhrase.gql'
+import getItemsByPhrase from '@/apollo/queries/getItemsByPhrase.gql'
 
 export default {
   name: 'PrtItemsListing',
@@ -41,8 +41,8 @@ export default {
       const order = map[key]
 
       const queryString = `
-						query getBookmarksByOrder{
-							bookmarks(order_by:${order}) {
+						query getItemsByOrder{
+							items(order_by:${order}) {
 								uuid
 								name
 								slug
@@ -51,7 +51,7 @@ export default {
 								user {
 									id
 								}
-								bookmarks_tags {
+								items_tags {
 									tag {
 										uuid
 										name
@@ -74,7 +74,7 @@ export default {
         const { uuid, catName } = catData
 
         const { data, error } = await this.$apollo.query({
-          query: getBookmarksByCat,
+          query: getItemsByCat,
           variables: {
             uuid
           },
@@ -82,14 +82,14 @@ export default {
         })
         log(error ? error : data)
 
-        const catItems = data.cats[0].bookmarks // currently single cat filter is supported
+        const catItems = data.cats[0].items // currently single cat filter is supported
         const formattedItems = catItems.map(el => {
-          return { bookmark: el }
+          return { item: el }
         })
         let item = {
           name: catName,
           id: new Date().getTime(),
-          bookmarks_cats: formattedItems
+          items_cats: formattedItems
         }
 
         this.items = [item]
@@ -101,7 +101,7 @@ export default {
         const { uuid, tagName } = tagData
 
         const { data, error } = await this.$apollo.query({
-          query: getBookmarksByTag,
+          query: getItemsByTag,
           variables: {
             uuid
           }
@@ -109,11 +109,11 @@ export default {
         log(error ? error : data)
 
         const tags = data.tags
-        const tagItems = tags[0].bookmarks_tags // currently single tag filter is supported
+        const tagItems = tags[0].items_tags // currently single tag filter is supported
         let item = {
           name: tagName,
           id: new Date().getTime(),
-          bookmarks_cats: tagItems
+          items_cats: tagItems
         }
 
         this.items = [item]
@@ -129,14 +129,14 @@ export default {
           })
           .then(result => {
             const tempId = new Date().getTime()
-            const items = result.data.bookmarks.map(el => {
-              return { bookmark: el }
+            const items = result.data.items.map(el => {
+              return { item: el }
             })
 
             let item = {
               name: data.order,
               uuid: tempId,
-              bookmarks_cats: items
+              items_cats: items
             }
             this.items = [item]
           })
@@ -148,7 +148,7 @@ export default {
         const { phrase } = phraseObj
         if (!phrase) {
           const { data, error } = await this.$apollo.query({
-            query: getAllBookmarksByCat
+            query: getAllItemsByCat
           })
           log(error ? error : data)
           this.items = data.cats
@@ -158,7 +158,7 @@ export default {
         const queryName = '%' + phrase + '%'
 
         const { data, error } = await this.$apollo.query({
-          query: getBookmarksByPhrase,
+          query: getItemsByPhrase,
           variables: {
             phrase: queryName
           }
@@ -166,14 +166,14 @@ export default {
 
         log(error ? error : data)
         const tempId = new Date().getTime()
-        const items = data.bookmarks.map(el => {
-          return { bookmark: el }
+        const items = data.items.map(el => {
+          return { item: el }
         })
 
         let item = {
           name: phrase,
           uuid: tempId,
-          bookmarks_cats: items
+          items_cats: items
         }
         this.items = [item]
         return data
@@ -187,7 +187,7 @@ export default {
     async getItems() {
       const { data, error } = await this.$apollo.query({
         $loadingKey: 'loading',
-        query: getAllBookmarksByCat,
+        query: getAllItemsByCat,
         fetchPolicy: 'no-cache',
         variables: {}
       })

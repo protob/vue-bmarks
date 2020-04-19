@@ -52,10 +52,10 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: bookmarks; Type: TABLE; Schema: public; Owner: -
+-- Name: items; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.bookmarks (
+CREATE TABLE public.items (
     uuid uuid DEFAULT public.gen_random_uuid() NOT NULL,
     "userUuid" uuid NOT NULL,
     name text NOT NULL,
@@ -69,21 +69,21 @@ CREATE TABLE public.bookmarks (
 
 
 --
--- Name: bookmarks_cats; Type: TABLE; Schema: public; Owner: -
+-- Name: items_cats; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.bookmarks_cats (
-    "bookmarkUuid" uuid NOT NULL,
+CREATE TABLE public.items_cats (
+    "itemUuid" uuid NOT NULL,
     "catUuid" uuid NOT NULL
 );
 
 
 --
--- Name: bookmarks_tags; Type: TABLE; Schema: public; Owner: -
+-- Name: items_tags; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.bookmarks_tags (
-    "bookmarkUuid" uuid NOT NULL,
+CREATE TABLE public.items_tags (
+    "itemUuid" uuid NOT NULL,
     "tagUuid" uuid NOT NULL
 );
 
@@ -172,34 +172,34 @@ ALTER TABLE ONLY public.test ALTER COLUMN nr SET DEFAULT nextval('public.test_nr
 
 
 --
--- Data for Name: bookmarks; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.bookmarks VALUES ('6370cc14-2d83-4e54-a6e3-bee56f782c6c', '7b913740-33b7-422e-a540-236a327b6b75', 'vue', 'vue', 'https://vuejs.org', '2020-04-09 21:17:50.964745+00', 'The Progressive JavaScript Framework', '0cbd7327-5e96-493e-af59-203da9e0de22', 'auth0|5e8f905fd00e310bfb61f15f');
-INSERT INTO public.bookmarks VALUES ('812e9c97-16b6-484f-a6db-bed4bb551759', '7b913740-33b7-422e-a540-236a327b6b75', 'magento', 'magento', 'https://magento.com/', '2020-04-09 21:18:48.95923+00', 'magento', '186270f5-abdf-4459-a088-d8a0a4a0d8a9', 'auth0|5e8f905fd00e310bfb61f15f');
-INSERT INTO public.bookmarks VALUES ('e59dee31-ce49-4755-9fa5-4d65c27aa9b8', '7b913740-33b7-422e-a540-236a327b6b75', 'Google fonts', 'Google-fonts', 'https://fonts.google.com/', '2020-04-09 21:19:01.218358+00', 'Google fonts', '04c6af04-ef86-4163-96ce-50745c50d039', 'auth0|5e8f905fd00e310bfb61f15f');
-INSERT INTO public.bookmarks VALUES ('923c3cc5-eb3f-4be6-a7c8-41faaffe0124', '7b913740-33b7-422e-a540-236a327b6b75', 'react', 'react', 'https://reactjs.org/', '2020-04-09 21:19:36.603918+00', 'A JavaScript library for building user interfaces', 'a34ae8cc-71da-44c8-a39a-ccd5a88234c4', 'auth0|5e8f905fd00e310bfb61f15f');
-INSERT INTO public.bookmarks VALUES ('30eefe5b-457e-4ef3-a188-c8279673a314', '7b913740-33b7-422e-a540-236a327b6b75', 'Angular', 'Angular', 'https://angular.io/', '2020-04-09 21:19:56.74443+00', 'One framework. Mobile & desktop', '642a1a59-9d2a-471b-8ff4-df907c800c2a', 'auth0|5e8f905fd00e310bfb61f15f');
-INSERT INTO public.bookmarks VALUES ('d0da5bcf-d959-46f1-9ca8-01ff4f635621', '7b913740-33b7-422e-a540-236a327b6b75', 'PrestaShop', 'PrestaShop', 'https://www.prestashop.com/en', '2020-04-11 14:39:41.682814+00', 'Create and develop your business with PrestaShop', '186270f5-abdf-4459-a088-d8a0a4a0d8a9', 'auth0|5e8f905fd00e310bfb61f15f');
-
-
---
--- Data for Name: bookmarks_cats; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO public.bookmarks_cats VALUES ('6370cc14-2d83-4e54-a6e3-bee56f782c6c', '0cbd7327-5e96-493e-af59-203da9e0de22');
-INSERT INTO public.bookmarks_cats VALUES ('812e9c97-16b6-484f-a6db-bed4bb551759', '186270f5-abdf-4459-a088-d8a0a4a0d8a9');
-INSERT INTO public.bookmarks_cats VALUES ('e59dee31-ce49-4755-9fa5-4d65c27aa9b8', '04c6af04-ef86-4163-96ce-50745c50d039');
-INSERT INTO public.bookmarks_cats VALUES ('923c3cc5-eb3f-4be6-a7c8-41faaffe0124', 'a34ae8cc-71da-44c8-a39a-ccd5a88234c4');
-INSERT INTO public.bookmarks_cats VALUES ('30eefe5b-457e-4ef3-a188-c8279673a314', '642a1a59-9d2a-471b-8ff4-df907c800c2a');
-INSERT INTO public.bookmarks_cats VALUES ('d0da5bcf-d959-46f1-9ca8-01ff4f635621', '186270f5-abdf-4459-a088-d8a0a4a0d8a9');
+INSERT INTO public.items VALUES ('6370cc14-2d83-4e54-a6e3-bee56f782c6c', '7b913740-33b7-422e-a540-236a327b6b75', 'vue', 'vue', 'https://vuejs.org', '2020-04-09 21:17:50.964745+00', 'The Progressive JavaScript Framework', '0cbd7327-5e96-493e-af59-203da9e0de22', 'auth0|5e8f905fd00e310bfb61f15f');
+INSERT INTO public.items VALUES ('812e9c97-16b6-484f-a6db-bed4bb551759', '7b913740-33b7-422e-a540-236a327b6b75', 'magento', 'magento', 'https://magento.com/', '2020-04-09 21:18:48.95923+00', 'magento', '186270f5-abdf-4459-a088-d8a0a4a0d8a9', 'auth0|5e8f905fd00e310bfb61f15f');
+INSERT INTO public.items VALUES ('e59dee31-ce49-4755-9fa5-4d65c27aa9b8', '7b913740-33b7-422e-a540-236a327b6b75', 'Google fonts', 'Google-fonts', 'https://fonts.google.com/', '2020-04-09 21:19:01.218358+00', 'Google fonts', '04c6af04-ef86-4163-96ce-50745c50d039', 'auth0|5e8f905fd00e310bfb61f15f');
+INSERT INTO public.items VALUES ('923c3cc5-eb3f-4be6-a7c8-41faaffe0124', '7b913740-33b7-422e-a540-236a327b6b75', 'react', 'react', 'https://reactjs.org/', '2020-04-09 21:19:36.603918+00', 'A JavaScript library for building user interfaces', 'a34ae8cc-71da-44c8-a39a-ccd5a88234c4', 'auth0|5e8f905fd00e310bfb61f15f');
+INSERT INTO public.items VALUES ('30eefe5b-457e-4ef3-a188-c8279673a314', '7b913740-33b7-422e-a540-236a327b6b75', 'Angular', 'Angular', 'https://angular.io/', '2020-04-09 21:19:56.74443+00', 'One framework. Mobile & desktop', '642a1a59-9d2a-471b-8ff4-df907c800c2a', 'auth0|5e8f905fd00e310bfb61f15f');
+INSERT INTO public.items VALUES ('d0da5bcf-d959-46f1-9ca8-01ff4f635621', '7b913740-33b7-422e-a540-236a327b6b75', 'PrestaShop', 'PrestaShop', 'https://www.prestashop.com/en', '2020-04-11 14:39:41.682814+00', 'Create and develop your business with PrestaShop', '186270f5-abdf-4459-a088-d8a0a4a0d8a9', 'auth0|5e8f905fd00e310bfb61f15f');
 
 
 --
--- Data for Name: bookmarks_tags; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: items_cats; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.bookmarks_tags VALUES ('d0da5bcf-d959-46f1-9ca8-01ff4f635621', 'e84482e7-4d7d-4507-9f10-7ead62a54ca1');
+INSERT INTO public.items_cats VALUES ('6370cc14-2d83-4e54-a6e3-bee56f782c6c', '0cbd7327-5e96-493e-af59-203da9e0de22');
+INSERT INTO public.items_cats VALUES ('812e9c97-16b6-484f-a6db-bed4bb551759', '186270f5-abdf-4459-a088-d8a0a4a0d8a9');
+INSERT INTO public.items_cats VALUES ('e59dee31-ce49-4755-9fa5-4d65c27aa9b8', '04c6af04-ef86-4163-96ce-50745c50d039');
+INSERT INTO public.items_cats VALUES ('923c3cc5-eb3f-4be6-a7c8-41faaffe0124', 'a34ae8cc-71da-44c8-a39a-ccd5a88234c4');
+INSERT INTO public.items_cats VALUES ('30eefe5b-457e-4ef3-a188-c8279673a314', '642a1a59-9d2a-471b-8ff4-df907c800c2a');
+INSERT INTO public.items_cats VALUES ('d0da5bcf-d959-46f1-9ca8-01ff4f635621', '186270f5-abdf-4459-a088-d8a0a4a0d8a9');
+
+
+--
+-- Data for Name: items_tags; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+INSERT INTO public.items_tags VALUES ('d0da5bcf-d959-46f1-9ca8-01ff4f635621', 'e84482e7-4d7d-4507-9f10-7ead62a54ca1');
 
 
 --
@@ -251,27 +251,27 @@ SELECT pg_catalog.setval('public.test_nr_seq', 4, true);
 
 
 --
--- Name: bookmarks_cats bookmarks_cats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: items_cats items_cats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.bookmarks_cats
-    ADD CONSTRAINT bookmarks_cats_pkey PRIMARY KEY ("bookmarkUuid", "catUuid");
-
-
---
--- Name: bookmarks bookmarks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.bookmarks
-    ADD CONSTRAINT bookmarks_pkey PRIMARY KEY (uuid);
+ALTER TABLE ONLY public.items_cats
+    ADD CONSTRAINT items_cats_pkey PRIMARY KEY ("itemUuid", "catUuid");
 
 
 --
--- Name: bookmarks_tags bookmarks_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: items items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.bookmarks_tags
-    ADD CONSTRAINT bookmarks_tags_pkey PRIMARY KEY ("bookmarkUuid", "tagUuid");
+ALTER TABLE ONLY public.items
+    ADD CONSTRAINT items_pkey PRIMARY KEY (uuid);
+
+
+--
+-- Name: items_tags items_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.items_tags
+    ADD CONSTRAINT items_tags_pkey PRIMARY KEY ("itemUuid", "tagUuid");
 
 
 --
@@ -331,17 +331,17 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: bookmarks set_public_bookmarks_updated_at; Type: TRIGGER; Schema: public; Owner: -
+-- Name: items set_public_items_updated_at; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER set_public_bookmarks_updated_at BEFORE UPDATE ON public.bookmarks FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
+CREATE TRIGGER set_public_items_updated_at BEFORE UPDATE ON public.items FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
 
 
 --
--- Name: TRIGGER set_public_bookmarks_updated_at ON bookmarks; Type: COMMENT; Schema: public; Owner: -
+-- Name: TRIGGER set_public_items_updated_at ON items; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON TRIGGER set_public_bookmarks_updated_at ON public.bookmarks IS 'trigger to set value of column "updated_at" to current timestamp on row update';
+COMMENT ON TRIGGER set_public_items_updated_at ON public.items IS 'trigger to set value of column "updated_at" to current timestamp on row update';
 
 
 --
@@ -387,51 +387,51 @@ COMMENT ON TRIGGER set_public_users_updated_at ON public.users IS 'trigger to se
 
 
 --
--- Name: bookmarks bookmarks_catUuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: items items_catUuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.bookmarks
-    ADD CONSTRAINT "bookmarks_catUuid_fkey" FOREIGN KEY ("catUuid") REFERENCES public.cats(uuid) ON UPDATE RESTRICT ON DELETE RESTRICT;
-
-
---
--- Name: bookmarks_cats bookmarks_cats_bookmarkUuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.bookmarks_cats
-    ADD CONSTRAINT "bookmarks_cats_bookmarkUuid_fkey" FOREIGN KEY ("bookmarkUuid") REFERENCES public.bookmarks(uuid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE ONLY public.items
+    ADD CONSTRAINT "items_catUuid_fkey" FOREIGN KEY ("catUuid") REFERENCES public.cats(uuid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
--- Name: bookmarks_cats bookmarks_cats_catUuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: items_cats items_cats_itemUuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.bookmarks_cats
-    ADD CONSTRAINT "bookmarks_cats_catUuid_fkey" FOREIGN KEY ("catUuid") REFERENCES public.cats(uuid) ON UPDATE RESTRICT ON DELETE RESTRICT;
-
-
---
--- Name: bookmarks_tags bookmarks_tags_bookmarkUuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.bookmarks_tags
-    ADD CONSTRAINT "bookmarks_tags_bookmarkUuid_fkey" FOREIGN KEY ("bookmarkUuid") REFERENCES public.bookmarks(uuid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE ONLY public.items_cats
+    ADD CONSTRAINT "items_cats_itemUuid_fkey" FOREIGN KEY ("itemUuid") REFERENCES public.items(uuid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
--- Name: bookmarks_tags bookmarks_tags_tagUuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: items_cats items_cats_catUuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.bookmarks_tags
-    ADD CONSTRAINT "bookmarks_tags_tagUuid_fkey" FOREIGN KEY ("tagUuid") REFERENCES public.tags(uuid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE ONLY public.items_cats
+    ADD CONSTRAINT "items_cats_catUuid_fkey" FOREIGN KEY ("catUuid") REFERENCES public.cats(uuid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
--- Name: bookmarks bookmarks_userUuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: items_tags items_tags_itemUuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.bookmarks
-    ADD CONSTRAINT "bookmarks_userUuid_fkey" FOREIGN KEY ("userUuid") REFERENCES public.users(uuid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE ONLY public.items_tags
+    ADD CONSTRAINT "items_tags_itemUuid_fkey" FOREIGN KEY ("itemUuid") REFERENCES public.items(uuid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: items_tags items_tags_tagUuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.items_tags
+    ADD CONSTRAINT "items_tags_tagUuid_fkey" FOREIGN KEY ("tagUuid") REFERENCES public.tags(uuid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: items items_userUuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.items
+    ADD CONSTRAINT "items_userUuid_fkey" FOREIGN KEY ("userUuid") REFERENCES public.users(uuid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --

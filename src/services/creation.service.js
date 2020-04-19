@@ -6,7 +6,7 @@ import { log } from '@/utils'
 import addCat from '@/apollo/queries/addCat.gql'
 import addTag from '@/apollo/queries/addTag.gql'
 import addTags from '@/apollo/queries/addTags.gql'
-import addBookmark from '@/apollo/queries/addBookmark.gql'
+import addItem from '@/apollo/queries/addItem.gql'
 
 const CreateService = {
   normalizeTags(tags) {
@@ -43,26 +43,26 @@ const CreateService = {
     return error ? false : data
   },
 
-  async insertTagsBeforeCollectionItem(apollo, bookmarkObj) {
+  async insertTagsBeforeCollectionItem(apollo, itemObj) {
     // preparetags
-    const tagsToInsert = bookmarkObj.tags.map(el => {
+    const tagsToInsert = itemObj.tags.map(el => {
       return {
         name: el,
         slug: slugify(el),
-        userId: bookmarkObj.userId,
-        userUuid: bookmarkObj.userUuid
+        userId: itemObj.userId,
+        userUuid: itemObj.userUuid
       }
     })
 
-    return await this.insertTags(apollo, tagsToInsert, bookmarkObj)
+    return await this.insertTags(apollo, tagsToInsert, itemObj)
   },
 
   async addCollectionItemAndMaybeTags(apollo, obj, userId, userUuid) {
     let tags = !obj.tags ? [] : obj.tags
     tags = this.normalizeTags(tags)
 
-    const bookmarkObj = {
-      bookmarkUuid: uuidv4(),
+    const itemObj = {
+      itemUuid: uuidv4(),
       userUuid: userUuid,
       userId: userId,
       url: obj.url,
@@ -73,16 +73,16 @@ const CreateService = {
       tags: tags
     }
 
-    const bookmarkObjToInsert =
+    const itemObjToInsert =
       tags.length > 0
-        ? await this.insertTagsBeforeCollectionItem(apollo, bookmarkObj)
-        : bookmarkObj
+        ? await this.insertTagsBeforeCollectionItem(apollo, itemObj)
+        : itemObj
 
-    return await this.insertCollectionItem(apollo, bookmarkObjToInsert)
+    return await this.insertCollectionItem(apollo, itemObjToInsert)
   },
 
   // INSERT
-  async insertTags(apollo, tagsToInsert, bookmarkObj) {
+  async insertTags(apollo, tagsToInsert, itemObj) {
     const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
       mutation: addTags,
@@ -95,20 +95,20 @@ const CreateService = {
       log(error)
       return false
     }
-    const tagsBookmarksMap = await data.insert_tags.returning.map(item => {
+    const tagsItemsMap = await data.insert_tags.returning.map(item => {
       return {
-        bookmarkUuid: bookmarkObj.bookmarkUuid,
+        itemUuid: itemObj.itemUuid,
         tagUuid: item.uuid
       }
     })
-    bookmarkObj.tags = tagsBookmarksMap
-    return bookmarkObj
+    itemObj.tags = tagsItemsMap
+    return itemObj
   },
-  async insertCollectionItem(apollo, bookmarkObj) {
+  async insertCollectionItem(apollo, itemObj) {
     const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
-      mutation: addBookmark,
-      variables: bookmarkObj
+      mutation: addItem,
+      variables: itemObj
     })
     log(error ? error : data)
 

@@ -1,5 +1,5 @@
 mutation DeleteTags($uuid: uuid!) {
-  delete_bookmarks_tags(where: { tagUuid: { _eq: $uuid } }) {
+  delete_items_tags(where: { tagUuid: { _eq: $uuid } }) {
     affected_rows
     returning {
       tagUuid

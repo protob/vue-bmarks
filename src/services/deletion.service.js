@@ -78,7 +78,7 @@ const DeleteService = {
       bookmarksUuids
     )
 
-    // it  removes only mapping from bookmark_tags table not tag itself
+    // it removes only mapping from bookmark_tags table not tag itself
     const { data, error } = await apollo.mutate({
       $loadingKey: 'loading',
       mutation: DELETE_BOOKMARKS_TAGS

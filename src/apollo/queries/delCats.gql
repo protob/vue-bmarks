@@ -1,12 +1,12 @@
 mutation DeleteCats($uuid: uuid!) {
-  delete_bookmarks_cats(where: { catUuid: { _eq: $uuid } }) {
+  delete_items_cats(where: { catUuid: { _eq: $uuid } }) {
     affected_rows
     returning {
       catUuid
     }
   }
 
-  delete_bookmarks(where: { catUuid: { _eq: $uuid } }) {
+  delete_items(where: { catUuid: { _eq: $uuid } }) {
     affected_rows
     returning {
       catUuid

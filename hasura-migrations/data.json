@@ -1,6 +1,6 @@
 {
   "data": {
-    "bookmarks": [
+    "items": [
       {
         "desc": "The Progressive JavaScript Framework",
         "id": "1",
@@ -218,84 +218,84 @@
         "email": "admin@hasura.com"
       }
     ],
-    "bookmarks_cats": [
+    "items_cats": [
       {
-        "bookmarkUuid": "62d5f84a-465b-4d7d-8d3c-3bdb4c2e72b0",
+        "itemUuid": "62d5f84a-465b-4d7d-8d3c-3bdb4c2e72b0",
         "catUuid": "972dd38a-4bf6-42b6-b320-b26e6a44a7dc"
       },
       {
-        "bookmarkUuid": "d47cd20f-fddc-4c6f-8132-3d5f40a3836e",
+        "itemUuid": "d47cd20f-fddc-4c6f-8132-3d5f40a3836e",
         "catUuid": "a996917b-a5d7-46b2-876d-a6937fc4bc8d"
       },
       {
-        "bookmarkUuid": "c6fd91ba-a373-439a-9ae8-b774207cb3d2",
+        "itemUuid": "c6fd91ba-a373-439a-9ae8-b774207cb3d2",
         "catUuid": "a996917b-a5d7-46b2-876d-a6937fc4bc8d"
       },
       {
-        "bookmarkUuid": "3d891600-41bb-4ba9-bb43-8d76db90836f",
+        "itemUuid": "3d891600-41bb-4ba9-bb43-8d76db90836f",
         "catUuid": "a996917b-a5d7-46b2-876d-a6937fc4bc8d"
       },
       {
-        "bookmarkUuid": "7622e7a2-644d-483c-b715-e6992d330da1",
+        "itemUuid": "7622e7a2-644d-483c-b715-e6992d330da1",
         "catUuid": "0ff6228a-ec86-430f-9f3f-fd7f7e179f33"
       },
       {
-        "bookmarkUuid": "ece66928-4cf4-4aa4-937e-24a496a90507",
+        "itemUuid": "ece66928-4cf4-4aa4-937e-24a496a90507",
         "catUuid": "0ff6228a-ec86-430f-9f3f-fd7f7e179f33"
       },
       {
-        "bookmarkUuid": "bb94d90c-b97b-4176-87b6-548e8356f2a1",
+        "itemUuid": "bb94d90c-b97b-4176-87b6-548e8356f2a1",
         "catUuid": "1c7f56ab-7b50-4560-85fd-63cd97095535"
       },
       {
-        "bookmarkUuid": "8b69ee92-d99b-4c00-856c-ac75db72b1df",
+        "itemUuid": "8b69ee92-d99b-4c00-856c-ac75db72b1df",
         "catUuid": "32f10cba-fdb6-4401-91da-3bf3b8016de8"
       }
     ],
-    "bookmarks_tags": [
+    "items_tags": [
       {
         "tagUuid": "6d25e5a6-56cf-40bf-b0e8-af9c831196ee",
-        "bookmarkUuid": "62d5f84a-465b-4d7d-8d3c-3bdb4c2e72b0"
+        "itemUuid": "62d5f84a-465b-4d7d-8d3c-3bdb4c2e72b0"
       },
       {
         "tagUuid": "bdafaf08-1c5c-4a21-8eb6-b6f8c351f91c",
-        "bookmarkUuid": "62d5f84a-465b-4d7d-8d3c-3bdb4c2e72b0"
+        "itemUuid": "62d5f84a-465b-4d7d-8d3c-3bdb4c2e72b0"
       },
       {
         "tagUuid": "96a9a459-a486-464e-bb8d-c5b071dabf36",
-        "bookmarkUuid": "d47cd20f-fddc-4c6f-8132-3d5f40a3836e"
+        "itemUuid": "d47cd20f-fddc-4c6f-8132-3d5f40a3836e"
       },
       {
         "tagUuid": "96a9a459-a486-464e-bb8d-c5b071dabf36",
-        "bookmarkUuid": "c6fd91ba-a373-439a-9ae8-b774207cb3d2"
+        "itemUuid": "c6fd91ba-a373-439a-9ae8-b774207cb3d2"
       },
       {
         "tagUuid": "96a9a459-a486-464e-bb8d-c5b071dabf36",
-        "bookmarkUuid": "3d891600-41bb-4ba9-bb43-8d76db90836f"
+        "itemUuid": "3d891600-41bb-4ba9-bb43-8d76db90836f"
       },
       {
         "tagUuid": "466d0b65-6e78-4150-a934-86ee2514a317",
-        "bookmarkUuid": "7622e7a2-644d-483c-b715-e6992d330da1"
+        "itemUuid": "7622e7a2-644d-483c-b715-e6992d330da1"
       },
       {
         "tagUuid": "466d0b65-6e78-4150-a934-86ee2514a317",
-        "bookmarkUuid": "ece66928-4cf4-4aa4-937e-24a496a90507"
+        "itemUuid": "ece66928-4cf4-4aa4-937e-24a496a90507"
       },
       {
         "tagUuid": "bdafaf08-1c5c-4a21-8eb6-b6f8c351f91c",
-        "bookmarkUuid": "bb94d90c-b97b-4176-87b6-548e8356f2a1"
+        "itemUuid": "bb94d90c-b97b-4176-87b6-548e8356f2a1"
       },
       {
         "tagUuid": "e439f647-b793-4dc2-8f0b-92d78eaeea43",
-        "bookmarkUuid": "bb94d90c-b97b-4176-87b6-548e8356f2a1"
+        "itemUuid": "bb94d90c-b97b-4176-87b6-548e8356f2a1"
       },
       {
         "tagUuid": "bdafaf08-1c5c-4a21-8eb6-b6f8c351f91c",
-        "bookmarkUuid": "8b69ee92-d99b-4c00-856c-ac75db72b1df"
+        "itemUuid": "8b69ee92-d99b-4c00-856c-ac75db72b1df"
       },
       {
         "tagUuid": "a38d649e-a338-497d-9f1a-a175b5255762",
-        "bookmarkUuid": "8b69ee92-d99b-4c00-856c-ac75db72b1df"
+        "itemUuid": "8b69ee92-d99b-4c00-856c-ac75db72b1df"
       }
     ]
   }

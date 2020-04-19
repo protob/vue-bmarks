@@ -1,0 +1,20 @@
+mutation DeleteItems($uuid: uuid!) {
+  delete_items_cats(where: { itemUuid: { _eq: $uuid } }) {
+    affected_rows
+    returning {
+      catUuid
+    }
+  }
+  delete_items_tags(where: { itemUuid: { _eq: $uuid } }) {
+    affected_rows
+    returning {
+      tagUuid
+    }
+  }
+  delete_items(where: { uuid: { _eq: $uuid } }) {
+    affected_rows
+    returning {
+      uuid
+    }
+  }
+}

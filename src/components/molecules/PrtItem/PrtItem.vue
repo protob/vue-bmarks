@@ -27,7 +27,7 @@
     </div>
 
     <div class=" w-full prt-item__tags">
-      <PrtTags :tags="item.bookmarks_tags" />
+      <PrtTags :tags="item.items_tags" />
     </div>
   </div>
 </template>

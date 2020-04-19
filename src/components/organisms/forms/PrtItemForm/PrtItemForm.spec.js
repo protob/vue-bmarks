@@ -15,7 +15,7 @@ describe('PrtTaxForm.vue', () => {
       getModalForm: () => {
         return {
           catUuid: '186270f5-abdf-4459-a088-d8a0a4a0d8a9',
-          isBookmark: true,
+          isItem: true,
           isEditing: false,
           target: 'item',
           taxName: 'ecommerce',

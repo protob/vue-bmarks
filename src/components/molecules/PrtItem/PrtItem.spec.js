@@ -4,7 +4,7 @@ import PrtItem from './PrtItem.vue'
 describe('PrtItem.vue', () => {
   const item = {
     name: 'sampleTitle',
-    bookmarks_tags: [
+    items_tags: [
       {
         tag: {
           uuid: 'e84482e7-4d7d-4507-9f10-7ead62a54ca1',
@@ -12,7 +12,7 @@ describe('PrtItem.vue', () => {
           slug: 'persta',
           __typename: 'tags'
         },
-        __typename: 'bookmarks_tags'
+        __typename: 'items_tags'
       }
     ]
   }

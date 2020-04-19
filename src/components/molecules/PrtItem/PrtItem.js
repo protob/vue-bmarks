@@ -32,11 +32,11 @@ export default {
       this.$root.$emit('fireConfirm', { target, taxUuid, taxName })
     },
 
-    openModal(target, taxUuid, bookmark = null, isEditing = true) {
-      // edit exsiting bookmark
-      if (bookmark) {
+    openModal(target, taxUuid, item = null, isEditing = true) {
+      // edit exsiting item
+      if (item) {
         if (isEditing) {
-          const tagsArr = bookmark.bookmarks_tags.map(elem => {
+          const tagsArr = item.items_tags.map(elem => {
             return {
               uuid: elem.tag.uuid,
               name: elem.tag.name
@@ -46,20 +46,20 @@ export default {
           this.$store.dispatch('setModalFormData', {
             target,
             taxUuid,
-            taxName: bookmark.name,
-            desc: bookmark.desc,
-            slug: bookmark.slug,
-            url: bookmark.url,
+            taxName: item.name,
+            desc: item.desc,
+            slug: item.slug,
+            url: item.url,
             tags: tagsArr,
             catUuid: this.catUuid,
-            isBookmark: true,
+            isItem: true,
             isEditing
           })
 
           this.$root.$emit('fireModal', {
             target,
             taxUuid,
-            bookmark,
+            item,
             isEditing
           })
         }

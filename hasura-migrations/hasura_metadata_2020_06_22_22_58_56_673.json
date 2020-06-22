@@ -1,0 +1,209 @@
+{
+  "version": 2,
+  "tables": [
+    {
+      "table": {
+        "schema": "public",
+        "name": "cats"
+      },
+      "object_relationships": [
+        {
+          "name": "user",
+          "using": {
+            "foreign_key_constraint_on": "userUuid"
+          }
+        }
+      ],
+      "array_relationships": [
+        {
+          "name": "items",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "catUuid",
+              "table": {
+                "schema": "public",
+                "name": "items"
+              }
+            }
+          }
+        },
+        {
+          "name": "items_cats",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "catUuid",
+              "table": {
+                "schema": "public",
+                "name": "items_cats"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "items"
+      },
+      "object_relationships": [
+        {
+          "name": "cat",
+          "using": {
+            "foreign_key_constraint_on": "catUuid"
+          }
+        },
+        {
+          "name": "user",
+          "using": {
+            "foreign_key_constraint_on": "userUuid"
+          }
+        }
+      ],
+      "array_relationships": [
+        {
+          "name": "items_cats",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "itemUuid",
+              "table": {
+                "schema": "public",
+                "name": "items_cats"
+              }
+            }
+          }
+        },
+        {
+          "name": "items_tags",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "itemUuid",
+              "table": {
+                "schema": "public",
+                "name": "items_tags"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "items_cats"
+      },
+      "object_relationships": [
+        {
+          "name": "cat",
+          "using": {
+            "foreign_key_constraint_on": "catUuid"
+          }
+        },
+        {
+          "name": "item",
+          "using": {
+            "foreign_key_constraint_on": "itemUuid"
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "items_tags"
+      },
+      "object_relationships": [
+        {
+          "name": "item",
+          "using": {
+            "foreign_key_constraint_on": "itemUuid"
+          }
+        },
+        {
+          "name": "tag",
+          "using": {
+            "foreign_key_constraint_on": "tagUuid"
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "tags"
+      },
+      "object_relationships": [
+        {
+          "name": "user",
+          "using": {
+            "foreign_key_constraint_on": "userUuid"
+          }
+        }
+      ],
+      "array_relationships": [
+        {
+          "name": "items_tags",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "tagUuid",
+              "table": {
+                "schema": "public",
+                "name": "items_tags"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "test"
+      }
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "users"
+      },
+      "array_relationships": [
+        {
+          "name": "cats",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "userUuid",
+              "table": {
+                "schema": "public",
+                "name": "cats"
+              }
+            }
+          }
+        },
+        {
+          "name": "items",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "userUuid",
+              "table": {
+                "schema": "public",
+                "name": "items"
+              }
+            }
+          }
+        },
+        {
+          "name": "tags",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "userUuid",
+              "table": {
+                "schema": "public",
+                "name": "tags"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
